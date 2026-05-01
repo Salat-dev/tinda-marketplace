@@ -1,248 +1,404 @@
-// ============================================================
-// responsive.js — Tinda · Scripts communs responsives
-// Inclure dans chaque page : <script src="responsive.js"></script>
-// (après le CDN Supabase)
-// ============================================================
+/* ══════════════════════════════════════════════════════════════
+   TINDAMBA — responsive.js
+   Script responsif centralisé pour TOUTES les pages.
+   Inclure dans chaque page : <script src="js/responsive.js"></script>
+   (après le CDN Supabase si nécessaire)
+   ══════════════════════════════════════════════════════════════ */
 
-// --- Configuration Supabase (centralisée) ---
-const SUPABASE_URL = 'https://uytrjgtrpsbegifudosi.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_Pj_C1NLwxYiVSNOxuX6kUg_MukIHzga';
-const { createClient } = supabase;
-const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
-const IMG_FALLBACK = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200"%3E%3Crect fill="%23F2F2EF" width="200" height="200"/%3E%3C/svg%3E';
+(function () {
+    'use strict';
 
-// --- Utilitaires ---
-function escapeHTML(s) {
-    if (!s) return '';
-    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function formatXAF(n) {
-    if (n == null) return '—';
-    return new Intl.NumberFormat('fr-FR', { style:'currency', currency:'XAF', maximumFractionDigits:0 }).format(n);
-}
-function badgeLabel(b) {
-    return { new:'Nouveau', bestseller:'Best-seller', featured:'Coup de cœur', promo:'Promo', out_of_stock:'Épuisé' }[b] || b;
-}
+    /* ─────────────────────────────────────────────────────────
+       CONFIGURATION
+       ───────────────────────────────────────────────────────── */
+    const BREAKPOINT_MOBILE = 768;
+    const BREAKPOINT_BOTTOM_NAV = 640;
+    const NAVBAR_HEIGHT_DESKTOP = 68;
+    const NAVBAR_HEIGHT_MOBILE = 52;
 
-// --- Toast ---
-function toast(msg, type='info') {
-    const container = document.getElementById('toastContainer');
-    if (!container) return;
-    const el = document.createElement('div');
-    el.className = `toast toast--${type}`;
-    const icon = type==='success'
-        ? '<polyline points="20 6 9 17 4 12"/>'
-        : '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/>';
-    el.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">${icon}</svg>${escapeHTML(msg)}`;
-    container.appendChild(el);
-    setTimeout(() => el.remove(), 3200);
-}
+    /* ─────────────────────────────────────────────────────────
+       UTILITAIRES
+       ───────────────────────────────────────────────────────── */
+    function escapeHTML(s) {
+        if (!s) return '';
+        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
 
-// --- Panier (localStorage) ---
-const Cart = {
-    get() { try { return JSON.parse(localStorage.getItem('tinda_cart')||'[]'); } catch { return []; } },
-    save(cart) { localStorage.setItem('tinda_cart', JSON.stringify(cart)); },
-    count() { return this.get().reduce((s,i) => s+i.qty, 0); },
-    subtotal() { return this.get().reduce((s,i) => s+i.price*i.qty, 0); },
-    add(product, qty=1, color=null) {
-        const cart = this.get();
-        const key = color ? `${product.id}__${color}` : product.id;
-        const existing = cart.find(i => i._key === key);
-        if (existing) { existing.qty += qty; }
-        else cart.push({
-            _key: key,
-            id: product.id,
-            vendor_id: product.vendor_id || null,
-            vendor: product.vendors?.shop_name || 'Tinda',
-            name: product.name,
-            price: product.price,
-            image: (Array.isArray(product.images) && product.images[0]) || product.image_url || '',
-            color,
-            qty
+    function isMobile() {
+        return window.innerWidth <= BREAKPOINT_MOBILE;
+    }
+
+    function getCurrentPage() {
+        const path = window.location.pathname;
+        const filename = path.split('/').pop() || 'shop.html';
+        return filename.replace('.html', '');
+    }
+
+    /* ─────────────────────────────────────────────────────────
+       CART BADGE (mise à jour depuis localStorage)
+       ───────────────────────────────────────────────────────── */
+    function getCartCount() {
+        try {
+            const cart = JSON.parse(localStorage.getItem('tindamba_cart') || localStorage.getItem('tinda_cart') || '[]');
+            return cart.reduce((s, i) => s + (i.qty || 0), 0);
+        } catch {
+            return 0;
+        }
+    }
+
+    function updateAllCartBadges() {
+        const count = getCartCount();
+        document.querySelectorAll('#cartCount, #cartCountMobile, .bottom-nav__badge, .navbar__cart-count').forEach(el => {
+            if (el) el.textContent = count;
         });
-        this.save(cart);
-        updateCartBadges();
-    },
-    updateQty(key, delta) {
-        const cart = this.get();
-        const item = cart.find(i => i._key === key);
-        if (!item) return;
-        item.qty = Math.max(1, item.qty + delta);
-        this.save(cart);
-        updateCartBadges();
-    },
-    remove(key) {
-        const cart = this.get().filter(i => i._key !== key);
-        this.save(cart);
-        updateCartBadges();
-    },
-    clear() {
-        this.save([]);
-        updateCartBadges();
     }
-};
 
-function updateCartBadges() {
-    const n = Cart.count();
-    document.querySelectorAll('#cartCount, #cartCountMobile').forEach(el => {
-        if (el) el.textContent = n;
-    });
-}
-document.addEventListener('DOMContentLoaded', updateCartBadges);
+    /* ─────────────────────────────────────────────────────────
+       INJECTION DU HTML RESPONSIVE
+       On injecte hamburger, search toggle, mobile search,
+       mobile sidebar, et bottom nav uniquement si absents.
+       ───────────────────────────────────────────────────────── */
+    function injectResponsiveElements() {
+        const page = getCurrentPage();
 
-// --- Quick add to cart (nécessite une variable globale `allProducts`) ---
-window.quickAddToCart = function(productId) {
-    if (typeof allProducts === 'undefined') {
-        toast('Chargement des produits…', 'error');
-        return;
+        // ── Hamburger button dans la navbar ──
+        const navbarInner = document.querySelector('.navbar__inner');
+        if (navbarInner && !document.querySelector('.mobile-hamburger')) {
+            const hamburger = document.createElement('button');
+            hamburger.className = 'mobile-hamburger';
+            hamburger.id = 'hamburgerBtn';
+            hamburger.setAttribute('aria-label', 'Menu');
+            hamburger.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';
+            navbarInner.insertBefore(hamburger, navbarInner.firstChild);
+        }
+
+        // ── Search toggle dans la navbar ──
+        if (navbarInner && !document.querySelector('.navbar__search-toggle')) {
+            const searchToggle = document.createElement('button');
+            searchToggle.className = 'navbar__search-toggle';
+            searchToggle.id = 'searchToggle';
+            searchToggle.setAttribute('aria-label', 'Rechercher');
+            searchToggle.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>';
+            // Insérer avant les actions ou le cart
+            const insertBefore = navbarInner.querySelector('.navbar__actions')
+                || navbarInner.querySelector('.navbar__cart')
+                || navbarInner.querySelector('.navbar__back');
+            if (insertBefore) {
+                navbarInner.insertBefore(searchToggle, insertBefore);
+            } else {
+                navbarInner.appendChild(searchToggle);
+            }
+        }
+
+        // ── Mobile search overlay ──
+        if (!document.getElementById('mobileSearch')) {
+            const mobileSearch = document.createElement('div');
+            mobileSearch.className = 'mobile-search';
+            mobileSearch.id = 'mobileSearch';
+            mobileSearch.innerHTML = `
+                <div class="mobile-search__inner">
+                    <input type="search" class="mobile-search__input" id="mobileSearchInput" placeholder="Rechercher un produit…" autocomplete="off" />
+                    <button class="mobile-search__close" id="mobileSearchClose" aria-label="Fermer">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                </div>
+            `;
+            document.body.insertBefore(mobileSearch, document.body.firstChild);
+        }
+
+        // ── Mobile sidebar ──
+        if (!document.getElementById('mobileSidebar')) {
+            const sidebar = document.createElement('div');
+            sidebar.className = 'mobile-sidebar';
+            sidebar.id = 'mobileSidebar';
+            sidebar.innerHTML = `
+                <div class="mobile-sidebar__overlay" id="sidebarOverlay"></div>
+                <div class="mobile-sidebar__panel">
+                    <div class="mobile-sidebar__header">
+                        <a href="shop.html" class="mobile-sidebar__logo">
+                            <div class="mobile-sidebar__logo-mark">T</div>
+                            <span class="mobile-sidebar__logo-text">Tindamba</span>
+                        </a>
+                        <button class="mobile-sidebar__close" id="sidebarClose" aria-label="Fermer le menu">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        </button>
+                    </div>
+                    <nav class="mobile-sidebar__nav">
+                        <a href="shop.html" class="mobile-sidebar__link ${page === 'shop' ? 'active' : ''}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                            Boutique
+                        </a>
+                        <a href="cart.html" class="mobile-sidebar__link ${page === 'cart' ? 'active' : ''}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 6L8 16H20L22 6H6Z"/><path d="M6 6L4 2H2"/><circle cx="10" cy="20" r="1.5" fill="currentColor" stroke="none"/><circle cx="18" cy="20" r="1.5" fill="currentColor" stroke="none"/></svg>
+                            Mon panier
+                        </a>
+                        <a href="faqs.html" class="mobile-sidebar__link ${page === 'faqs' ? 'active' : ''}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                            FAQ
+                        </a>
+                        <a href="help.html" class="mobile-sidebar__link ${page === 'help' ? 'active' : ''}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            Aide vendeur
+                        </a>
+                        <div class="mobile-sidebar__divider"></div>
+                        <a href="login.html" class="mobile-sidebar__link ${page === 'login' ? 'active' : ''}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            Espace vendeur
+                        </a>
+                        <a href="conditions.html" class="mobile-sidebar__link ${page === 'conditions' ? 'active' : ''}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                            Conditions
+                        </a>
+                    </nav>
+                    <div class="mobile-sidebar__footer">
+                        <p>© 2025 Tindamba</p>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(sidebar);
+        }
+
+        // ── Bottom navigation ──
+        if (!document.getElementById('bottomNav')) {
+            const count = getCartCount();
+            const bottomNav = document.createElement('nav');
+            bottomNav.className = 'bottom-nav';
+            bottomNav.id = 'bottomNav';
+            bottomNav.innerHTML = `
+                <div class="bottom-nav__inner">
+                    <a href="shop.html" class="bottom-nav__item ${page === 'shop' || page === 'category' ? 'active' : ''}">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                        <span>Boutique</span>
+                    </a>
+                    <a href="faqs.html" class="bottom-nav__item ${page === 'faqs' || page === 'help' ? 'active' : ''}">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <span>Explorer</span>
+                    </a>
+                    <a href="cart.html" class="bottom-nav__item ${page === 'cart' || page === 'checkout' ? 'active' : ''}">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 6L8 16H20L22 6H6Z"/><path d="M6 6L4 2H2"/><circle cx="10" cy="20" r="1.5" fill="currentColor" stroke="none"/><circle cx="18" cy="20" r="1.5" fill="currentColor" stroke="none"/></svg>
+                        <span class="bottom-nav__badge" id="cartCountMobile">${count}</span>
+                        <span>Panier</span>
+                    </a>
+                    <a href="login.html" class="bottom-nav__item ${page === 'login' || page === 'dashboard' ? 'active' : ''}">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        <span>Compte</span>
+                    </a>
+                </div>
+            `;
+            document.body.appendChild(bottomNav);
+        }
     }
-    const product = allProducts.find(p => p.id == productId);
-    if (!product) { toast('Produit introuvable', 'error'); return; }
-    if (product.stock <= 0 || product.badge === 'out_of_stock') {
-        toast('Ce produit est en rupture de stock', 'error');
-        return;
-    }
-    Cart.add(product, 1);
-    toast(`"${product.name}" ajouté au panier ✓`, 'success');
-};
 
-// --- Recherche mobile ---
-document.addEventListener('DOMContentLoaded', () => {
-    const searchToggle = document.getElementById('searchToggle');
-    const mobileSearch = document.getElementById('mobileSearch');
-    const mobileInput  = document.getElementById('mobileSearchInput');
-    const searchInput  = document.getElementById('searchInput');
+    /* ─────────────────────────────────────────────────────────
+       EVENT HANDLERS
+       ───────────────────────────────────────────────────────── */
+    function bindEvents() {
 
-    if (searchToggle && mobileSearch) {
-        searchToggle.addEventListener('click', () => {
-            mobileSearch.classList.toggle('open');
-            if (mobileSearch.classList.contains('open') && mobileInput) {
-                setTimeout(() => mobileInput.focus(), 50);
+        // ── Hamburger → ouvrir sidebar ──
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const mobileSidebar = document.getElementById('mobileSidebar');
+        const sidebarClose = document.getElementById('sidebarClose');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        if (hamburgerBtn && mobileSidebar) {
+            hamburgerBtn.addEventListener('click', () => {
+                mobileSidebar.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            });
+        }
+
+        function closeSidebar() {
+            if (mobileSidebar) {
+                mobileSidebar.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+        }
+
+        if (sidebarClose) sidebarClose.addEventListener('click', closeSidebar);
+        if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
+
+        // ── Search toggle ──
+        const searchToggle = document.getElementById('searchToggle');
+        const mobileSearch = document.getElementById('mobileSearch');
+        const mobileSearchInput = document.getElementById('mobileSearchInput');
+        const mobileSearchClose = document.getElementById('mobileSearchClose');
+        const desktopSearchInput = document.getElementById('searchInput');
+
+        if (searchToggle && mobileSearch) {
+            searchToggle.addEventListener('click', () => {
+                mobileSearch.classList.add('open');
+                if (mobileSearchInput) {
+                    setTimeout(() => mobileSearchInput.focus(), 100);
+                }
+            });
+        }
+
+        if (mobileSearchClose && mobileSearch) {
+            mobileSearchClose.addEventListener('click', () => {
+                mobileSearch.classList.remove('open');
+            });
+        }
+
+        // ── Sync mobile search → desktop search input ──
+        if (mobileSearchInput && desktopSearchInput) {
+            mobileSearchInput.addEventListener('input', () => {
+                desktopSearchInput.value = mobileSearchInput.value;
+                desktopSearchInput.dispatchEvent(new Event('input', { bubbles: true }));
+            });
+            mobileSearchInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const searchForm = document.getElementById('searchForm');
+                    if (searchForm) {
+                        searchForm.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+                    }
+                    mobileSearch.classList.remove('open');
+                }
+            });
+        }
+
+        // ── Fermer mobile search en cliquant dehors ──
+        document.addEventListener('click', (e) => {
+            if (mobileSearch && mobileSearch.classList.contains('open')) {
+                if (!e.target.closest('.mobile-search') && !e.target.closest('.navbar__search-toggle')) {
+                    mobileSearch.classList.remove('open');
+                }
+            }
+        });
+
+        // ── Raccourci clavier Escape ──
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeSidebar();
+                if (mobileSearch) mobileSearch.classList.remove('open');
             }
         });
     }
-    if (mobileSearch && mobileInput && searchInput) {
-        mobileInput.addEventListener('input', () => {
-            searchInput.value = mobileInput.value;
+
+    /* ─────────────────────────────────────────────────────────
+       ADAPT LAYOUT ON RESIZE
+       ───────────────────────────────────────────────────────── */
+    function adaptLayout() {
+        const w = window.innerWidth;
+
+        // Navbar cart: masquer sur petit mobile (présent dans bottom nav)
+        const navCart = document.querySelector('.navbar__cart');
+        if (navCart) {
+            navCart.style.display = w <= BREAKPOINT_BOTTOM_NAV ? 'none' : '';
+        }
+
+        // Navbar actions (vendeur label)
+        document.querySelectorAll('.navbar__action').forEach(el => {
+            el.style.display = w <= BREAKPOINT_BOTTOM_NAV ? 'none' : '';
         });
-    }
-    // Fermer la recherche mobile en cliquant à l'extérieur (optionnel)
-    document.addEventListener('click', function(e) {
-        if (mobileSearch && !e.target.closest('.mobile-search') && !e.target.closest('.navbar__search-toggle')) {
-            mobileSearch.classList.remove('open');
+
+        // Body padding pour bottom nav
+        if (w <= BREAKPOINT_BOTTOM_NAV) {
+            document.body.style.paddingBottom = 'calc(56px + env(safe-area-inset-bottom))';
+        } else {
+            document.body.style.paddingBottom = '';
         }
-    });
-});
 
-// --- Navigation mobile (bottom-nav active) ---
-document.addEventListener('DOMContentLoaded', () => {
-    const currentPath = window.location.pathname;
-    document.querySelectorAll('.bottom-nav__item').forEach(item => {
-        const href = item.getAttribute('href');
-        if (href && currentPath.includes(href.replace('/',''))) {
-            item.classList.add('active');
+        // Fermer sidebar et search si on repasse en desktop
+        if (w > BREAKPOINT_MOBILE) {
+            const sidebar = document.getElementById('mobileSidebar');
+            const search = document.getElementById('mobileSearch');
+            if (sidebar) sidebar.classList.remove('open');
+            if (search) search.classList.remove('open');
+            document.body.style.overflow = '';
         }
-    });
-});
 
-// --- Slider horizontal (shop, catégories) ---
-window.slideSection = function(sliderId, direction) {
-    const grid = document.getElementById(sliderId);
-    if (!grid) return;
-    const card = grid.querySelector('.mi-card');
-    const cardW = card ? card.offsetWidth + 14 : 224;
-    grid.scrollBy({ left: direction * cardW * 2, behavior: 'smooth' });
-};
-
-// --- Masquer le panier de la navbar sur mobile (présent dans bottom nav) ---
-function adaptNavbarCart() {
-    const navCart = document.getElementById('navCart');
-    if (navCart) {
-        navCart.style.display = window.innerWidth < 641 ? 'none' : 'flex';
+        // Cat nav sticky offset
+        const catNav = document.querySelector('.cat-nav');
+        if (catNav) {
+            catNav.style.top = (w <= BREAKPOINT_BOTTOM_NAV ? NAVBAR_HEIGHT_MOBILE : w <= BREAKPOINT_MOBILE ? 56 : NAVBAR_HEIGHT_DESKTOP) + 'px';
+        }
     }
-}
-window.addEventListener('resize', adaptNavbarCart);
-document.addEventListener('DOMContentLoaded', adaptNavbarCart);
 
-// --- Gestion du body padding pour la bottom nav ---
-document.addEventListener('DOMContentLoaded', () => {
-    if (window.innerWidth <= 640) {
-        document.body.style.paddingBottom = '68px';
+    /* ─────────────────────────────────────────────────────────
+       SLIDER HORIZONTAL (touch-friendly)
+       ───────────────────────────────────────────────────────── */
+    if (typeof window.slideSection === 'undefined') {
+        window.slideSection = function (sliderId, direction) {
+            const grid = document.getElementById(sliderId);
+            if (!grid) return;
+            const card = grid.querySelector('.mi-card, .skel-card');
+            const cardW = card ? card.offsetWidth + 16 : 220;
+            grid.scrollBy({ left: direction * cardW * 2, behavior: 'smooth' });
+        };
     }
-});
-window.addEventListener('resize', () => {
-    if (window.innerWidth <= 640) {
-        document.body.style.paddingBottom = '68px';
+
+    /* ─────────────────────────────────────────────────────────
+       HIDE/SHOW BOTTOM NAV ON SCROLL
+       ───────────────────────────────────────────────────────── */
+    let lastScrollY = 0;
+    let ticking = false;
+
+    function handleScroll() {
+        const bottomNav = document.getElementById('bottomNav');
+        if (!bottomNav || window.innerWidth > BREAKPOINT_BOTTOM_NAV) return;
+
+        const currentY = window.scrollY;
+        const delta = currentY - lastScrollY;
+
+        if (delta > 8 && currentY > 100) {
+            bottomNav.style.transform = 'translateY(100%)';
+            bottomNav.style.transition = 'transform 0.3s ease';
+        } else if (delta < -5) {
+            bottomNav.style.transform = 'translateY(0)';
+            bottomNav.style.transition = 'transform 0.3s ease';
+        }
+
+        lastScrollY = currentY;
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            requestAnimationFrame(handleScroll);
+            ticking = true;
+        }
+    }, { passive: true });
+
+    /* ─────────────────────────────────────────────────────────
+       INITIALISATION
+       ───────────────────────────────────────────────────────── */
+    function init() {
+        injectResponsiveElements();
+        bindEvents();
+        adaptLayout();
+        updateAllCartBadges();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
     } else {
-        document.body.style.paddingBottom = '';
+        init();
     }
-});
 
-// --- Fonctions de rendu produit (réutilisables) ---
-function renderSwatches(colors, max = 4) {
-    if (!Array.isArray(colors) || !colors.length) return '';
-    const visible = colors.slice(0, max);
-    const extra = colors.length - max;
-    return `<div class="mi-card__swatches">${visible.map(c => `<span class="mi-swatch" style="background:${escapeHTML(c?.hex||c)}"></span>`).join('')}${extra>0?`<span style="font-size:9px;color:var(--color-text-tertiary)">+${extra}</span>`:''}</div>`;
-}
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(adaptLayout, 80);
+    });
 
-function cardHTML(p) {
-    const img = (Array.isArray(p.images) && p.images[0]) || p.image_url || IMG_FALLBACK;
-    const hasPromo = p.old_price && p.old_price > p.price;
-    const isOut = p.stock <= 0 || p.badge === 'out_of_stock';
-    const discount = hasPromo ? Math.round((1 - p.price / p.old_price) * 100) : 0;
-    const desc = p.description || `Vendu par ${p.vendors?.shop_name || 'Tinda'}`;
-    const rating = p.rating || (3.5 + Math.random() * 1.5).toFixed(1);
-    const reviews = p.reviews_count || Math.floor(10 + Math.random() * 200);
-    const stars = '★'.repeat(Math.round(rating)) + '☆'.repeat(5 - Math.round(rating));
-    let badgeHTML = '';
-    if (p.badge && p.badge !== 'out_of_stock') badgeHTML = `<span class="badge badge--${p.badge}">${escapeHTML(badgeLabel(p.badge))}</span>`;
-    else if (isOut) badgeHTML = '<span class="badge badge--out_of_stock">Épuisé</span>';
-    else if (hasPromo) badgeHTML = `<span class="badge badge--promo">−${discount}%</span>`;
-    return `<a href="product.html?id=${p.id}" class="mi-card${isOut?' mi-card--out':''}" aria-label="${escapeHTML(p.name)}">
-        <div class="mi-card__media">${badgeHTML}
-            <button class="mi-card__wish" onclick="event.preventDefault();event.stopPropagation();" aria-label="Favori">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            </button>
-            <img src="${escapeHTML(img)}" alt="${escapeHTML(p.name)}" loading="lazy" onerror="this.src='${IMG_FALLBACK}'">
-            <button class="mi-card__atc" onclick="event.preventDefault();event.stopPropagation();quickAddToCart('${p.id}')">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 6L8 16H20L22 6H6Z"/><path d="M6 6L4 2H2"/><circle cx="10" cy="20" r="1.5" fill="currentColor" stroke="none"/><circle cx="18" cy="20" r="1.5" fill="currentColor" stroke="none"/></svg>Ajouter
-            </button>
-        </div>
-        <div class="mi-card__body">
-            <div class="mi-card__vendor">${escapeHTML(p.vendors?.shop_name||'Tinda')}</div>
-            <h3 class="mi-card__name">${escapeHTML(p.name)}</h3>
-            <p class="mi-card__desc">${escapeHTML(desc)}</p>
-            ${renderSwatches(p.colors)}
-            <div class="mi-card__rating"><span class="mi-card__stars">${stars}</span><span>${rating} (${reviews})</span></div>
-            <div class="mi-card__price">
-                <span class="mi-card__price-current">${formatXAF(p.price)}</span>
-                ${hasPromo?`<span class="mi-card__price-old">${formatXAF(p.old_price)}</span>`:''}
-                ${hasPromo?`<span class="mi-card__price-discount">−${discount}%</span>`:''}
-            </div>
-        </div>
-    </a>`;
-}
+    // Écouter les changements du panier (multi-tabs)
+    window.addEventListener('storage', (e) => {
+        if (e.key === 'tindamba_cart' || e.key === 'tinda_cart') {
+            updateAllCartBadges();
+        }
+    });
 
-// --- Construction de section (utilisée dans shop.html) ---
-window.buildSection = function({ id, title, subtitle, products, featured=false, total=0, categoryId }) {
-    const idAttr = id ? `id="${id}"` : '';
-    const sliderId = id ? `slider-${id}` : `slider-${Math.random().toString(36).slice(2,7)}`;
-    const seeAll = total > products.length
-        ? `<a href="category.html?id=${categoryId}" class="cat-section__see-all">Tout voir <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>`
-        : '';
-    return `<section class="cat-section${featured?' cat-section--featured':''}" ${idAttr}>
-        <div class="cat-section__head">
-            <div>
-                <h2 class="cat-section__title">${escapeHTML(title)}</h2>
-                ${subtitle ? `<p class="cat-section__subtitle">${escapeHTML(subtitle)}</p>` : ''}
-            </div>
-            ${seeAll}
-        </div>
-        <div class="slider-wrapper">
-            <button class="slider-btn slider-btn--prev" onclick="slideSection('${sliderId}',-1)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 18 9 12 15 6"/></svg></button>
-            <div class="cat-section__grid" id="${sliderId}">${products.map(cardHTML).join('')}</div>
-            <button class="slider-btn slider-btn--next" onclick="slideSection('${sliderId}',1)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"/></svg></button>
-        </div>
-    </section>`;
-};
+    // Export pour usage externe
+    window.TindambaResponsive = {
+        updateCartBadges: updateAllCartBadges,
+        getCartCount: getCartCount,
+        adaptLayout: adaptLayout,
+        closeSidebar: function () {
+            const sidebar = document.getElementById('mobileSidebar');
+            if (sidebar) sidebar.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+    };
+
+})();
