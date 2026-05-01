@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Produit · Tinda</title>
+    <meta name="description" content="Découvrez ce produit sur Tinda, la marketplace africaine." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="css/product.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap" rel="stylesheet" />
+
+    <!-- Supabase JS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+  
+</head>
+<body>
+
+    <!-- ─── TOPBAR (identique shop) ─── -->
+    <div class="topbar">
+        <div class="topbar__inner">
+            <div class="topbar__promo">
+                <span class="topbar__dot"></span>
+                Livraison gratuite dès <strong>25 000 FCFA</strong>
+            </div>
+            <div class="topbar__links">
+                <a href="#" class="topbar__link">Aide</a>
+                <span class="topbar__sep">·</span>
+                <a href="login.html" class="topbar__link">Espace vendeur</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── NAVBAR (nouveau design) ─── -->
+    <nav class="navbar">
+        <div class="navbar__inner">
+            <a href="shop.html" class="navbar__logo">
+                <div class="navbar__logo-mark">T</div>
+                <div class="navbar__logo-text">
+                    <span class="navbar__logo-name">Tindamba</span>
+                    <span class="navbar__logo-tagline">Marketplace</span>
+                </div>
+            </a>
+            <div class="navbar__spacer"></div>
+            <a href="shop.html" class="navbar__back">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                Boutique
+            </a>
+            <a href="cart.html" class="navbar__cart" aria-label="Panier">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 6L8 16H20L22 6H6Z"/>
+                    <path d="M6 6L4 2H2"/>
+                    <circle cx="10" cy="20" r="1.5" fill="currentColor" stroke="none"/>
+                    <circle cx="18" cy="20" r="1.5" fill="currentColor" stroke="none"/>
+                </svg>
+                <span class="navbar__cart-count" id="cartCount">0</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- ─── TRUST STRIP ─── -->
+    <div class="trust-strip">
+        <div class="trust-strip__inner">
+            <div class="trust-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                <div><div class="trust-item__title">Vendeur vérifié</div><div class="trust-item__sub">Profils certifiés</div></div>
+            </div>
+            <div class="trust-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                <div><div class="trust-item__title">Paiement à la livraison</div><div class="trust-item__sub">Cash ou mobile money</div></div>
+            </div>
+            <div class="trust-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                <div><div class="trust-item__title">Livraison rapide</div><div class="trust-item__sub">2–5 jours ouvrés</div></div>
+            </div>
+            <div class="trust-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                <div><div class="trust-item__title">Retour facile</div><div class="trust-item__sub">Sous 30 jours</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── PAGE ─── -->
+    <main class="page">
+        <!-- Breadcrumb -->
+        <nav class="breadcrumb" id="breadcrumb">
+            <a href="shop.html">Boutique</a>
+            <span class="breadcrumb__sep">›</span>
+            <span class="breadcrumb__current" id="breadcrumbCat">…</span>
+            <span class="breadcrumb__sep">›</span>
+            <span class="breadcrumb__current" id="breadcrumbName">…</span>
+        </nav>
+
+        <!-- Product zone (skeleton) -->
+        <div id="productZone">
+            <div class="product-layout">
+                <div>
+                    <div class="skel skel--gallery"></div>
+                    <div style="display: flex; gap: 8px; margin-top: 12px;">
+                        <div class="skel" style="width:64px; height:64px; border-radius:4px; flex-shrink:0;"></div>
+                        <div class="skel" style="width:64px; height:64px; border-radius:4px; flex-shrink:0;"></div>
+                        <div class="skel" style="width:64px; height:64px; border-radius:4px; flex-shrink:0;"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="skel skel--vendor"></div>
+                    <div class="skel skel--title"></div>
+                    <div class="skel skel--title-2"></div>
+                    <div class="skel skel--price"></div>
+                    <div class="skel skel--line"></div>
+                    <div class="skel skel--line"></div>
+                    <div class="skel skel--line-med"></div>
+                    <div class="skel skel--btn"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related products -->
+        <div id="relatedZone"></div>
+    </main>
+
+    <!-- ─── MOBILE STICKY CTA ─── -->
+    <div class="sticky-cta" id="stickyCta">
+        <div>
+            <span class="sticky-cta__price-old" id="stickyOldPrice"></span>
+            <span class="sticky-cta__price" id="stickyPrice">—</span>
+        </div>
+        <button class="sticky-cta__btn" id="stickyAddBtn" disabled>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 6L8 16H20L22 6H6Z"/>
+                <path d="M6 6L4 2H2"/>
+                <circle cx="10" cy="20" r="1.5" fill="currentColor" stroke="none"/>
+                <circle cx="18" cy="20" r="1.5" fill="currentColor" stroke="none"/>
+            </svg>
+            Ajouter
+        </button>
+    </div>
+
+    <!-- ─── FOOTER (version shop.html) ─── -->
+    <footer class="footer">
+        <div class="footer__main">
+            <div class="footer__brand">
+                <a href="/" class="footer__logo">
+                    <div class="footer__logo-mark">T</div>
+                    <span>Tindamba</span>
+                </a>
+                <p class="footer__brand-desc">La marketplace africaine qui connecte vendeurs locaux et acheteurs à travers l'Afrique Centrale.</p>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Navigation</h4>
+                <ul class="footer__links">
+                    <li><a href="shop.html">Boutique</a></li>
+                    <li><a href="cart.html">Mon panier</a></li>
+                    <li><a href="checkout.html">Commander</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Vendeurs</h4>
+                <ul class="footer__links">
+                    <li><a href="login.html">Créer ma boutique</a></li>
+                    <li><a href="login.html">Se connecter</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Support</h4>
+                <ul class="footer__links">
+                    <li><a href="https://wa.me/237693421348">WhatsApp direct</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Conditions</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            <p>© 2025 Tindamba — Marketplace africaine de confiance.</p>
+            <div class="footer__payment">
+                <span class="footer__payment-badge">MTN MoMo</span>
+                <span class="footer__payment-badge">Orange Money</span>
+                <span class="footer__payment-badge">Paiement cash</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- TOAST CONTAINER -->
+    <div class="toast-container" id="toastContainer"></div>
+    <script src="js/product.js"></script>
+</body>
+</html>

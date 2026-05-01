@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aide Vendeur · Tindamba</title>
+    <meta name="description" content="Guide complet pour devenir vendeur sur Tindamba — Démo, tutoriel, avantages, FAQ." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/help.css" />
+</head>
+<body>
+    <!-- TOPBAR -->
+    <div class="topbar">
+        <div class="topbar__inner">
+            <div class="topbar__promo"><span class="topbar__dot"></span>Devenez vendeur — <strong>0% de commission</strong></div>
+            <div class="topbar__links"><a href="shop.html" class="topbar__link">Boutique</a></div>
+        </div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="navbar__inner">
+            <a href="/" class="navbar__logo">
+                <div class="navbar__logo-mark">T</div>
+                <div class="navbar__logo-text"><span class="navbar__logo-name">Tindamba</span><span class="navbar__logo-tagline">Marketplace</span></div>
+            </a>
+            <div class="navbar__spacer"></div>
+            <a href="shop.html" class="navbar__back"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>Boutique</a>
+            <a href="cart.html" class="navbar__cart"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6L8 16H20L22 6H6Z"/><path d="M6 6L4 2H2"/><circle cx="10" cy="20" r="1.5" fill="currentColor" stroke="none"/><circle cx="18" cy="20" r="1.5" fill="currentColor" stroke="none"/></svg><span class="navbar__cart-count" id="cartCount">0</span></a>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="help-hero">
+        <div class="help-hero__eyebrow"><span class="help-hero__eyebrow-line"></span>Guide vendeur</div>
+        <h1 class="help-hero__title">Lancez votre boutique<br>en quelques minutes</h1>
+        <p class="help-hero__sub">Tout ce que vous devez savoir pour vendre sur Tindamba : démo, étapes, avantages et astuces.</p>
+        <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+            <a href="login.html" class="btn btn--white">Créer ma boutique</a>
+            <a href="#demo" class="btn btn--outline">Voir la démo</a>
+        </div>
+    </section>
+
+    <!-- DÉMO VIDÉO -->
+    <section class="section" id="demo">
+        <div class="section__header">
+            <div class="section__eyebrow">Démo</div>
+            <h2 class="section__title">Découvrez la plateforme en action</h2>
+            <p class="section__sub">Un aperçu rapide du dashboard vendeur et de ses fonctionnalités</p>
+        </div>
+        <div class="demo-card">
+            <div class="demo-card__video" onclick="this.querySelector('img').src='https://via.placeholder.com/800x450/1D1D1F/FFFFFF?text=Vidéo+démo+dashboard'">
+                <img src="https://via.placeholder.com/800x450/E8E8ED/1D1D1F?text=Cliquez+pour+lire+la+démo" alt="Démo dashboard vendeur" />
+                <div class="demo-card__play"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 19,12 8,19"/></svg></div>
+            </div>
+            <div class="demo-card__body">
+                <h3 class="demo-card__title">Dashboard vendeur</h3>
+                <p class="demo-card__text">Gérez vos produits, suivez vos commandes et communiquez avec vos clients — tout en un seul endroit.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ÉTAPES -->
+    <section class="section">
+        <div class="section__header">
+            <div class="section__eyebrow">Étapes</div>
+            <h2 class="section__title">Comment devenir vendeur</h2>
+            <p class="section__sub">Quatre étapes simples pour ouvrir votre boutique</p>
+        </div>
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-card__num">01</div>
+                <div class="step-card__icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg></div>
+                <h3 class="step-card__title">Créez votre compte</h3>
+                <p class="step-card__desc">Inscrivez-vous en 2 minutes avec votre email et le nom de votre boutique. Aucun frais d'inscription.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-card__num">02</div>
+                <div class="step-card__icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/></svg></div>
+                <h3 class="step-card__title">Ajoutez vos produits</h3>
+                <p class="step-card__desc">Publiez vos produits avec photos, prix et descriptions. Vous pouvez aussi importer un fichier CSV.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-card__num">03</div>
+                <div class="step-card__icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+                <h3 class="step-card__title">Recevez des commandes</h3>
+                <p class="step-card__desc">Les clients vous contactent via WhatsApp pour confirmer. Vous gérez tout depuis votre dashboard.</p>
+            </div>
+            <div class="step-card" style="grid-column: span 2; max-width: 400px; margin: 0 auto;">
+                <div class="step-card__num">04</div>
+                <div class="step-card__icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+                <h3 class="step-card__title">Suivez vos ventes</h3>
+                <p class="step-card__desc">Tableau de bord complet : chiffre d'affaires, commandes acceptées, produits populaires. Exportez vos données.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- AVANTAGES -->
+    <section class="section" style="background:var(--color-bg-secondary); max-width:100%;">
+        <div style="max-width:1100px; margin:0 auto; padding:0 24px;">
+            <div class="section__header">
+                <div class="section__eyebrow">Avantages</div>
+                <h2 class="section__title">Pourquoi vendre sur Tindamba ?</h2>
+                <p class="section__sub">La marketplace pensée pour les vendeurs africains</p>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-card"><div class="benefit-card__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div><h3 class="benefit-card__title">0% de commission</h3><p class="benefit-card__desc">Vous gardez 100% de vos ventes</p></div>
+                <div class="benefit-card"><div class="benefit-card__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/></svg></div><h3 class="benefit-card__title">Livraison intégrée</h3><p class="benefit-card__desc">Réseau de livraison partout au Cameroun</p></div>
+                <div class="benefit-card"><div class="benefit-card__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h3 class="benefit-card__title">Paiement sécurisé</h3><p class="benefit-card__desc">Mobile Money et cash à la livraison</p></div>
+                <div class="benefit-card"><div class="benefit-card__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div><h3 class="benefit-card__title">Dashboard gratuit</h3><p class="benefit-card__desc">Gérez tout depuis votre espace pro</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ VENDEUR -->
+    <section class="section">
+        <div class="section__header">
+            <div class="section__eyebrow">FAQ</div>
+            <h2 class="section__title">Questions fréquentes des vendeurs</h2>
+        </div>
+        <div class="faq-list" id="faqList">
+            <div class="faq-item"><button class="faq-item__question" onclick="toggleFAQ(this)">L'inscription est-elle vraiment gratuite ?<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button><div class="faq-item__answer"><div class="faq-item__answer-inner">Oui, totalement. Il n'y a aucun frais d'inscription ni d'abonnement. Vous ne payez rien pour publier vos produits.</div></div></div>
+            <div class="faq-item"><button class="faq-item__question" onclick="toggleFAQ(this)">Comment les clients me contactent-ils ?<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button><div class="faq-item__answer"><div class="faq-item__answer-inner">Les clients reçoivent votre numéro WhatsApp une fois la commande passée. Ils vous contactent directement pour confirmer les détails de la livraison.</div></div></div>
+            <div class="faq-item"><button class="faq-item__question" onclick="toggleFAQ(this)">Puis-je importer mes produits en masse ?<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button><div class="faq-item__answer"><div class="faq-item__answer-inner">Absolument. Depuis votre dashboard, utilisez la fonction "Importer CSV" pour ajouter plusieurs produits en une seule fois.</div></div></div>
+            <div class="faq-item"><button class="faq-item__question" onclick="toggleFAQ(this)">Comment fonctionne le paiement à la livraison ?<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button><div class="faq-item__answer"><div class="faq-item__answer-inner">Le client paie directement au livreur à la réception du colis. Le livreur vous reverse ensuite le montant de la vente.</div></div></div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <h2 class="cta-section__title">Prêt à lancer votre boutique ?</h2>
+        <p class="cta-section__text">Rejoignez des centaines de vendeurs qui ont déjà choisi Tindamba</p>
+        <a href="login.html" class="btn btn--white">Créer ma boutique gratuitement</a>
+    </section>
+
+    <footer class="footer">© 2025 Tindamba — Marketplace africaine de confiance</footer>
+
+    <script>
+        window.toggleFAQ = function(btn) {
+            const item = btn.closest('.faq-item');
+            item.classList.toggle('is-open');
+        };
+        document.getElementById('cartCount').textContent = (() => {
+            try { return JSON.parse(localStorage.getItem('tindamba_cart')||'[]').reduce((s,i)=>s+i.qty,0); }
+            catch { return 0; }
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mon Panier · Tindamba</title>
+    <meta name="description" content="Votre panier Tindamba — Finalisez vos achats." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="css/cart.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap" rel="stylesheet" />
+
+    
+</head>
+<body>
+
+    <!-- ─── TOPBAR ─── -->
+    <div class="topbar">
+        <div class="topbar__inner">
+            <div class="topbar__promo">
+                <span class="topbar__dot"></span>
+                Livraison gratuite dès <strong>25 000 FCFA</strong>
+            </div>
+            <div class="topbar__links">
+                <a href="#" class="topbar__link">Aide</a>
+                <span class="topbar__sep">·</span>
+                <a href="login.html" class="topbar__link">Espace vendeur</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── NAVBAR ─── -->
+    <nav class="navbar">
+        <div class="navbar__inner">
+            <a href="shop.html" class="navbar__logo">
+                <div class="navbar__logo-mark">T</div>
+                <div class="navbar__logo-text">
+                    <span class="navbar__logo-name">Tindamba</span>
+                    <span class="navbar__logo-tagline">Marketplace</span>
+                </div>
+            </a>
+            <div class="navbar__spacer"></div>
+            <a href="shop.html" class="navbar__back">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                Boutique
+            </a>
+            <a href="cart.html" class="navbar__cart" aria-label="Panier" style="color:var(--color-accent)">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 6L8 16H20L22 6H6Z"/>
+                    <path d="M6 6L4 2H2"/>
+                    <circle cx="10" cy="20" r="1.5" fill="currentColor" stroke="none"/>
+                    <circle cx="18" cy="20" r="1.5" fill="currentColor" stroke="none"/>
+                </svg>
+                <span class="navbar__cart-count" id="cartCount">0</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- ─── TRUST STRIP ─── -->
+    <div class="trust-strip">
+        <div class="trust-strip__inner">
+            <div class="trust-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                <div><div class="trust-item__title">Vendeur vérifié</div><div class="trust-item__sub">Profils certifiés</div></div>
+            </div>
+            <div class="trust-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                <div><div class="trust-item__title">Paiement à la livraison</div><div class="trust-item__sub">Cash ou mobile money</div></div>
+            </div>
+            <div class="trust-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                <div><div class="trust-item__title">Livraison rapide</div><div class="trust-item__sub">2–5 jours ouvrés</div></div>
+            </div>
+            <div class="trust-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                <div><div class="trust-item__title">Retour facile</div><div class="trust-item__sub">Sous 30 jours</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── PAGE ─── -->
+    <main class="page">
+
+        <!-- Breadcrumb -->
+        <nav class="breadcrumb">
+            <a href="shop.html">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                Continuer mes achats
+            </a>
+        </nav>
+
+        <h1 class="page-title">Mon panier</h1>
+        <p class="page-subtitle" id="pageSubtitle">Chargement…</p>
+
+        <div class="checkout-grid" id="checkoutGrid">
+
+            <!-- ── CART ITEMS ── -->
+            <div class="cart-panel" id="cartPanel">
+                <div class="cart-panel__header">
+                    <span class="cart-panel__title">Articles</span>
+                    <button class="cart-panel__clear" id="clearAllBtn" onclick="clearAll()">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                            <polyline points="3 6 5 6 21 6"/>
+                            <path d="M19 6l-1 14H6L5 6"/>
+                            <path d="M10 11v6M14 11v6"/>
+                        </svg>
+                        Tout supprimer
+                    </button>
+                </div>
+                <div id="itemsList"></div>
+            </div>
+
+            <!-- ── SUMMARY SIDEBAR ── -->
+            <aside>
+                <div class="summary">
+                    <h2 class="summary__title">Résumé</h2>
+
+                    <div class="summary__line">
+                        <span>Articles</span>
+                        <strong id="summaryCount">0</strong>
+                    </div>
+                    <div class="summary__line">
+                        <span>Sous-total</span>
+                        <strong id="summarySubtotal">0 FCFA</strong>
+                    </div>
+
+                    <hr class="summary__divider" />
+
+                    <div class="summary__shipping">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                            <rect x="1" y="3" width="15" height="13"/>
+                            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
+                            <circle cx="5.5" cy="18.5" r="2.5"/>
+                            <circle cx="18.5" cy="18.5" r="2.5"/>
+                        </svg>
+                        Livraison : à convenir avec le vendeur
+                    </div>
+
+                    <div class="summary__total">
+                        <span class="summary__total-label">Total estimé</span>
+                        <span class="summary__total-price" id="summaryTotal">0 FCFA</span>
+                    </div>
+
+                    <a href="checkout.html" class="btn-checkout" id="checkoutBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            <path d="m9 12 2 2 4-4"/>
+                        </svg>
+                        Passer commande
+                    </a>
+
+                    <a href="shop.html" class="btn-continue">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                            <polyline points="15 18 9 12 15 6"/>
+                        </svg>
+                        Continuer les achats
+                    </a>
+
+                    <!-- Trust mini -->
+                    <div class="trust-mini">
+                        <div class="trust-mini__item">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                            Paiement sécurisé à la livraison
+                        </div>
+                        <div class="trust-mini__item">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                            Livraison rapide partout
+                        </div>
+                        <div class="trust-mini__item">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                            Support WhatsApp disponible
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+        </div>
+    </main>
+
+    <!-- ─── FOOTER ─── -->
+    <footer class="footer">
+        <div class="footer__main">
+            <div class="footer__brand">
+                <a href="/" class="footer__logo">
+                    <div class="footer__logo-mark">T</div>
+                    <span>Tindamba</span>
+                </a>
+                <p class="footer__brand-desc">
+                    La marketplace africaine qui connecte vendeurs locaux et acheteurs à travers l'Afrique Centrale.
+                </p>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Navigation</h4>
+                <ul class="footer__links">
+                    <li><a href="shop.html">Boutique</a></li>
+                    <li><a href="cart.html">Mon panier</a></li>
+                    <li><a href="checkout.html">Commander</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Vendeurs</h4>
+                <ul class="footer__links">
+                    <li><a href="login.html">Créer ma boutique</a></li>
+                    <li><a href="login.html">Se connecter</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Support</h4>
+                <ul class="footer__links">
+                    <li><a href="https://wa.me/237693421348">WhatsApp direct</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Conditions</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            <p>© 2025 Tindamba — Marketplace africaine de confiance.</p>
+            <div class="footer__payment">
+                <span class="footer__payment-badge">MTN MoMo</span>
+                <span class="footer__payment-badge">Orange Money</span>
+                <span class="footer__payment-badge">Paiement cash</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- TOAST CONTAINER -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ═══════════════════════════════════════
+         SCRIPTS (identiques à l'ancien cart.html,
+         avec les mêmes fonctions et logique)
+    ═══════════════════════════════════════ -->
+    <script>
+        const IMG_FALLBACK = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"%3E%3Crect fill="%23F2F2EF" width="200" height="200"/%3E%3C/svg%3E';
+
+        function esc(s) {
+            return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+
+        function formatXAF(n) {
+            return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XAF', maximumFractionDigits: 0 }).format(n || 0);
+        }
+
+        function toast(msg, type = 'info') {
+            const tc = document.getElementById('toastContainer');
+            const el = document.createElement('div');
+            el.className = `toast toast--${type}`;
+            const icon = type === 'success'
+                ? '<polyline points="20 6 9 17 4 12"/>'
+                : '<polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/>';
+            el.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">${icon}</svg>${esc(msg)}`;
+            tc.appendChild(el);
+            setTimeout(() => el.remove(), 3200);
+        }
+
+        const Cart = {
+            get()       { try { return JSON.parse(localStorage.getItem('tindamba_cart') || '[]'); } catch { return []; } },
+            save(c)     { localStorage.setItem('tindamba_cart', JSON.stringify(c)); },
+            count()     { return this.get().reduce((s, i) => s + i.qty, 0); },
+            subtotal()  { return this.get().reduce((s, i) => s + i.price * i.qty, 0); },
+
+            updateQty(key, delta) {
+                const cart = this.get();
+                const item = cart.find(i => i._key === key);
+                if (!item) return;
+                item.qty = Math.max(1, item.qty + delta);
+                this.save(cart);
+                this.syncCount();
+                renderCart();
+            },
+
+            remove(key) {
+                const cart = this.get().filter(i => i._key !== key);
+                this.save(cart);
+                this.syncCount();
+                renderCart();
+                toast('Article retiré du panier', 'error');
+            },
+
+            clear() {
+                this.save([]);
+                this.syncCount();
+                renderCart();
+            },
+
+            syncCount() {
+                document.getElementById('cartCount').textContent = this.count();
+            }
+        };
+
+        function renderCart() {
+            const items = Cart.get();
+            const list  = document.getElementById('itemsList');
+            const grid  = document.getElementById('checkoutGrid');
+            const sub   = document.getElementById('pageSubtitle');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+
+            const total = Cart.count();
+            sub.textContent = total === 0
+                ? 'Votre panier est vide'
+                : `${total} article${total > 1 ? 's' : ''} dans votre panier`;
+
+            document.getElementById('summaryCount').textContent    = total;
+            document.getElementById('summarySubtotal').textContent = formatXAF(Cart.subtotal());
+            document.getElementById('summaryTotal').textContent    = formatXAF(Cart.subtotal());
+
+            if (!items.length) {
+                grid.innerHTML = `
+                <div class="empty-cart">
+                    <div class="empty-cart__icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                            <path d="M6 6L8 16H20L22 6H6Z"/>
+                            <path d="M6 6L4 2H2"/>
+                            <circle cx="10" cy="20" r="1.5" fill="currentColor" stroke="none"/>
+                            <circle cx="18" cy="20" r="1.5" fill="currentColor" stroke="none"/>
+                        </svg>
+                    </div>
+                    <h2 class="empty-cart__title">Votre panier est vide</h2>
+                    <p class="empty-cart__sub">Explorez notre catalogue et ajoutez les produits qui vous plaisent.</p>
+                    <a href="shop.html" class="btn-shop">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                        </svg>
+                        Voir la boutique
+                    </a>
+                </div>`;
+                return;
+            }
+
+            if (checkoutBtn) checkoutBtn.disabled = (total === 0);
+
+            list.innerHTML = items.map(item => {
+                const subtotal = item.price * item.qty;
+                const colorDot = item.color
+                    ? `<span class="cart-item__color">
+                         <span class="cart-item__color-dot" style="background:${esc(item.color)}"></span>
+                         ${esc(item.color)}
+                       </span>`
+                    : '';
+
+                return `
+                <div class="cart-item" data-key="${esc(item._key)}">
+                    <img class="cart-item__img"
+                         src="${esc(item.image || IMG_FALLBACK)}"
+                         alt="${esc(item.name)}"
+                         onerror="this.src='${IMG_FALLBACK}'">
+
+                    <div class="cart-item__body">
+                        <div class="cart-item__vendor">${esc(item.vendor || 'Tindamba')}</div>
+                        <div class="cart-item__name">${esc(item.name)}</div>
+                        ${colorDot}
+                        <div class="cart-item__unit-price" style="margin-top:4px">${formatXAF(item.price)} / unité</div>
+                    </div>
+
+                    <div class="cart-item__right">
+                        <div class="cart-item__price">${formatXAF(subtotal)}</div>
+
+                        <div class="qty-control">
+                            <button class="qty-btn"
+                                    onclick="Cart.updateQty('${esc(item._key)}', -1)"
+                                    ${item.qty <= 1 ? 'disabled' : ''}>
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            </button>
+                            <span class="qty-val">${item.qty}</span>
+                            <button class="qty-btn"
+                                    onclick="Cart.updateQty('${esc(item._key)}', 1)">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            </button>
+                        </div>
+
+                        <button class="cart-item__remove"
+                                aria-label="Supprimer"
+                                onclick="Cart.remove('${esc(item._key)}')">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+                        </button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function clearAll() {
+            if (Cart.count() === 0) return;
+            if (!confirm('Vider le panier entièrement ?')) return;
+            Cart.clear();
+            toast('Panier vidé', 'error');
+        }
+        window.clearAll = clearAll;
+
+        /* ── Init ── */
+        Cart.syncCount();
+        renderCart();
+    </script>
+</body>
+</html>

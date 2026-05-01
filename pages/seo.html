@@ -1,0 +1,114 @@
+<!-- ═══════════════════════════════════════════════════════════
+     Tinda — SEO HEAD COMPLET
+     À coller dans <head> de chaque page (adapter title/desc par page)
+════════════════════════════════════════════════════════════ -->
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- ─── INDEXATION ─── -->
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://Tinda.com/shop.html" />
+
+    <!-- ─── TITLE & DESCRIPTION ─── -->
+    <!-- 50–60 caractères pour le title, 150–160 pour la description -->
+    <title>Tinda — Marketplace Africaine | Achetez Local au Cameroun</title>
+    <meta name="description" content="Découvrez des milliers de produits locaux sur Tinda, la marketplace #1 au Cameroun. Vendeurs vérifiés, paiement à la livraison, livraison rapide à Douala, Yaoundé et partout au Cameroun." />
+    <meta name="keywords" content="marketplace cameroun, acheter en ligne cameroun, boutique en ligne douala, boutique en ligne yaoundé, produits locaux cameroun, Tinda, ecommerce afrique centrale, paiement mobile money, MTN MoMo, Orange Money" />
+    <meta name="author" content="Tinda" />
+    <meta name="theme-color" content="#0071E3" />
+
+    <!-- ─── OPEN GRAPH (Facebook, WhatsApp, LinkedIn) ─── -->
+    <meta property="og:type"        content="website" />
+    <meta property="og:site_name"   content="Tinda" />
+    <meta property="og:url"         content="https://Tinda.com/shop.html" />
+    <meta property="og:title"       content="Tinda — Marketplace Africaine | Achetez Local au Cameroun" />
+    <meta property="og:description" content="Des milliers de produits locaux, des vendeurs vérifiés, paiement à la livraison. La marketplace de confiance au Cameroun." />
+    <meta property="og:image"       content="https://Tinda.com/images/og-cover.jpg" />
+    <!-- og:image recommandé : 1200×630px -->
+    <meta property="og:image:width"  content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt"    content="Tinda — Marketplace africaine" />
+    <meta property="og:locale"       content="fr_CM" />
+
+    <!-- ─── TWITTER / X CARD ─── -->
+    <meta name="twitter:card"        content="summary_large_image" />
+    <meta name="twitter:site"        content="@Tinda" />
+    <meta name="twitter:title"       content="Tinda — Marketplace Africaine | Achetez Local au Cameroun" />
+    <meta name="twitter:description" content="Des milliers de produits locaux, des vendeurs vérifiés, paiement à la livraison. La marketplace de confiance au Cameroun." />
+    <meta name="twitter:image"       content="https://Tinda.com/images/og-cover.jpg" />
+
+    <!-- ─── FAVICON ─── -->
+    <link rel="icon"             type="image/svg+xml"  href="/favicon.svg" />
+    <link rel="icon"             type="image/png"      href="/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon"             type="image/png"      href="/favicon-16x16.png" sizes="16x16" />
+    <link rel="apple-touch-icon"                       href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="manifest"                               href="/site.webmanifest" />
+
+    <!-- ─── SCHEMA.ORG — données structurées JSON-LD ─── -->
+    <!-- Google affiche ces infos dans les résultats de recherche -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Tinda",
+      "url": "https://Tinda.com",
+      "description": "La marketplace africaine qui connecte vendeurs locaux et acheteurs à travers l'Afrique Centrale.",
+      "inLanguage": "fr",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://Tinda.com/shop.html?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Tinda",
+      "url": "https://Tinda.com",
+      "logo": "https://Tinda.com/images/logo.svg",
+      "sameAs": [],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+237693421348",
+        "contactType": "customer service",
+        "availableLanguage": ["French"],
+        "contactOption": "TollFree"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "CM",
+        "addressLocality": "Douala"
+      }
+    }
+    </script>
+
+    <!-- ─── PERFORMANCE ─── -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://uytrjgtrpsbegifudosi.supabase.co" />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+</head>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     ADAPTATION PAR PAGE — remplace title, description et canonical
+═══════════════════════════════════════════════════════════════
+
+  PAGE          | TITLE (max 60 car.)                          | DESCRIPTION (max 160 car.)
+  --------------|----------------------------------------------|---------------------------
+  shop.html     | Tinda — Boutique en ligne Cameroun        | Parcourez des milliers de produits locaux...
+  cart.html     | Mon panier — Tinda                        | Vérifiez vos articles et passez commande...
+  checkout.html | Commander — Tinda                         | Finalisez votre commande en toute sécurité...
+  login.html    | Espace vendeur — Tinda                    | Créez votre boutique et vendez vos produits...
+  product.html  | [Nom du produit] — Tinda                  | [Description du produit]...
+
+════════════════════════════════════════════════════════════ -->

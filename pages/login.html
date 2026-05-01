@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Espace Vendeur · Tindamba</title>
+    <meta name="description" content="Connectez-vous à votre espace vendeur Tindamba." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Cormorant+sa:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+    <link rel="stylesheet" href="css/login.css" />
+</head>
+<body>
+    <!-- TOPBAR -->
+    <div class="topbar">
+        <div class="topbar__promo">
+            <span class="topbar__dot"></span>
+            Livraison gratuite dès <strong>25 000 FCFA</strong>
+        </div>
+        <a href="#" class="topbar__link">Aide</a>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="navbar__inner">
+            <a href="shop.html" class="navbar__logo">
+                <div class="navbar__logo-mark">T</div>
+                <div class="navbar__logo-text">
+                    <span class="navbar__logo-name">Tindamba</span>
+                    <span class="navbar__logo-tagline">Marketplace</span>
+                </div>
+            </a>
+            <div class="navbar__spacer"></div>
+            <a href="shop.html" class="navbar__back">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                Boutique
+            </a>
+        </div>
+    </nav>
+
+    <!-- LOGIN / SIGNUP -->
+    <main class="login-container">
+        <div class="auth-card">
+            <div class="auth-logo">
+                <a href="shop.html">Tindamba</a>
+                <p>Espace Vendeur</p>
+            </div>
+
+            <!-- Tabs -->
+            <div class="auth-tabs">
+                <button type="button" class="auth-tab is-active" data-tab="login">Connexion</button>
+                <button type="button" class="auth-tab" data-tab="signup">Inscription</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm">
+                <div class="field">
+                    <label>Adresse email</label>
+                    <input class="input" name="email" type="email" required autocomplete="email" placeholder="votreemail@exemple.com">
+                </div>
+                <div class="field">
+                    <label>Mot de passe</label>
+                    <input class="input" name="password" type="password" required autocomplete="current-password" placeholder="Votre mot de passe">
+                </div>
+                <button type="submit" class="btn btn--primary btn--full" id="loginSubmit">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+                    Se connecter
+                </button>
+            </form>
+
+            <!-- Signup Form -->
+            <form id="signupForm" hidden>
+                <div class="field">
+                    <label>Nom de votre boutique *</label>
+                    <input class="input" name="shop_name" required placeholder="Ex: Ma Super Boutique">
+                </div>
+                <div class="field">
+                    <label>Adresse email *</label>
+                    <input class="input" name="email" type="email" required autocomplete="email" placeholder="votreemail@exemple.com">
+                </div>
+                <div class="field">
+                    <label>Téléphone WhatsApp *</label>
+                    <input class="input" name="phone" required placeholder="237 6XX XX XX XX" autocomplete="tel">
+                    <small style="font-size:11px;color:var(--color-text-tertiary);margin-top:4px;">Les clients vous contacteront sur ce numéro</small>
+                </div>
+                <div class="field">
+                    <label>Mot de passe (min. 6 caractères) *</label>
+                    <input class="input" name="password" type="password" required minlength="6" autocomplete="new-password" placeholder="Choisissez un mot de passe sécurisé">
+                </div>
+                <button type="submit" class="btn btn--primary btn--full" id="signupSubmit">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+                    Créer ma boutique
+                </button>
+            </form>
+
+            <!-- Benefits -->
+            <div class="benefits">
+                <p class="benefits__title">Avantages vendeur</p>
+                <div class="benefit-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    Gérez vos produits facilement
+                </div>
+                <div class="benefit-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    Recevez des commandes en temps réel
+                </div>
+                <div class="benefit-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    Contactez vos clients via WhatsApp
+                </div>
+                <div class="benefit-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    Commission 0% sur vos ventes
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>© 2025 Tindamba — Marketplace africaine de confiance</p>
+    </footer>
+
+    <!-- TOAST CONTAINER -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/login.js">
+    
+    </script>
+</body>
+</html>
