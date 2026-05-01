@@ -3,18 +3,615 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>Catégorie · Tinda</title>
-    <meta name="description" content="Découvrez tous les produits de cette catégorie sur Tinda." />
+    <title>Catégorie · Tindamba</title>
+    <meta name="description" content="Découvrez tous les produits de cette catégorie sur Tindamba." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link rel="stylesheet" href="css/logo.css">
-        <link rel="stylesheet" href="css/responsive.css">
-
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 
     <style>
-  
+        /* ══════════════════════════════════════════════════════════
+           DESIGN SYSTEM (identique à shop.html)
+        ══════════════════════════════════════════════════════════ */
+        :root {
+            --color-bg: #FFFFFF;
+            --color-bg-secondary: #FAFAFA;
+            --color-bg-tertiary: #F5F5F5;
+            --color-text: #1D1D1F;
+            --color-text-secondary: #6E6E73;
+            --color-text-tertiary: #86868B;
+            --color-accent: #0071E3;
+            --color-accent-hover: #0077ED;
+            --color-border: #E8E8ED;
+            --color-border-light: #F2F2F7;
+            --font-display: 'Outfit', system-ui;
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 2.5rem;
+            --space-xl: 4rem;
+            --space-2xl: 6rem;
+            --space-3xl: 9rem;
+            --space-4xl: 14rem;
+            --transition-fast: 0.22s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --transition-base: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --transition-slow: 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+            --shadow-md: 0 8px 32px rgba(0,0,0,0.08);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.10);
+            --shadow-xl: 0 40px 100px rgba(0,0,0,0.13);
+            --radius-sm: 3px;
+            --radius-md: 6px;
+            --radius-full: 999px;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+        body {
+            font-family: var(--font-display);
+            font-size: 16px;
+            line-height: 1.65;
+            color: var(--color-text);
+            background: var(--color-bg);
+            overflow-x: hidden;
+        }
+        img { max-width: 100%; height: auto; display: block; }
+        a { color: inherit; text-decoration: none; }
+        button { font-family: inherit; border: none; background: none; cursor: pointer; }
+
+        /* ─── TOPBAR ─── */
+        .topbar {
+            background: var(--color-text);
+            padding: 10px max(48px, env(safe-area-inset-left));
+            position: relative;
+            z-index: 900;
+        }
+        .topbar__inner {
+            max-width: 1440px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .topbar__promo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 12px;
+            letter-spacing: 0.05em;
+            color: rgba(255,255,255,0.65);
+            font-weight: 400;
+        }
+        .topbar__promo strong { color: rgba(255,255,255,0.9); font-weight: 600; }
+        .topbar__dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--color-accent);
+            flex-shrink: 0;
+            animation: topbarPulse 2.5s ease-in-out infinite;
+        }
+        @keyframes topbarPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.7); }
+        }
+        .topbar__links { display: flex; align-items: center; gap: 16px; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+        .topbar__link { color: rgba(255,255,255,0.5); transition: color var(--transition-fast); }
+        .topbar__link:hover { color: white; }
+        .topbar__sep { color: rgba(255,255,255,0.2); }
+
+        /* ─── NAVBAR ─── */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 800;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--color-border-light);
+        }
+        .navbar__inner {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 max(48px, env(safe-area-inset-left));
+            height: 68px;
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+        .navbar__logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+            transition: opacity var(--transition-fast);
+        }
+        .navbar__logo:hover { opacity: 0.6; }
+        .navbar__logo-mark {
+            width: 34px;
+            height: 34px;
+            background: var(--color-text);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-serif);
+            font-size: 20px;
+            font-weight: 600;
+            font-style: normal;
+            flex-shrink: 0;
+        }
+        .navbar__logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.1;
+        }
+        .navbar__logo-name {
+            font-family: var(--font-display);
+            font-weight: 400;
+            font-size: 17px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--color-text);
+        }
+        .navbar__logo-tagline {
+            font-family: var(--font-display);
+            font-size: 9px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--color-text-tertiary);
+            font-weight: 500;
+        }
+        .navbar__spacer { flex: 1; }
+        .navbar__back {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            transition: color var(--transition-fast);
+        }
+        .navbar__back:hover { color: var(--color-text); }
+        .navbar__cart {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-text-secondary);
+            transition: color var(--transition-fast);
+        }
+        .navbar__cart:hover { color: var(--color-text); }
+        .navbar__cart-count {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            min-width: 16px;
+            height: 16px;
+            background: var(--color-accent);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+        }
+
+        /* ─── CATEGORY HERO ─── */
+        .category-hero {
+            background: var(--color-bg-secondary);
+            border-bottom: 1px solid var(--color-border-light);
+            padding: var(--space-xl) max(48px, env(safe-area-inset-left));
+            text-align: center;
+        }
+        .category-hero__title {
+            font-family: var(--font-serif);
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-style: normal;
+            color: var(--color-text);
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+        .category-hero__count {
+            font-size: 15px;
+            color: var(--color-text-tertiary);
+        }
+
+        /* ─── FILTERS BAR ─── */
+        .filters-bar {
+            background: var(--color-bg);
+            border-bottom: 1px solid var(--color-border-light);
+            padding: 16px max(48px, env(safe-area-inset-left));
+            position: sticky;
+            top: 68px;
+            z-index: 700;
+            backdrop-filter: blur(12px);
+            background: rgba(255,255,255,0.92);
+        }
+        .filters-bar__inner {
+            max-width: 1440px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .filter-group label {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--color-text-secondary);
+            white-space: nowrap;
+        }
+        .filter-input {
+            height: 38px;
+            padding: 0 12px;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            background: var(--color-bg-secondary);
+            font-family: var(--font-display);
+            font-size: 14px;
+            color: var(--color-text);
+            outline: none;
+            transition: border-color 0.2s;
+            min-width: 100px;
+        }
+        .filter-input:focus { border-color: var(--color-accent); }
+        .filter-input::placeholder { color: var(--color-text-tertiary); }
+        .filter-btn, .btn--ghost {
+            height: 38px;
+            padding: 0 18px;
+            border-radius: var(--radius-md);
+            font-family: var(--font-display);
+            font-size: 13px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            letter-spacing: 0.03em;
+            transition: all var(--transition-fast);
+        }
+        .filter-btn {
+            background: var(--color-accent);
+            color: white;
+            border: none;
+        }
+        .filter-btn:hover { background: var(--color-accent-hover); }
+        .btn--ghost {
+            background: transparent;
+            color: var(--color-text-secondary);
+            border: 1px solid var(--color-border);
+        }
+        .btn--ghost:hover {
+            border-color: var(--color-text);
+            color: var(--color-text);
+        }
+
+        /* ─── PRODUCTS GRID ─── */
+        .page-content {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: var(--space-lg) max(48px, env(safe-area-inset-left)) 80px;
+        }
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 16px;
+        }
+
+        /* ─── MI-CARD (identique à shop.html) ─── */
+        .mi-card {
+            background: white;
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            transition: transform var(--transition-base), box-shadow var(--transition-base);
+            position: relative;
+            outline: none;
+        }
+        .mi-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            z-index: 2;
+        }
+        .mi-card--out { opacity: 0.65; }
+        .mi-card__media {
+            position: relative;
+            aspect-ratio: 1;
+            background: var(--color-bg-secondary);
+            overflow: hidden;
+        }
+        .mi-card__media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .mi-card:hover .mi-card__media img { transform: scale(1.06); }
+        .mi-card__wish {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            z-index: 3;
+            width: 30px;
+            height: 30px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-text-secondary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            opacity: 0;
+            transition: opacity var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+        }
+        .mi-card:hover .mi-card__wish { opacity: 1; }
+        .mi-card__wish:hover { color: #FF3B30; transform: scale(1.1); }
+        .mi-card__atc {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 3;
+            background: var(--color-text);
+            color: white;
+            font-family: var(--font-display);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            opacity: 0;
+            transform: translateY(100%);
+            transition: opacity var(--transition-fast), transform var(--transition-fast), background var(--transition-fast);
+        }
+        .mi-card:hover .mi-card__atc {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .mi-card__atc:hover { background: var(--color-accent); }
+        .mi-card__body {
+            padding: var(--space-md) var(--space-md) var(--space-lg);
+            border-top: 1px solid var(--color-border-light);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .mi-card__vendor {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-text-tertiary);
+        }
+        .mi-card__name {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--color-text);
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .mi-card__desc {
+            font-size: 12px;
+            color: var(--color-text-tertiary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .mi-card__swatches {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 2px;
+        }
+        .mi-swatch {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 1px solid var(--color-border);
+            flex-shrink: 0;
+        }
+        .mi-swatch--more {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--color-text-tertiary);
+        }
+        .mi-card__rating {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: var(--color-text-tertiary);
+            margin-top: 2px;
+        }
+        .mi-card__stars { color: #B8860B; font-size: 11px; }
+        .mi-card__price {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        .mi-card__price-current {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--color-text);
+        }
+        .mi-card__price-old {
+            font-size: 13px;
+            color: var(--color-text-tertiary);
+            text-decoration: line-through;
+        }
+        .mi-card__price-discount {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--color-accent);
+        }
+
+        /* Badges */
+        .badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            z-index: 2;
+            font-family: var(--font-display);
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            pointer-events: none;
+        }
+        .badge--new { background: var(--color-text); color: white; }
+        .badge--bestseller { background: var(--color-accent); color: white; }
+        .badge--featured { background: var(--color-accent); color: white; }
+        .badge--promo { background: var(--color-text); color: white; }
+        .badge--out_of_stock { background: var(--color-text-tertiary); color: white; }
+
+        /* TOAST */
+        .toast-container {
+            position: fixed;
+            bottom: var(--space-lg);
+            right: var(--space-lg);
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+        .toast {
+            background: var(--color-text);
+            color: white;
+            padding: var(--space-md) var(--space-lg);
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: var(--shadow-lg);
+            animation: toastIn 0.35s cubic-bezier(0.25,0.46,0.45,0.94) forwards;
+        }
+        .toast--success { border-left: 3px solid #34C759; }
+        .toast--error { border-left: 3px solid #FF3B30; }
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* FOOTER (identique shop) */
+        .footer {
+            background: var(--color-bg);
+            border-top: 1px solid var(--color-border-light);
+            padding: var(--space-2xl) max(48px, env(safe-area-inset-left)) var(--space-lg);
+            margin-top: var(--space-xl);
+        }
+        .footer__main {
+            max-width: 1440px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: var(--space-2xl);
+            padding-bottom: var(--space-xl);
+            border-bottom: 1px solid var(--color-border-light);
+        }
+        .footer__brand { max-width: 320px; }
+        .footer__logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 400;
+            font-size: 17px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: var(--space-md);
+        }
+        .footer__logo-mark {
+            width: 30px;
+            height: 30px;
+            background: var(--color-text);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-serif);
+            font-size: 18px;
+            font-style: normal;
+            flex-shrink: 0;
+        }
+        .footer__brand-desc {
+            font-family: var(--font-serif);
+            font-size: 16px;
+            font-style: normal;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-lg);
+        }
+        .footer__col-title {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            margin-bottom: var(--space-lg);
+        }
+        .footer__links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+        .footer__links a { font-size: 14px; color: var(--color-text-secondary); transition: color var(--transition-fast); }
+        .footer__links a:hover { color: var(--color-text); }
+        .footer__bottom {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding-top: var(--space-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .footer__bottom p { font-size: 12px; color: var(--color-text-tertiary); }
+        .footer__payment { display: flex; gap: 8px; }
+        .footer__payment-badge {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            padding: 5px 12px;
+            border: 1px solid var(--color-border);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .topbar { padding: 8px 24px; }
+            .topbar__links { display: none; }
+            .navbar__inner { padding: 0 24px; gap: 16px; }
+            .navbar__logo-tagline { display: none; }
+            .category-hero { padding: var(--space-lg) 24px; }
+            .page-content { padding: var(--space-md) 24px 60px; }
+            .filters-bar { padding: 12px 24px; top: 68px; }
+            .filters-bar__inner { gap: 10px; }
+            .footer { padding: var(--space-xl) 24px var(--space-lg); }
+            .footer__main { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
@@ -35,28 +632,31 @@
     </div>
 
     <!-- NAVBAR -->
-   <!-- NAVBAR -->
     <nav class="navbar">
         <div class="navbar__inner">
-
-            <!-- ✅ LOGO SVG INLINE — remplace l'ancien carré "T" + texte -->
-            <a href="/" class="navbar__logo" aria-label="Tinda — Accueil">
-                <svg height="32" width="auto" viewBox="0 0 369 150" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M42 98.736C72.2603 96.3154 88.8099 96.1166 118 100.138" stroke="#0071E3" stroke-width="3"/>
-                    <path d="M138.64 93V74H142.24V93H138.64ZM151.48 93V81.52C151.48 80.1067 151.04 79 150.16 78.2C149.307 77.3733 148.227 76.96 146.92 76.96C146.04 76.96 145.253 77.1467 144.56 77.52C143.867 77.8933 143.307 78.4133 142.88 79.08C142.453 79.7467 142.24 80.5467 142.24 81.48L140.76 80.76C140.76 79.32 141.067 78.0667 141.68 77C142.32 75.9333 143.187 75.1067 144.28 74.52C145.373 73.9067 146.6 73.6 147.96 73.6C149.293 73.6 150.493 73.8933 151.56 74.48C152.653 75.0667 153.507 75.8933 154.12 76.96C154.76 78.0267 155.08 79.2933 155.08 80.76V93H151.48ZM164.32 93V81.52C164.32 80.1067 163.88 79 163 78.2C162.147 77.3733 161.08 76.96 159.8 76.96C158.92 76.96 158.12 77.1467 157.4 77.52C156.707 77.8933 156.147 78.4133 155.72 79.08C155.293 79.7467 155.08 80.5467 155.08 81.48L153.04 80.76C153.12 79.2933 153.507 78.04 154.2 77C154.92 75.9333 155.84 75.1067 156.96 74.52C158.08 73.9067 159.307 73.6 160.64 73.6C162.027 73.6 163.267 73.8933 164.36 74.48C165.453 75.0667 166.32 75.8933 166.96 76.96C167.627 78.0267 167.96 79.3067 167.96 80.8V93H164.32ZM179.739 93.4C178.005 93.4 176.432 92.9733 175.019 92.12C173.605 91.24 172.485 90.0533 171.659 88.56C170.859 87.0667 170.459 85.3867 170.459 83.52C170.459 81.6533 170.859 79.9733 171.659 78.48C172.485 76.9867 173.592 75.8 174.979 74.92C176.392 74.04 177.979 73.6 179.739 73.6C181.179 73.6 182.459 73.9067 183.579 74.52C184.725 75.1067 185.645 75.9333 186.339 77C187.032 78.04 187.419 79.2533 187.499 80.64V86.36C187.419 87.72 187.032 88.9333 186.339 90C185.672 91.0667 184.765 91.9067 183.619 92.52C182.499 93.1067 181.205 93.4 179.739 93.4ZM180.339 90C182.125 90 183.565 89.4 184.659 88.2C185.752 86.9733 186.299 85.4133 186.299 83.52C186.299 82.2133 186.045 81.08 185.539 80.12C185.059 79.1333 184.365 78.3733 183.459 77.84C182.552 77.28 181.499 77 180.299 77C179.099 77 178.032 77.28 177.099 77.84C176.192 78.4 175.472 79.1733 174.939 80.16C174.432 81.12 174.179 82.2267 174.179 83.48C174.179 84.76 174.432 85.8933 174.939 86.88C175.472 87.84 176.205 88.6 177.139 89.16C178.072 89.72 179.139 90 180.339 90ZM186.059 93V87.88L186.739 83.24L186.059 78.64V74H189.699V93H186.059ZM193.74 93V74H197.34V93H193.74ZM197.34 82.16L195.98 81.56C195.98 79.1333 196.54 77.2 197.66 75.76C198.78 74.32 200.393 73.6 202.5 73.6C203.46 73.6 204.327 73.7733 205.1 74.12C205.873 74.44 206.593 74.9867 207.26 75.76L204.9 78.2C204.5 77.7733 204.06 77.4667 203.58 77.28C203.1 77.0933 202.54 77 201.9 77C200.567 77 199.473 77.4267 198.62 78.28C197.767 79.1333 197.34 80.4267 197.34 82.16ZM220.755 93L211.875 83.28L220.675 74H225.035L215.235 84.24L215.395 82.16L225.395 93H220.755ZM208.595 93V64.44H212.195V93H208.595ZM235.023 93.4C233.129 93.4 231.423 92.9733 229.903 92.12C228.383 91.24 227.183 90.0533 226.303 88.56C225.423 87.0667 224.983 85.3733 224.983 83.48C224.983 81.6133 225.409 79.9333 226.263 78.44C227.143 76.9467 228.316 75.7733 229.783 74.92C231.276 74.04 232.943 73.6 234.783 73.6C236.543 73.6 238.089 74 239.423 74.8C240.783 75.6 241.836 76.7067 242.583 78.12C243.356 79.5333 243.743 81.1333 243.743 82.92C243.743 83.1867 243.729 83.48 243.703 83.8C243.676 84.0933 243.623 84.44 243.543 84.84H227.503V81.84H241.623L240.303 83C240.303 81.72 240.076 80.64 239.623 79.76C239.169 78.8533 238.529 78.16 237.703 77.68C236.876 77.1733 235.876 76.92 234.703 76.92C233.476 76.92 232.396 77.1867 231.463 77.72C230.529 78.2533 229.809 79 229.303 79.96C228.796 80.92 228.543 82.0533 228.543 83.36C228.543 84.6933 228.809 85.8667 229.343 86.88C229.876 87.8667 230.636 88.64 231.623 89.2C232.609 89.7333 233.743 90 235.023 90C236.089 90 237.063 89.8133 237.943 89.44C238.849 89.0667 239.623 88.5067 240.263 87.76L242.583 90.12C241.676 91.1867 240.556 92 239.223 92.56C237.916 93.12 236.516 93.4 235.023 93.4ZM248.802 93V66.04H252.402V93H248.802ZM244.122 77.28V74H257.082V77.28H244.122ZM269.409 93.4C267.969 93.4 266.662 93.1067 265.489 92.52C264.342 91.9067 263.422 91.0667 262.729 90C262.035 88.9333 261.649 87.72 261.569 86.36V80.64C261.649 79.2533 262.035 78.04 262.729 77C263.449 75.9333 264.382 75.1067 265.529 74.52C266.702 73.9067 267.995 73.6 269.409 73.6C271.142 73.6 272.702 74.04 274.089 74.92C275.502 75.8 276.609 76.9867 277.409 78.48C278.209 79.9733 278.609 81.6533 278.609 83.52C278.609 85.3867 278.209 87.0667 277.409 88.56C276.609 90.0533 275.502 91.24 274.089 92.12C272.702 92.9733 271.142 93.4 269.409 93.4ZM259.409 100.96V74H263.009V79L262.329 83.6L263.009 88.24V100.96H259.409ZM268.809 90C270.009 90 271.062 89.72 271.969 89.16C272.875 88.6 273.595 87.84 274.129 86.88C274.662 85.8933 274.929 84.76 274.929 83.48C274.929 82.2267 274.662 81.1067 274.129 80.12C273.595 79.1333 272.875 78.3733 271.969 77.84C271.062 77.28 270.022 77 268.849 77C267.649 77 266.595 77.28 265.689 77.84C264.782 78.3733 264.075 79.1333 263.569 80.12C263.062 81.1067 262.809 82.24 262.809 83.52C262.809 84.7733 263.049 85.8933 263.529 86.88C264.035 87.84 264.742 88.6 265.649 89.16C266.582 89.72 267.635 90 268.809 90ZM281.49 93V64.44H285.09V93H281.49ZM297.237 93.4C295.504 93.4 293.931 92.9733 292.517 92.12C291.104 91.24 289.984 90.0533 289.157 88.56C288.357 87.0667 287.957 85.3867 287.957 83.52C287.957 81.6533 288.357 79.9733 289.157 78.48C289.984 76.9867 291.091 75.8 292.477 74.92C293.891 74.04 295.477 73.6 297.237 73.6C298.677 73.6 299.957 73.9067 301.077 74.52C302.224 75.1067 303.144 75.9333 303.837 77C304.531 78.04 304.917 79.2533 304.997 80.64V86.36C304.917 87.72 304.531 88.9333 303.837 90C303.171 91.0667 302.264 91.9067 301.117 92.52C299.997 93.1067 298.704 93.4 297.237 93.4ZM297.837 90C299.624 90 301.064 89.4 302.157 88.2C303.251 86.9733 303.797 85.4133 303.797 83.52C303.797 82.2133 303.544 81.08 303.037 80.12C302.557 79.1333 301.864 78.3733 300.957 77.84C300.051 77.28 298.997 77 297.797 77C296.597 77 295.531 77.28 294.597 77.84C293.691 78.4 292.971 79.1733 292.437 80.16C291.931 81.12 291.677 82.2267 291.677 83.48C291.677 84.76 291.931 85.8933 292.437 86.88C292.971 87.84 293.704 88.6 294.637 89.16C295.571 89.72 296.637 90 297.837 90ZM303.557 93V87.88L304.237 83.24L303.557 78.64V74H307.197V93H303.557ZM319.918 93.4C318.052 93.4 316.358 92.96 314.838 92.08C313.345 91.2 312.158 90.0133 311.278 88.52C310.425 87 309.998 85.32 309.998 83.48C309.998 81.6133 310.425 79.9333 311.278 78.44C312.158 76.9467 313.345 75.7733 314.838 74.92C316.358 74.04 318.052 73.6 319.918 73.6C321.385 73.6 322.745 73.88 323.998 74.44C325.252 74.9733 326.332 75.76 327.238 76.8L324.838 79.2C324.252 78.5067 323.532 77.9867 322.678 77.64C321.852 77.2667 320.932 77.08 319.918 77.08C318.718 77.08 317.652 77.36 316.718 77.92C315.785 78.4533 315.052 79.2 314.518 80.16C313.985 81.12 313.718 82.2267 313.718 83.48C313.718 84.7333 313.985 85.84 314.518 86.8C315.052 87.76 315.785 88.52 316.718 89.08C317.652 89.64 318.718 89.92 319.918 89.92C320.932 89.92 321.852 89.7467 322.678 89.4C323.532 89.0267 324.265 88.4933 324.878 87.8L327.238 90.2C326.358 91.2133 325.278 92 323.998 92.56C322.745 93.12 321.385 93.4 319.918 93.4ZM338.018 93.4C336.125 93.4 334.418 92.9733 332.898 92.12C331.378 91.24 330.178 90.0533 329.298 88.56C328.418 87.0667 327.978 85.3733 327.978 83.48C327.978 81.6133 328.405 79.9333 329.258 78.44C330.138 76.9467 331.311 75.7733 332.778 74.92C334.271 74.04 335.938 73.6 337.778 73.6C339.538 73.6 341.085 74 342.418 74.8C343.778 75.6 344.831 76.7067 345.578 78.12C346.351 79.5333 346.738 81.1333 346.738 82.92C346.738 83.1867 346.725 83.48 346.698 83.8C346.671 84.0933 346.618 84.44 346.538 84.84H330.498V81.84H344.618L343.298 83C343.298 81.72 343.071 80.64 342.618 79.76C342.165 78.8533 341.525 78.16 340.698 77.68C339.871 77.1733 338.871 76.92 337.698 76.92C336.471 76.92 335.391 77.1867 334.458 77.72C333.525 78.2533 332.805 79 332.298 79.96C331.791 80.92 331.538 82.0533 331.538 83.36C331.538 84.6933 331.805 85.8667 332.338 86.88C332.871 87.8667 333.631 88.64 334.618 89.2C335.605 89.7333 336.738 90 338.018 90C339.085 90 340.058 89.8133 340.938 89.44C341.845 89.0667 342.618 88.5067 343.258 87.76L345.578 90.12C344.671 91.1867 343.551 92 342.218 92.56C340.911 93.12 339.511 93.4 338.018 93.4Z" fill="#0071E3"/>
-                    <path d="M26.9 93V58.45H35.6V93H26.9ZM21.5 75.8V68.55H41V75.8H21.5ZM42.0078 93V68.55H50.7578V93H42.0078ZM46.3578 65.7C45.0578 65.7 43.9745 65.2667 43.1078 64.4C42.2411 63.5 41.8078 62.3833 41.8078 61.05C41.8078 59.75 42.2411 58.65 43.1078 57.75C43.9745 56.85 45.0578 56.4 46.3578 56.4C47.7245 56.4 48.8245 56.85 49.6578 57.75C50.5245 58.65 50.9578 59.75 50.9578 61.05C50.9578 62.3833 50.5245 63.5 49.6578 64.4C48.8245 65.2667 47.7245 65.7 46.3578 65.7ZM69.6773 93V79.2C69.6773 78.0667 69.344 77.1833 68.6773 76.55C68.0107 75.8833 67.1607 75.55 66.1273 75.55C65.4273 75.55 64.794 75.7 64.2273 76C63.694 76.3 63.2773 76.7167 62.9773 77.25C62.6773 77.7833 62.5273 78.4333 62.5273 79.2L59.1273 77.6C59.1273 75.6333 59.5607 73.95 60.4273 72.55C61.294 71.1167 62.4773 70.0167 63.9773 69.25C65.5107 68.45 67.244 68.05 69.1773 68.05C70.944 68.05 72.5107 68.4667 73.8773 69.3C75.2773 70.1 76.3773 71.1833 77.1773 72.55C77.9773 73.9167 78.3773 75.4667 78.3773 77.2V93H69.6773ZM53.8273 93V68.55H62.5273V93H53.8273ZM91.4777 93.5C89.1111 93.5 87.0277 92.95 85.2277 91.85C83.4277 90.75 82.0111 89.25 80.9777 87.35C79.9777 85.4167 79.4777 83.2333 79.4777 80.8C79.4777 78.3333 79.9777 76.1333 80.9777 74.2C82.0111 72.2667 83.4111 70.7667 85.1777 69.7C86.9777 68.6 89.0777 68.05 91.4777 68.05C93.0111 68.05 94.4444 68.3333 95.7777 68.9C97.1111 69.4333 98.2277 70.2 99.1277 71.2C100.028 72.2 100.561 73.3333 100.728 74.6V86.55C100.561 87.8167 100.028 88.9833 99.1277 90.05C98.2277 91.1167 97.1111 91.9667 95.7777 92.6C94.4444 93.2 93.0111 93.5 91.4777 93.5ZM93.0277 85.75C93.9944 85.75 94.8277 85.55 95.5277 85.15C96.2277 84.7167 96.7777 84.1333 97.1777 83.4C97.6111 82.6333 97.8277 81.75 97.8277 80.75C97.8277 79.7833 97.6277 78.9333 97.2277 78.2C96.8277 77.4667 96.2611 76.8833 95.5277 76.45C94.8277 76.0167 94.0111 75.8 93.0777 75.8C92.1444 75.8 91.3111 76.0167 90.5777 76.45C89.8777 76.8833 89.3111 77.4833 88.8777 78.25C88.4777 78.9833 88.2777 79.8167 88.2777 80.75C88.2777 81.7167 88.4777 82.5833 88.8777 83.35C89.2777 84.0833 89.8444 84.6667 90.5777 85.1C91.3111 85.5333 92.1277 85.75 93.0277 85.75ZM106.028 93H97.4777V86.45L98.7277 80.45L97.3277 74.55V56.55H106.028V93ZM119.305 93.5C117.038 93.5 115.021 92.95 113.255 91.85C111.488 90.75 110.105 89.25 109.105 87.35C108.105 85.4167 107.605 83.2333 107.605 80.8C107.605 78.3333 108.105 76.1333 109.105 74.2C110.105 72.2667 111.488 70.7667 113.255 69.7C115.021 68.6 117.038 68.05 119.305 68.05C120.838 68.05 122.238 68.3333 123.505 68.9C124.771 69.4333 125.805 70.2 126.605 71.2C127.438 72.2 127.938 73.3333 128.105 74.6V86.9C127.938 88.2 127.438 89.35 126.605 90.35C125.805 91.3167 124.771 92.0833 123.505 92.65C122.238 93.2167 120.838 93.5 119.305 93.5ZM121.155 85.75C122.588 85.75 123.738 85.2833 124.605 84.35C125.505 83.4167 125.955 82.2167 125.955 80.75C125.955 79.7833 125.755 78.9333 125.355 78.2C124.955 77.4667 124.388 76.8833 123.655 76.45C122.955 76.0167 122.138 75.8 121.205 75.8C120.271 75.8 119.438 76.0167 118.705 76.45C118.005 76.8833 117.438 77.4833 117.005 78.25C116.605 78.9833 116.405 79.8167 116.405 80.75C116.405 81.7167 116.605 82.5833 117.005 83.35C117.405 84.0833 117.971 84.6667 118.705 85.1C119.438 85.5333 120.255 85.75 121.155 85.75ZM125.605 93V86.45L126.855 80.45L125.605 74.55V68.55H134.155V93H125.605Z" fill="#1D1D1F"/>
-                </svg>
+            <a href="shop.html" class="navbar__logo">
+                <div class="navbar__logo-mark">T</div>
+                <div class="navbar__logo-text">
+                    <span class="navbar__logo-name">Tindamba</span>
+                    <span class="navbar__logo-tagline">Marketplace</span>
+                </div>
             </a>
-
-            <form class="navbar__search" id="searchForm">
-                <button type="submit" class="navbar__search-btn" aria-label="Rechercher"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
-                <input id="searchInput" type="search" placeholder="Rechercher un produit, une boutique…" autocomplete="off" />
-                <kbd class="navbar__search-kbd">⌘ K</kbd>
-            </form>
-            <div class="navbar__actions">
-                <a href="login.html" class="navbar__action"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Vendeur</span></a>
-                <a href="cart.html" class="navbar__cart"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6L8 16H20L22 6H6Z"/><path d="M6 6L4 2H2"/><circle cx="10" cy="20" r="1.5" fill="currentColor" stroke="none"/><circle cx="18" cy="20" r="1.5" fill="currentColor" stroke="none"/></svg><span class="navbar__cart-count" id="cartCount">0</span></a>
-            </div>
+            <div class="navbar__spacer"></div>
+            <a href="shop.html" class="navbar__back">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                Boutique
+            </a>
+            <a href="cart.html" class="navbar__cart" aria-label="Panier">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 6L8 16H20L22 6H6Z"/>
+                    <path d="M6 6L4 2H2"/>
+                    <circle cx="10" cy="20" r="1.5" fill="currentColor" stroke="none"/>
+                    <circle cx="18" cy="20" r="1.5" fill="currentColor" stroke="none"/>
+                </svg>
+                <span class="navbar__cart-count" id="cartCount">0</span>
+            </a>
         </div>
     </nav>
 
@@ -105,36 +705,267 @@
         <div id="products" class="products-grid"></div>
     </main>
 
-   <footer class="footer">
+    <!-- FOOTER -->
+    <footer class="footer">
         <div class="footer__main">
             <div class="footer__brand">
-
-                <!-- ✅ LOGO SVG INLINE footer — même SVG, taille réduite -->
-                <a href="/" class="footer__logo" aria-label="Tinda — Accueil">
-                    <svg height="26" width="auto" viewBox="0 0 369 150" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M42 98.736C72.2603 96.3154 88.8099 96.1166 118 100.138" stroke="#0071E3" stroke-width="3"/>
-                        <path d="M138.64 93V74H142.24V93H138.64ZM151.48 93V81.52C151.48 80.1067 151.04 79 150.16 78.2C149.307 77.3733 148.227 76.96 146.92 76.96C146.04 76.96 145.253 77.1467 144.56 77.52C143.867 77.8933 143.307 78.4133 142.88 79.08C142.453 79.7467 142.24 80.5467 142.24 81.48L140.76 80.76C140.76 79.32 141.067 78.0667 141.68 77C142.32 75.9333 143.187 75.1067 144.28 74.52C145.373 73.9067 146.6 73.6 147.96 73.6C149.293 73.6 150.493 73.8933 151.56 74.48C152.653 75.0667 153.507 75.8933 154.12 76.96C154.76 78.0267 155.08 79.2933 155.08 80.76V93H151.48ZM164.32 93V81.52C164.32 80.1067 163.88 79 163 78.2C162.147 77.3733 161.08 76.96 159.8 76.96C158.92 76.96 158.12 77.1467 157.4 77.52C156.707 77.8933 156.147 78.4133 155.72 79.08C155.293 79.7467 155.08 80.5467 155.08 81.48L153.04 80.76C153.12 79.2933 153.507 78.04 154.2 77C154.92 75.9333 155.84 75.1067 156.96 74.52C158.08 73.9067 159.307 73.6 160.64 73.6C162.027 73.6 163.267 73.8933 164.36 74.48C165.453 75.0667 166.32 75.8933 166.96 76.96C167.627 78.0267 167.96 79.3067 167.96 80.8V93H164.32ZM179.739 93.4C178.005 93.4 176.432 92.9733 175.019 92.12C173.605 91.24 172.485 90.0533 171.659 88.56C170.859 87.0667 170.459 85.3867 170.459 83.52C170.459 81.6533 170.859 79.9733 171.659 78.48C172.485 76.9867 173.592 75.8 174.979 74.92C176.392 74.04 177.979 73.6 179.739 73.6C181.179 73.6 182.459 73.9067 183.579 74.52C184.725 75.1067 185.645 75.9333 186.339 77C187.032 78.04 187.419 79.2533 187.499 80.64V86.36C187.419 87.72 187.032 88.9333 186.339 90C185.672 91.0667 184.765 91.9067 183.619 92.52C182.499 93.1067 181.205 93.4 179.739 93.4ZM180.339 90C182.125 90 183.565 89.4 184.659 88.2C185.752 86.9733 186.299 85.4133 186.299 83.52C186.299 82.2133 186.045 81.08 185.539 80.12C185.059 79.1333 184.365 78.3733 183.459 77.84C182.552 77.28 181.499 77 180.299 77C179.099 77 178.032 77.28 177.099 77.84C176.192 78.4 175.472 79.1733 174.939 80.16C174.432 81.12 174.179 82.2267 174.179 83.48C174.179 84.76 174.432 85.8933 174.939 86.88C175.472 87.84 176.205 88.6 177.139 89.16C178.072 89.72 179.139 90 180.339 90ZM186.059 93V87.88L186.739 83.24L186.059 78.64V74H189.699V93H186.059ZM193.74 93V74H197.34V93H193.74ZM197.34 82.16L195.98 81.56C195.98 79.1333 196.54 77.2 197.66 75.76C198.78 74.32 200.393 73.6 202.5 73.6C203.46 73.6 204.327 73.7733 205.1 74.12C205.873 74.44 206.593 74.9867 207.26 75.76L204.9 78.2C204.5 77.7733 204.06 77.4667 203.58 77.28C203.1 77.0933 202.54 77 201.9 77C200.567 77 199.473 77.4267 198.62 78.28C197.767 79.1333 197.34 80.4267 197.34 82.16ZM220.755 93L211.875 83.28L220.675 74H225.035L215.235 84.24L215.395 82.16L225.395 93H220.755ZM208.595 93V64.44H212.195V93H208.595ZM235.023 93.4C233.129 93.4 231.423 92.9733 229.903 92.12C228.383 91.24 227.183 90.0533 226.303 88.56C225.423 87.0667 224.983 85.3733 224.983 83.48C224.983 81.6133 225.409 79.9333 226.263 78.44C227.143 76.9467 228.316 75.7733 229.783 74.92C231.276 74.04 232.943 73.6 234.783 73.6C236.543 73.6 238.089 74 239.423 74.8C240.783 75.6 241.836 76.7067 242.583 78.12C243.356 79.5333 243.743 81.1333 243.743 82.92C243.743 83.1867 243.729 83.48 243.703 83.8C243.676 84.0933 243.623 84.44 243.543 84.84H227.503V81.84H241.623L240.303 83C240.303 81.72 240.076 80.64 239.623 79.76C239.169 78.8533 238.529 78.16 237.703 77.68C236.876 77.1733 235.876 76.92 234.703 76.92C233.476 76.92 232.396 77.1867 231.463 77.72C230.529 78.2533 229.809 79 229.303 79.96C228.796 80.92 228.543 82.0533 228.543 83.36C228.543 84.6933 228.809 85.8667 229.343 86.88C229.876 87.8667 230.636 88.64 231.623 89.2C232.609 89.7333 233.743 90 235.023 90C236.089 90 237.063 89.8133 237.943 89.44C238.849 89.0667 239.623 88.5067 240.263 87.76L242.583 90.12C241.676 91.1867 240.556 92 239.223 92.56C237.916 93.12 236.516 93.4 235.023 93.4ZM248.802 93V66.04H252.402V93H248.802ZM244.122 77.28V74H257.082V77.28H244.122ZM269.409 93.4C267.969 93.4 266.662 93.1067 265.489 92.52C264.342 91.9067 263.422 91.0667 262.729 90C262.035 88.9333 261.649 87.72 261.569 86.36V80.64C261.649 79.2533 262.035 78.04 262.729 77C263.449 75.9333 264.382 75.1067 265.529 74.52C266.702 73.9067 267.995 73.6 269.409 73.6C271.142 73.6 272.702 74.04 274.089 74.92C275.502 75.8 276.609 76.9867 277.409 78.48C278.209 79.9733 278.609 81.6533 278.609 83.52C278.609 85.3867 278.209 87.0667 277.409 88.56C276.609 90.0533 275.502 91.24 274.089 92.12C272.702 92.9733 271.142 93.4 269.409 93.4ZM259.409 100.96V74H263.009V79L262.329 83.6L263.009 88.24V100.96H259.409ZM268.809 90C270.009 90 271.062 89.72 271.969 89.16C272.875 88.6 273.595 87.84 274.129 86.88C274.662 85.8933 274.929 84.76 274.929 83.48C274.929 82.2267 274.662 81.1067 274.129 80.12C273.595 79.1333 272.875 78.3733 271.969 77.84C271.062 77.28 270.022 77 268.849 77C267.649 77 266.595 77.28 265.689 77.84C264.782 78.3733 264.075 79.1333 263.569 80.12C263.062 81.1067 262.809 82.24 262.809 83.52C262.809 84.7733 263.049 85.8933 263.529 86.88C264.035 87.84 264.742 88.6 265.649 89.16C266.582 89.72 267.635 90 268.809 90ZM281.49 93V64.44H285.09V93H281.49ZM297.237 93.4C295.504 93.4 293.931 92.9733 292.517 92.12C291.104 91.24 289.984 90.0533 289.157 88.56C288.357 87.0667 287.957 85.3867 287.957 83.52C287.957 81.6533 288.357 79.9733 289.157 78.48C289.984 76.9867 291.091 75.8 292.477 74.92C293.891 74.04 295.477 73.6 297.237 73.6C298.677 73.6 299.957 73.9067 301.077 74.52C302.224 75.1067 303.144 75.9333 303.837 77C304.531 78.04 304.917 79.2533 304.997 80.64V86.36C304.917 87.72 304.531 88.9333 303.837 90C303.171 91.0667 302.264 91.9067 301.117 92.52C299.997 93.1067 298.704 93.4 297.237 93.4ZM297.837 90C299.624 90 301.064 89.4 302.157 88.2C303.251 86.9733 303.797 85.4133 303.797 83.52C303.797 82.2133 303.544 81.08 303.037 80.12C302.557 79.1333 301.864 78.3733 300.957 77.84C300.051 77.28 298.997 77 297.797 77C296.597 77 295.531 77.28 294.597 77.84C293.691 78.4 292.971 79.1733 292.437 80.16C291.931 81.12 291.677 82.2267 291.677 83.48C291.677 84.76 291.931 85.8933 292.437 86.88C292.971 87.84 293.704 88.6 294.637 89.16C295.571 89.72 296.637 90 297.837 90ZM303.557 93V87.88L304.237 83.24L303.557 78.64V74H307.197V93H303.557ZM319.918 93.4C318.052 93.4 316.358 92.96 314.838 92.08C313.345 91.2 312.158 90.0133 311.278 88.52C310.425 87 309.998 85.32 309.998 83.48C309.998 81.6133 310.425 79.9333 311.278 78.44C312.158 76.9467 313.345 75.7733 314.838 74.92C316.358 74.04 318.052 73.6 319.918 73.6C321.385 73.6 322.745 73.88 323.998 74.44C325.252 74.9733 326.332 75.76 327.238 76.8L324.838 79.2C324.252 78.5067 323.532 77.9867 322.678 77.64C321.852 77.2667 320.932 77.08 319.918 77.08C318.718 77.08 317.652 77.36 316.718 77.92C315.785 78.4533 315.052 79.2 314.518 80.16C313.985 81.12 313.718 82.2267 313.718 83.48C313.718 84.7333 313.985 85.84 314.518 86.8C315.052 87.76 315.785 88.52 316.718 89.08C317.652 89.64 318.718 89.92 319.918 89.92C320.932 89.92 321.852 89.7467 322.678 89.4C323.532 89.0267 324.265 88.4933 324.878 87.8L327.238 90.2C326.358 91.2133 325.278 92 323.998 92.56C322.745 93.12 321.385 93.4 319.918 93.4ZM338.018 93.4C336.125 93.4 334.418 92.9733 332.898 92.12C331.378 91.24 330.178 90.0533 329.298 88.56C328.418 87.0667 327.978 85.3733 327.978 83.48C327.978 81.6133 328.405 79.9333 329.258 78.44C330.138 76.9467 331.311 75.7733 332.778 74.92C334.271 74.04 335.938 73.6 337.778 73.6C339.538 73.6 341.085 74 342.418 74.8C343.778 75.6 344.831 76.7067 345.578 78.12C346.351 79.5333 346.738 81.1333 346.738 82.92C346.738 83.1867 346.725 83.48 346.698 83.8C346.671 84.0933 346.618 84.44 346.538 84.84H330.498V81.84H344.618L343.298 83C343.298 81.72 343.071 80.64 342.618 79.76C342.165 78.8533 341.525 78.16 340.698 77.68C339.871 77.1733 338.871 76.92 337.698 76.92C336.471 76.92 335.391 77.1867 334.458 77.72C333.525 78.2533 332.805 79 332.298 79.96C331.791 80.92 331.538 82.0533 331.538 83.36C331.538 84.6933 331.805 85.8667 332.338 86.88C332.871 87.8667 333.631 88.64 334.618 89.2C335.605 89.7333 336.738 90 338.018 90C339.085 90 340.058 89.8133 340.938 89.44C341.845 89.0667 342.618 88.5067 343.258 87.76L345.578 90.12C344.671 91.1867 343.551 92 342.218 92.56C340.911 93.12 339.511 93.4 338.018 93.4Z" fill="#0071E3"/>
-                        <path d="M26.9 93V58.45H35.6V93H26.9ZM21.5 75.8V68.55H41V75.8H21.5ZM42.0078 93V68.55H50.7578V93H42.0078ZM46.3578 65.7C45.0578 65.7 43.9745 65.2667 43.1078 64.4C42.2411 63.5 41.8078 62.3833 41.8078 61.05C41.8078 59.75 42.2411 58.65 43.1078 57.75C43.9745 56.85 45.0578 56.4 46.3578 56.4C47.7245 56.4 48.8245 56.85 49.6578 57.75C50.5245 58.65 50.9578 59.75 50.9578 61.05C50.9578 62.3833 50.5245 63.5 49.6578 64.4C48.8245 65.2667 47.7245 65.7 46.3578 65.7ZM69.6773 93V79.2C69.6773 78.0667 69.344 77.1833 68.6773 76.55C68.0107 75.8833 67.1607 75.55 66.1273 75.55C65.4273 75.55 64.794 75.7 64.2273 76C63.694 76.3 63.2773 76.7167 62.9773 77.25C62.6773 77.7833 62.5273 78.4333 62.5273 79.2L59.1273 77.6C59.1273 75.6333 59.5607 73.95 60.4273 72.55C61.294 71.1167 62.4773 70.0167 63.9773 69.25C65.5107 68.45 67.244 68.05 69.1773 68.05C70.944 68.05 72.5107 68.4667 73.8773 69.3C75.2773 70.1 76.3773 71.1833 77.1773 72.55C77.9773 73.9167 78.3773 75.4667 78.3773 77.2V93H69.6773ZM53.8273 93V68.55H62.5273V93H53.8273ZM91.4777 93.5C89.1111 93.5 87.0277 92.95 85.2277 91.85C83.4277 90.75 82.0111 89.25 80.9777 87.35C79.9777 85.4167 79.4777 83.2333 79.4777 80.8C79.4777 78.3333 79.9777 76.1333 80.9777 74.2C82.0111 72.2667 83.4111 70.7667 85.1777 69.7C86.9777 68.6 89.0777 68.05 91.4777 68.05C93.0111 68.05 94.4444 68.3333 95.7777 68.9C97.1111 69.4333 98.2277 70.2 99.1277 71.2C100.028 72.2 100.561 73.3333 100.728 74.6V86.55C100.561 87.8167 100.028 88.9833 99.1277 90.05C98.2277 91.1167 97.1111 91.9667 95.7777 92.6C94.4444 93.2 93.0111 93.5 91.4777 93.5ZM93.0277 85.75C93.9944 85.75 94.8277 85.55 95.5277 85.15C96.2277 84.7167 96.7777 84.1333 97.1777 83.4C97.6111 82.6333 97.8277 81.75 97.8277 80.75C97.8277 79.7833 97.6277 78.9333 97.2277 78.2C96.8277 77.4667 96.2611 76.8833 95.5277 76.45C94.8277 76.0167 94.0111 75.8 93.0777 75.8C92.1444 75.8 91.3111 76.0167 90.5777 76.45C89.8777 76.8833 89.3111 77.4833 88.8777 78.25C88.4777 78.9833 88.2777 79.8167 88.2777 80.75C88.2777 81.7167 88.4777 82.5833 88.8777 83.35C89.2777 84.0833 89.8444 84.6667 90.5777 85.1C91.3111 85.5333 92.1277 85.75 93.0277 85.75ZM106.028 93H97.4777V86.45L98.7277 80.45L97.3277 74.55V56.55H106.028V93ZM119.305 93.5C117.038 93.5 115.021 92.95 113.255 91.85C111.488 90.75 110.105 89.25 109.105 87.35C108.105 85.4167 107.605 83.2333 107.605 80.8C107.605 78.3333 108.105 76.1333 109.105 74.2C110.105 72.2667 111.488 70.7667 113.255 69.7C115.021 68.6 117.038 68.05 119.305 68.05C120.838 68.05 122.238 68.3333 123.505 68.9C124.771 69.4333 125.805 70.2 126.605 71.2C127.438 72.2 127.938 73.3333 128.105 74.6V86.9C127.938 88.2 127.438 89.35 126.605 90.35C125.805 91.3167 124.771 92.0833 123.505 92.65C122.238 93.2167 120.838 93.5 119.305 93.5ZM121.155 85.75C122.588 85.75 123.738 85.2833 124.605 84.35C125.505 83.4167 125.955 82.2167 125.955 80.75C125.955 79.7833 125.755 78.9333 125.355 78.2C124.955 77.4667 124.388 76.8833 123.655 76.45C122.955 76.0167 122.138 75.8 121.205 75.8C120.271 75.8 119.438 76.0167 118.705 76.45C118.005 76.8833 117.438 77.4833 117.005 78.25C116.605 78.9833 116.405 79.8167 116.405 80.75C116.405 81.7167 116.605 82.5833 117.005 83.35C117.405 84.0833 117.971 84.6667 118.705 85.1C119.438 85.5333 120.255 85.75 121.155 85.75ZM125.605 93V86.45L126.855 80.45L125.605 74.55V68.55H134.155V93H125.605Z" fill="#1D1D1F"/>
-                    </svg>
+                <a href="/" class="footer__logo">
+                    <div class="footer__logo-mark">T</div>
+                    <span>Tindamba</span>
                 </a>
-
                 <p class="footer__brand-desc">La marketplace africaine qui connecte vendeurs locaux et acheteurs à travers l'Afrique Centrale.</p>
             </div>
-            <div class="footer__col"><h4 class="footer__col-title">Navigation</h4><ul class="footer__links"><li><a href="shop.html">Boutique</a></li><li><a href="cart.html">Mon panier</a></li><li><a href="checkout.html">Commander</a></li></ul></div>
-            <div class="footer__col"><h4 class="footer__col-title">Vendeurs</h4><ul class="footer__links"><li><a href="login.html">Créer ma boutique</a></li><li><a href="login.html">Se connecter</a></li></ul></div>
-            <div class="footer__col"><h4 class="footer__col-title">Support</h4><ul class="footer__links"><li><a href="https://wa.me/237693421348">WhatsApp direct</a></li><li><a href="#">FAQ</a></li><li><a href="#">Conditions</a></li></ul></div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Navigation</h4>
+                <ul class="footer__links">
+                    <li><a href="shop.html">Boutique</a></li>
+                    <li><a href="cart.html">Mon panier</a></li>
+                    <li><a href="checkout.html">Commander</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Vendeurs</h4>
+                <ul class="footer__links">
+                    <li><a href="login.html">Créer ma boutique</a></li>
+                    <li><a href="login.html">Se connecter</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4 class="footer__col-title">Support</h4>
+                <ul class="footer__links">
+                    <li><a href="https://wa.me/237693421348">WhatsApp direct</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Conditions</a></li>
+                </ul>
+            </div>
         </div>
         <div class="footer__bottom">
-            <p>© 2025 Tinda — Marketplace africaine de confiance.</p>
-            <div class="footer__payment"><span class="footer__payment-badge">MTN MoMo</span><span class="footer__payment-badge">Orange Money</span><span class="footer__payment-badge">Paiement cash</span></div>
+            <p>© 2025 Tindamba — Marketplace africaine de confiance.</p>
+            <div class="footer__payment">
+                <span class="footer__payment-badge">MTN MoMo</span>
+                <span class="footer__payment-badge">Orange Money</span>
+                <span class="footer__payment-badge">Paiement cash</span>
+            </div>
         </div>
     </footer>
 
     <!-- TOAST CONTAINER -->
     <div class="toast-container" id="toastContainer"></div>
 
-    <script src="js/category.js"></script>
-     <script src="js/responsive.js"></script>
+    <script>
+        const SUPABASE_URL = 'https://uytrjgtrpsbegifudosi.supabase.co';
+        const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_Pj_C1NLwxYiVSNOxuX6kUg_MukIHzga';
+        const { createClient } = supabase;
+        const sb = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+        const IMG_FALLBACK = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200"%3E%3Crect fill="%23F2F2EF" width="200" height="200"/%3E%3C/svg%3E';
 
+        /* ── UTILS ── */
+        function esc(s) {
+            return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+        function formatXAF(n) {
+            return new Intl.NumberFormat('fr-FR', { style:'currency', currency:'XAF', maximumFractionDigits:0 }).format(n||0);
+        }
+        function badgeLabel(b) {
+            return ({ new: 'Nouveau', bestseller: 'Best-seller', featured: 'Coup de cœur', promo: 'Promo', out_of_stock: 'Épuisé' }[b] || b);
+        }
+        function toast(msg, type='info') {
+            const tc = document.getElementById('toastContainer');
+            const el = document.createElement('div');
+            el.className = `toast toast--${type}`;
+            const icon = type==='success'
+                ? '<polyline points="20 6 9 17 4 12"/>'
+                : '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/>';
+            el.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">${icon}</svg>${esc(msg)}`;
+            tc.appendChild(el);
+            setTimeout(() => el.remove(), 3200);
+        }
+
+        /* ── CART (identique) ── */
+        const Cart = {
+            get()      { try { return JSON.parse(localStorage.getItem('tindamba_cart')||'[]'); } catch{ return []; } },
+            save(c)    { localStorage.setItem('tindamba_cart', JSON.stringify(c)); },
+            count()    { return this.get().reduce((s,i)=>s+i.qty,0); },
+            add(product, qty=1) {
+                const cart = this.get();
+                const key = String(product.id);
+                const ex = cart.find(i => i._key === key);
+                if (ex) { ex.qty += qty; }
+                else { cart.push({ _key: key, id: product.id, vendor_id: product.vendor_id||null, vendor: product.vendors?.shop_name||'Tindamba', name: product.name, price: product.price, image: (Array.isArray(product.images)&&product.images[0])||product.image_url||'', color: null, qty }); }
+                this.save(cart);
+                document.getElementById('cartCount').textContent = this.count();
+            }
+        };
+        document.getElementById('cartCount').textContent = Cart.count();
+
+        let allProducts = [];
+        const categoryId = new URLSearchParams(location.search).get('id');
+
+        async function loadCategory() {
+            if (!categoryId) {
+                document.getElementById('catTitle').textContent = 'Catégorie introuvable';
+                document.getElementById('catCount').textContent = '';
+                return;
+            }
+
+            // Charger la catégorie
+            const { data: catData } = await sb.from('categories').select('name').eq('id', categoryId).single();
+            if (!catData) {
+                document.getElementById('catTitle').textContent = 'Catégorie introuvable';
+                document.getElementById('catCount').textContent = '';
+                return;
+            }
+            document.getElementById('catTitle').textContent = catData.name;
+            document.title = `${catData.name} · Tindamba`;
+
+            // Charger les produits
+            const { data: products, error } = await sb
+                .from('products')
+                .select('id, name, description, price, old_price, image_url, images, colors, badge, stock, vendor_id, vendors(shop_name)')
+                .eq('active', true)
+                .eq('category_id', categoryId)
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                document.getElementById('catCount').textContent = 'Erreur de chargement';
+                return;
+            }
+
+            allProducts = products || [];
+            document.getElementById('catCount').textContent = `${allProducts.length} produit${allProducts.length > 1 ? 's' : ''}`;
+
+            // Extraire les couleurs uniques
+            const colorSet = new Set();
+            allProducts.forEach(p => {
+                let colors = p.colors;
+                if (typeof colors === 'string') {
+                    try { colors = JSON.parse(colors); } catch { colors = []; }
+                }
+                if (Array.isArray(colors)) {
+                    colors.forEach(c => {
+                        const hex = c?.hex || c;
+                        if (hex) colorSet.add(hex);
+                    });
+                }
+            });
+            const colorSelect = document.getElementById('colorFilter');
+            colorSelect.innerHTML = '<option value="">Toutes</option>';
+            Array.from(colorSet).sort().forEach(hex => {
+                const opt = document.createElement('option');
+                opt.value = hex;
+                opt.textContent = hex;
+                colorSelect.appendChild(opt);
+            });
+
+            applyFilters(); // rendu initial
+        }
+
+        function parseColors(product) {
+            let colors = product.colors;
+            if (typeof colors === 'string') {
+                try { colors = JSON.parse(colors); } catch { colors = []; }
+            }
+            return Array.isArray(colors) ? colors : [];
+        }
+
+        function applyFilters() {
+            const minPrice = parseFloat(document.getElementById('minPrice').value) || 0;
+            const maxPrice = parseFloat(document.getElementById('maxPrice').value) || Infinity;
+            const colorFilter = document.getElementById('colorFilter').value;
+            const sort = document.getElementById('sortFilter').value;
+
+            let filtered = allProducts.filter(p => {
+                const price = p.price || 0;
+                if (price < minPrice || price > maxPrice) return false;
+                if (colorFilter) {
+                    const colors = parseColors(p);
+                    if (!colors.some(c => (c?.hex || c) === colorFilter)) return false;
+                }
+                return true;
+            });
+
+            // Tri
+            if (sort === 'price_asc') filtered.sort((a,b) => (a.price||0) - (b.price||0));
+            else if (sort === 'price_desc') filtered.sort((a,b) => (b.price||0) - (a.price||0));
+            else if (sort === 'name') filtered.sort((a,b) => (a.name||'').localeCompare(b.name||''));
+            // 'newest' est déjà l'ordre par défaut (created_at desc)
+
+            document.getElementById('products').innerHTML = filtered.map(cardHTML).join('');
+        }
+
+        function resetFilters() {
+            document.getElementById('minPrice').value = '';
+            document.getElementById('maxPrice').value = '';
+            document.getElementById('colorFilter').value = '';
+            document.getElementById('sortFilter').value = 'newest';
+            applyFilters();
+        }
+        window.applyFilters = applyFilters;
+        window.resetFilters = resetFilters;
+
+        function cardHTML(p) {
+            const img = (Array.isArray(p.images) && p.images[0]) || p.image_url || IMG_FALLBACK;
+            const hasPromo = p.old_price && p.old_price > p.price;
+            const isOut = p.stock <= 0 || p.badge === 'out_of_stock';
+            const showBadge = p.badge && p.badge !== 'out_of_stock';
+            const discount = hasPromo ? Math.round((1 - p.price / p.old_price) * 100) : 0;
+            const desc = p.description || `Vendu par ${p.vendors?.shop_name || 'Tindamba'}`;
+            const rating = (3.5 + Math.random() * 1.5).toFixed(1);
+            const reviews = Math.floor(10 + Math.random() * 200);
+            const stars = '★'.repeat(Math.round(rating)) + '☆'.repeat(5 - Math.round(rating));
+
+            let badgeHTML = '';
+            if (showBadge) badgeHTML = `<span class="badge badge--${p.badge}">${esc(badgeLabel(p.badge))}</span>`;
+            else if (isOut) badgeHTML = `<span class="badge badge--out_of_stock">Épuisé</span>`;
+            else if (hasPromo) badgeHTML = `<span class="badge badge--promo">−${discount}%</span>`;
+
+            // Swatches
+            const colors = parseColors(p);
+            let swatchesHTML = '';
+            if (colors.length) {
+                const visible = colors.slice(0, 5);
+                const extra = colors.length - 5;
+                const sw = visible.map(c => `<span class="mi-swatch" style="background:${esc(c?.hex||c)}" title="${esc(c?.name||c?.hex||c)}"></span>`).join('');
+                const more = extra > 0 ? `<span class="mi-swatch--more">+${extra}</span>` : '';
+                swatchesHTML = `<div class="mi-card__swatches">${sw}${more}</div>`;
+            }
+
+            return `<a href="product.html?id=${p.id}" class="mi-card${isOut ? ' mi-card--out' : ''}" aria-label="${esc(p.name)}">
+                <div class="mi-card__media">
+                    ${badgeHTML}
+                    <button class="mi-card__wish" aria-label="Ajouter aux favoris" onclick="event.preventDefault();event.stopPropagation();">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                    </button>
+                    <img src="${esc(img)}" alt="${esc(p.name)}" loading="lazy" onerror="this.src='${IMG_FALLBACK}'">
+                    <button class="mi-card__atc" aria-label="Ajouter au panier" onclick="event.preventDefault();event.stopPropagation();quickAddToCart('${p.id}')">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 6L8 16H20L22 6H6Z"/><path d="M6 6L4 2H2"/><circle cx="10" cy="20" r="1.5" fill="currentColor" stroke="none"/><circle cx="18" cy="20" r="1.5" fill="currentColor" stroke="none"/></svg>
+                        Ajouter
+                    </button>
+                </div>
+                <div class="mi-card__body">
+                    <div class="mi-card__vendor">${esc(p.vendors?.shop_name || 'Tindamba')}</div>
+                    <h3 class="mi-card__name">${esc(p.name)}</h3>
+                    <p class="mi-card__desc">${esc(desc)}</p>
+                    ${swatchesHTML}
+                    <div class="mi-card__rating"><span class="mi-card__stars">${stars}</span><span>${rating} (${reviews})</span></div>
+                    <div class="mi-card__price">
+                        <span class="mi-card__price-current">${formatXAF(p.price)}</span>
+                        ${hasPromo ? `<span class="mi-card__price-old">${formatXAF(p.old_price)}</span>` : ''}
+                        ${hasPromo ? `<span class="mi-card__price-discount">−${discount}%</span>` : ''}
+                    </div>
+                </div>
+            </a>`;
+        }
+
+        window.quickAddToCart = function(productId) {
+            const product = allProducts.find(p => p.id == productId);
+            if (!product) { toast('Produit introuvable', 'error'); return; }
+            if (product.stock <= 0 || product.badge === 'out_of_stock') { toast('Ce produit est en rupture de stock', 'error'); return; }
+            Cart.add(product, 1);
+            toast(`"${product.name}" ajouté au panier ✓`, 'success');
+        };
+
+        loadCategory();
+    </script>
 </body>
 </html>

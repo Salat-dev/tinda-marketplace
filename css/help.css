@@ -38,7 +38,7 @@
         .navbar { position: sticky; top: 0; z-index: 800; background: rgba(255,255,255,0.92); backdrop-filter: blur(24px); border-bottom: 1px solid var(--color-border-light); }
         .navbar__inner { max-width: 1440px; margin: 0 auto; padding: 0 max(48px, env(safe-area-inset-left)); height: 68px; display: flex; align-items: center; gap: 28px; }
         .navbar__logo { display: flex; align-items: center; gap: 12px; flex-shrink: 0; transition: opacity var(--transition-fast); }
-        .navbar__logo-mark { width: 34px; height: 34px; background: var(--color-text); color: white; display: flex; align-items: center; justify-content: center; font-family: var(--font-serif); font-size: 20px; font-weight: 600; font-style: italic; }
+        .navbar__logo-mark { width: 34px; height: 34px; background: var(--color-text); color: white; display: flex; align-items: center; justify-content: center; font-family: var(--font-serif); font-size: 20px; font-weight: 600; font-style: normal; }
         .navbar__logo-text { display: flex; flex-direction: column; line-height: 1.1; }
         .navbar__logo-name { font-size: 17px; letter-spacing: 0.06em; text-transform: uppercase; }
         .navbar__logo-tagline { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-text-tertiary); font-weight: 500; }
@@ -52,14 +52,14 @@
         .help-hero { background: var(--color-bg-secondary); border-bottom: 1px solid var(--color-border-light); text-align: center; padding: var(--space-2xl) 24px; }
         .help-hero__eyebrow { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: var(--space-md); font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-accent); }
         .help-hero__eyebrow-line { width: 28px; height: 1px; background: var(--color-accent); }
-        .help-hero__title { font-family: var(--font-serif); font-size: clamp(2.2rem, 4vw, 3.5rem); font-weight: 400; font-style: italic; margin-bottom: var(--space-sm); }
+        .help-hero__title { font-family: var(--font-serif); font-size: clamp(2.2rem, 4vw, 3.5rem); font-weight: 400; font-style: normal; margin-bottom: var(--space-sm); }
         .help-hero__sub { font-size: 16px; color: var(--color-text-secondary); max-width: 500px; margin: 0 auto var(--space-lg); }
 
         /* SECTION GÉNÉRIQUE */
         .section { max-width: 1100px; margin: 0 auto; padding: var(--space-2xl) 24px; }
         .section__header { text-align: center; margin-bottom: var(--space-xl); }
         .section__eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-accent); margin-bottom: var(--space-sm); }
-        .section__title { font-family: var(--font-serif); font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 400; font-style: italic; margin-bottom: var(--space-sm); }
+        .section__title { font-family: var(--font-serif); font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 400; font-style: normal; margin-bottom: var(--space-sm); }
         .section__sub { font-size: 15px; color: var(--color-text-secondary); }
 
         /* DÉMO VIDÉO */
@@ -70,16 +70,16 @@
         .demo-card__play:hover { transform: scale(1.08); }
         .demo-card__play svg { width: 28px; height: 28px; color: var(--color-accent); }
         .demo-card__body { padding: var(--space-md); text-align: center; }
-        .demo-card__title { font-family: var(--font-serif); font-size: 1.3rem; font-style: italic; margin-bottom: 4px; }
+        .demo-card__title { font-family: var(--font-serif); font-size: 1.3rem; font-style: normal; margin-bottom: 4px; }
         .demo-card__text { font-size: 14px; color: var(--color-text-secondary); }
 
         /* ÉTAPES */
         .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
         .step-card { text-align: center; padding: var(--space-lg); background: white; border: 1px solid var(--color-border-light); border-radius: var(--radius-md); transition: transform var(--transition-fast), box-shadow var(--transition-fast); }
         .step-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
-        .step-card__num { width: 44px; height: 44px; background: var(--color-bg-tertiary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-serif); font-size: 1.2rem; font-weight: 600; font-style: italic; color: var(--color-accent); margin: 0 auto var(--space-md); }
+        .step-card__num { width: 44px; height: 44px; background: var(--color-bg-tertiary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-serif); font-size: 1.2rem; font-weight: 600; font-style: normal; color: var(--color-accent); margin: 0 auto var(--space-md); }
         .step-card__icon { width: 48px; height: 48px; margin: 0 auto var(--space-sm); color: var(--color-accent); }
-        .step-card__title { font-family: var(--font-serif); font-size: 1.15rem; font-style: italic; margin-bottom: var(--space-xs); }
+        .step-card__title { font-family: var(--font-serif); font-size: 1.15rem; font-style: normal; margin-bottom: var(--space-xs); }
         .step-card__desc { font-size: 13px; color: var(--color-text-secondary); }
 
         /* AVANTAGES */
@@ -102,7 +102,7 @@
 
         /* CTA */
         .cta-section { background: var(--color-accent); text-align: center; padding: var(--space-xl) 24px; }
-        .cta-section__title { font-family: var(--font-serif); font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 400; font-style: italic; color: white; margin-bottom: var(--space-sm); }
+        .cta-section__title { font-family: var(--font-serif); font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 400; font-style: normal; color: white; margin-bottom: var(--space-sm); }
         .cta-section__text { font-size: 15px; color: rgba(255,255,255,0.8); margin-bottom: var(--space-lg); }
         .btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 32px; font-size: 13px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; border-radius: var(--radius-md); transition: all var(--transition-fast); }
         .btn--white { background: white; color: var(--color-accent); border: none; }

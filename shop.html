@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="css/responsive.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Outfit:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
- 
 </head>
 <body>
     <!-- TOPBAR -->
@@ -40,10 +39,30 @@
         </div>
     </nav>
 
-      <!-- MEGA MENU CATEGORIES -->
-    <nav class="mega-menu">
-        <div class="mega-menu__inner" id="megaMenu">
-            <!-- Catégories récupérées dynamiquement ici -->
+    <!-- MEGA MENU CATEGORIES -->
+    <nav class="mega-menu" id="megaMenuNav">
+        <div class="mega-menu__inner">
+            <!-- Bouton toggle "Catégories" -->
+            <button class="mega-menu__toggle" id="megaMenuToggle">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="18" y2="18"/></svg>
+                <span>Catégories</span>
+                <svg class="mega-menu__chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <!-- Liens catégories (remplis dynamiquement) -->
+            <div class="mega-menu__links" id="megaMenuLinks">
+                <!-- Skeleton pendant le chargement -->
+                <span class="mega-menu__skel"></span>
+                <span class="mega-menu__skel"></span>
+                <span class="mega-menu__skel"></span>
+                <span class="mega-menu__skel"></span>
+                <span class="mega-menu__skel"></span>
+            </div>
+        </div>
+        <!-- Dropdown panel (mobile + desktop hover) -->
+        <div class="mega-menu__dropdown" id="megaMenuDropdown">
+            <div class="mega-menu__dropdown-inner" id="megaMenuDropdownInner">
+                <!-- Rempli dynamiquement -->
+            </div>
         </div>
     </nav>
 

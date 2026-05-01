@@ -94,7 +94,7 @@
             width: 34px; height: 34px;
             background: var(--color-text); color: white;
             display: flex; align-items: center; justify-content: center;
-            font-family: var(--font-serif); font-size: 20px; font-weight: 600; font-style: italic;
+            font-family: var(--font-serif); font-size: 20px; font-weight: 600; font-style: normal;
             flex-shrink: 0;
         }
         .navbar__logo-text {
@@ -134,7 +134,7 @@
         .auth-logo a {
             font-family: var(--font-serif);
             font-size: 2rem;
-            font-style: italic;
+            font-style: normal;
             color: var(--color-text);
         }
         .auth-logo p {

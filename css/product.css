@@ -124,7 +124,7 @@
             font-family: var(--font-serif);
             font-size: 20px;
             font-weight: 600;
-            font-style: italic;
+            font-style: normal;
             flex-shrink: 0;
         }
         .navbar__logo-text {
@@ -334,7 +334,7 @@
             font-family: var(--font-serif);
             font-size: clamp(24px, 3vw, 42px);
             font-weight: 400;
-            font-style: italic;
+            font-style: normal;
             line-height: 1.15;
             letter-spacing: -0.02em;
             color: var(--color-text);
@@ -548,7 +548,7 @@
             font-family: var(--font-serif);
             font-size: clamp(20px, 2.5vw, 28px);
             font-weight: 400;
-            font-style: italic;
+            font-style: normal;
             letter-spacing: -0.02em;
         }
         .related__sub { font-size: 13px; color: var(--color-text-tertiary); margin-top: 4px; }
@@ -744,13 +744,13 @@
             justify-content: center;
             font-family: var(--font-serif);
             font-size: 18px;
-            font-style: italic;
+            font-style: normal;
             flex-shrink: 0;
         }
         .footer__brand-desc {
             font-family: var(--font-serif);
             font-size: 16px;
-            font-style: italic;
+            font-style: normal;
             color: var(--color-text-secondary);
             margin-bottom: var(--space-lg);
         }
@@ -841,7 +841,7 @@
         /* ─── EMPTY STATE ─── */
         .empty { text-align: center; padding: 100px 24px; }
         .empty__icon { width: 64px; height: 64px; background: var(--color-bg-tertiary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: var(--color-text-tertiary); }
-        .empty__title { font-family: var(--font-serif); font-size: 24px; font-style: italic; margin-bottom: 8px; }
+        .empty__title { font-family: var(--font-serif); font-size: 24px; font-style: normal; margin-bottom: 8px; }
         .empty__sub { color: var(--color-text-secondary); font-size: 14px; margin-bottom: 24px; }
         .btn-outline {
             display: inline-flex;

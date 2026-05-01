@@ -126,7 +126,7 @@
             font-family: var(--font-serif);
             font-size: 20px;
             font-weight: 600;
-            font-style: italic;
+            font-style: normal;
             flex-shrink: 0;
         }
         .navbar__logo-text {
@@ -244,7 +244,7 @@
         .dash__main h1 {
             font-family: var(--font-serif);
             font-size: 2rem;
-            font-style: italic;
+            font-style: normal;
             color: var(--color-text);
             letter-spacing: -0.02em;
             margin-bottom: var(--space-md);
@@ -388,7 +388,7 @@
         .product-modal__header h2 {
             font-family: var(--font-serif);
             font-size: 1.35rem;
-            font-style: italic;
+            font-style: normal;
             margin: 0;
             color: var(--color-text);
         }
@@ -404,7 +404,7 @@
             font-family: var(--font-serif);
             font-weight: 600;
             font-size: 1.15rem;
-            font-style: italic;
+            font-style: normal;
             color: var(--color-text);
             margin-bottom: var(--space-sm);
             padding-bottom: 10px;

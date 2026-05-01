@@ -1,7 +1,8 @@
- const IMG_FALLBACK = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200"%3E%3Crect fill="%23F2F2EF" width="200" height="200"/%3E%3C/svg%3E';
-        function escapeHTML(s) 
-        { if (!s) return ''; 
-            return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+const IMG_FALLBACK = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200"%3E%3Crect fill="%23F2F2EF" width="200" height="200"/%3E%3C/svg%3E';
+        function escapeHTML(s) {
+            if (!s) return '';
+            return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
         function formatXAF(n) { return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XAF', maximumFractionDigits: 0 }).format(n || 0); }
         function badgeLabel(b) { return { new: 'Nouveau', bestseller: 'Best-seller', featured: 'Coup de cœur', promo: 'Promo', out_of_stock: 'Épuisé' }[b] || b; }
         function toast(msg, type = 'info') { const tc = document.getElementById('toastContainer'); const el = document.createElement('div'); el.className = `toast toast--${type}`; el.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">${type==='success'?'<polyline points="20 6 9 17 4 12"/>':'<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/>'}</svg>${escapeHTML(msg)}`; tc.appendChild(el); setTimeout(() => el.remove(), 3200); }
@@ -53,5 +54,140 @@
 
         function showSkeleton(el, count = 6) { const card = `<div class="skel-card"><div class="skel skel--img"></div><div class="skel-body"><div class="skel skel--line skel--short"></div><div class="skel skel--line"></div><div class="skel skel--line skel--med"></div><div class="skel skel--price"></div></div></div>`; el.innerHTML = `<section class="cat-section"><div class="cat-section__head"><div><div class="skel skel--title"></div><div class="skel skel--line skel--short" style="margin-top:6px"></div></div></div><div class="cat-section__grid" style="overflow:hidden">${Array(count).fill(card).join('')}</div></section>`; }
 
-        async function loadData() { showSkeleton(sectionsEl); const [pr, cr] = await Promise.all([sb.from('products').select('id,name,description,price,old_price,image_url,images,colors,badge,stock,category_id,vendor_id,vendors(shop_name),categories(id,name,slug)').eq('active', true).order('created_at', { ascending: false }), sb.from('categories').select('id,name,slug,vendor_id,position').order('position', { ascending: true, nullsFirst: false }).order('name')]); if (pr.error) { sectionsEl.innerHTML = `<div class="empty">⚠️ Erreur : ${escapeHTML(pr.error.message)}</div>`; return; } allProducts = pr.data || []; allCategories = cr.data || []; render(); }
+        /* ═══════════════════════════════════════════════════════════
+           MEGA MENU — Récupération des catégories & rendu
+           ═══════════════════════════════════════════════════════════ */
+
+        const megaMenuLinks = document.getElementById('megaMenuLinks');
+        const megaMenuDropdown = document.getElementById('megaMenuDropdown');
+        const megaMenuDropdownInner = document.getElementById('megaMenuDropdownInner');
+        const megaMenuToggle = document.getElementById('megaMenuToggle');
+        const megaMenuNav = document.getElementById('megaMenuNav');
+
+        // Icônes par défaut pour les catégories (basées sur le nom)
+        function getCategoryIcon(name) {
+            const n = (name || '').toLowerCase();
+            if (n.includes('élect') || n.includes('tech') || n.includes('phone'))
+                return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>';
+            if (n.includes('mode') || n.includes('vêt') || n.includes('habit'))
+                return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.38 3.46L16 2 12 5 8 2 3.62 3.46a1 1 0 00-.62.94v13.2a1 1 0 00.62.94L8 20l4-3 4 3 4.38-1.46a1 1 0 00.62-.94V4.4a1 1 0 00-.62-.94z"/></svg>';
+            if (n.includes('beauté') || n.includes('cosm') || n.includes('soin'))
+                return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2a10 10 0 100 20 10 10 0 000-20z"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>';
+            if (n.includes('maison') || n.includes('déco') || n.includes('meuble'))
+                return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>';
+            if (n.includes('aliment') || n.includes('nourr') || n.includes('food') || n.includes('cuisine'))
+                return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>';
+            if (n.includes('sport') || n.includes('fitness'))
+                return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>';
+            if (n.includes('livre') || n.includes('book') || n.includes('éduc'))
+                return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>';
+            if (n.includes('jouet') || n.includes('enfant') || n.includes('bébé'))
+                return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>';
+            // Icône par défaut
+            return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>';
+        }
+
+        function buildMegaMenu(categories, productsByCategory) {
+            if (!categories || !categories.length) {
+                megaMenuNav.style.display = 'none';
+                return;
+            }
+
+            // ── Liens horizontaux (barre desktop) ──
+            megaMenuLinks.innerHTML = categories.map(cat => {
+                const count = productsByCategory.get(cat.id) || 0;
+                return `<a href="category.html?id=${cat.id}" class="mega-menu__link" data-cat-id="${cat.id}">
+                    ${escapeHTML(cat.name)}
+                    ${count ? `<span class="mega-menu__count">${count}</span>` : ''}
+                </a>`;
+            }).join('');
+
+            // ── Dropdown panel (grille complète) ──
+            megaMenuDropdownInner.innerHTML = categories.map(cat => {
+                const count = productsByCategory.get(cat.id) || 0;
+                return `<a href="category.html?id=${cat.id}" class="mega-menu__card">
+                    <span class="mega-menu__card-icon">${getCategoryIcon(cat.name)}</span>
+                    <span class="mega-menu__card-info">
+                        <span class="mega-menu__card-name">${escapeHTML(cat.name)}</span>
+                        ${count ? `<span class="mega-menu__card-count">${count} produit${count > 1 ? 's' : ''}</span>` : '<span class="mega-menu__card-count">Explorer</span>'}
+                    </span>
+                    <svg class="mega-menu__card-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                </a>`;
+            }).join('');
+
+            megaMenuNav.style.display = '';
+        }
+
+        // ── Toggle dropdown ──
+        let megaMenuOpen = false;
+
+        function toggleMegaMenu(forceState) {
+            megaMenuOpen = typeof forceState === 'boolean' ? forceState : !megaMenuOpen;
+            megaMenuDropdown.classList.toggle('is-open', megaMenuOpen);
+            megaMenuToggle.classList.toggle('is-open', megaMenuOpen);
+            megaMenuNav.classList.toggle('is-open', megaMenuOpen);
+        }
+
+        if (megaMenuToggle) {
+            megaMenuToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleMegaMenu();
+            });
+        }
+
+        // Fermer le dropdown si clic en dehors
+        document.addEventListener('click', (e) => {
+            if (megaMenuOpen && !e.target.closest('.mega-menu')) {
+                toggleMegaMenu(false);
+            }
+        });
+
+        // Fermer avec Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && megaMenuOpen) {
+                toggleMegaMenu(false);
+            }
+        });
+
+        /* ═══════════════════════════════════════════════════════════
+           CHARGEMENT DONNÉES
+           ═══════════════════════════════════════════════════════════ */
+
+        async function loadData() {
+            showSkeleton(sectionsEl);
+
+            const [pr, cr] = await Promise.all([
+                sb.from('products')
+                  .select('id,name,description,price,old_price,image_url,images,colors,badge,stock,category_id,vendor_id,vendors(shop_name),categories(id,name,slug)')
+                  .eq('active', true)
+                  .order('created_at', { ascending: false }),
+                sb.from('categories')
+                  .select('id,name,slug,vendor_id,position')
+                  .order('position', { ascending: true, nullsFirst: false })
+                  .order('name')
+            ]);
+
+            if (pr.error) {
+                sectionsEl.innerHTML = `<div class="empty">⚠️ Erreur : ${escapeHTML(pr.error.message)}</div>`;
+                return;
+            }
+
+            allProducts = pr.data || [];
+            allCategories = cr.data || [];
+
+            // Compter les produits par catégorie pour le mega menu
+            const productsByCategory = new Map();
+            for (const p of allProducts) {
+                if (p.category_id) {
+                    productsByCategory.set(p.category_id, (productsByCategory.get(p.category_id) || 0) + 1);
+                }
+            }
+
+            // Construire le mega menu
+            buildMegaMenu(allCategories, productsByCategory);
+
+            // Rendu des sections produits
+            render();
+        }
+
         loadData();
