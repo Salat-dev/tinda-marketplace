@@ -1,0 +1,128 @@
+/* ═══════════════════════════════════════════════
+   STYLES DU LOGO SVG — NAVBAR & FOOTER
+   Respecte la convention BEM et les variables existantes
+   ═══════════════════════════════════════════════ */
+
+/* --- Logo dans la navbar --- */
+.navbar__logo {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem; /* 10px */
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+.navbar__logo:hover {
+    opacity: 0.85;
+}
+
+.navbar__logo-svg {
+    width: 82px;
+    height: 54px;
+    display: block;
+    /* Permet de contrôler la couleur du SVG via CSS si le SVG utilise currentColor */
+    color: var(--color-primary, #2563eb);
+}
+
+/* Conserver le texte à côté du logo */
+.navbar__logo-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.navbar__logo-name {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--color-text-primary, #1a1a2e);
+    letter-spacing: -0.02em;
+}
+
+.navbar__logo-tagline {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 400;
+    font-size: 0.6875rem;
+    color: var(--color-text-secondary, #6b7280);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+/* --- Logo dans le footer --- */
+.footer__logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+.footer__logo:hover {
+    opacity: 0.85;
+}
+
+.footer__logo-svg {
+    width: 82px;
+    height: 54px;
+    display: block;
+    color: var(--color-primary, #2563eb);
+}
+
+/* Le span à côté du logo dans le footer */
+.footer__logo span {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1.125rem;
+    color: var(--color-text-primary, #1a1a2e);
+}
+
+/* --- Optimisation pour le SVG --- */
+/* Assure que le SVG s'adapte proprement */
+.navbar__logo-svg,
+.footer__logo-svg {
+    flex-shrink: 0;
+    object-fit: contain;
+}
+
+/* Si votre SVG a besoin d'une couleur de remplissage spécifique */
+.navbar__logo-svg path,
+.navbar__logo-svg circle,
+.navbar__logo-svg rect,
+.footer__logo-svg path,
+.footer__logo-svg circle,
+.footer__logo-svg rect {
+    fill: currentColor; /* Permet de contrôler via la propriété color */
+}
+
+/* --- Version responsive --- */
+@media (max-width: 768px) {
+    .navbar__logo-svg {
+        width: 158px;
+        height: 63px;
+    }
+    
+    .navbar__logo-name {
+        font-size: 1.1rem;
+    }
+    
+    .navbar__logo-tagline {
+        font-size: 0.625rem;
+    }
+    
+    .footer__logo-svg {
+        width: 28px;
+        height: 28px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar__logo-svg {
+        width: 79px;
+        height: 32px;
+    }
+    
+    /* Possibilité de cacher le tagline sur très petit écran */
+    .navbar__logo-text {
+        /* display: none; */ /* Décommentez si vous voulez masquer le texte */
+    }
+}
