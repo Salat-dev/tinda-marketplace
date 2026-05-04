@@ -116,6 +116,7 @@
                 <div class="mobile-sidebar__panel">
                     <div class="mobile-sidebar__header">
                         <a href="shop.html" class="mobile-sidebar__logo">
+                            <img src="images/logo/logo1.svg" alt="Tindamba Marketplace" class="mobile-sidebar__logo-svg" />
                         </a>
                         <button class="mobile-sidebar__close" id="sidebarClose" aria-label="Fermer le menu">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
