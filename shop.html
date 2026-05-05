@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tindamba — Marketplace</title>
+    <title>Tinda — Marketplace</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="css/shop.css">
     <link rel="stylesheet" href="css/responsive.css">
-    <link rel="stylesheet" href="css/logo.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
@@ -25,8 +24,8 @@
     <nav class="navbar">
         <div class="navbar__inner">
             <a href="/" class="navbar__logo">
-                    <img src="images/logo/logo1.svg" alt="Tindamba Marketplace" class="navbar__logo-svg" />
-
+                <div class="navbar__logo-mark">T</div>
+                <div class="navbar__logo-text"><span class="navbar__logo-name">Tindamba</span><span class="navbar__logo-tagline">Marketplace</span></div>
             </a>
             <form class="navbar__search" id="searchForm">
                 <button type="submit" class="navbar__search-btn" aria-label="Rechercher"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
@@ -39,6 +38,9 @@
             </div>
         </div>
     </nav>
+
+    <!-- ═══ CONTENU PRINCIPAL (avec image de fond) ═══ -->
+    <div class="site-content">
 
     <!-- MEGA MENU -->
     <nav class="mega" id="megaNav">
@@ -99,7 +101,7 @@
         </div>
     </section>
 
-    <!-- ═══ GRILLE CATÉGORIES VISUELLES ═══
+    <!-- ═══ GRILLE CATÉGORIES VISUELLES ═══ -->
     <section class="cat-grid-section">
         <div class="cat-grid-section__inner">
             <div class="cat-grid-section__head">
@@ -107,9 +109,10 @@
                 <p class="cat-grid-section__sub">Trouvez exactement ce que vous cherchez</p>
             </div>
             <div class="cat-grid" id="catGrid">
+                <!-- Rempli dynamiquement -->
             </div>
         </div>
-    </section> -->
+    </section>
 
     <!-- TRUST BAR -->
     <div class="trust-bar">
@@ -130,6 +133,8 @@
         <div id="sections"></div>
     </main>
 
+    </div><!-- /.site-content -->
+
     <!-- NEWSLETTER -->
     <section class="newsletter">
         <div class="newsletter__inner">
@@ -148,8 +153,7 @@
     <footer class="footer">
         <div class="footer__main">
             <div class="footer__brand">
-                    <img src="images/logo/logo1.svg" alt="Tindamba Marketplace" class="footer__logo-svg" />
-
+                <a href="/" class="footer__logo"><div class="footer__logo-mark">T</div><span>Tindamba</span></a>
                 <p class="footer__brand-desc">La marketplace africaine qui connecte vendeurs locaux et acheteurs à travers l'Afrique Centrale.</p>
             </div>
             <div class="footer__col"><h4 class="footer__col-title">Navigation</h4><ul class="footer__links"><li><a href="shop.html">Boutique</a></li><li><a href="cart.html">Mon panier</a></li><li><a href="checkout.html">Commander</a></li></ul></div>
