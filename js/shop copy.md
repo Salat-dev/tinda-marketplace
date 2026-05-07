@@ -12,14 +12,14 @@ function renderSwatches(colors, max = 5) { if (!Array.isArray(colors) || !colors
 
 /* ─── Thèmes catégories ─── */
 const CAT_THEMES = [
-    { bg: '#FAFAFA', accent: '#1D1D1F', gradient: 'linear-gradient(135deg, #FAFAFA 0%, #F5F5F5 100%)' },
-    { bg: '#F8F8FA', accent: '#1D1D1F', gradient: 'linear-gradient(135deg, #F8F8FA 0%, #F2F2F7 100%)' },
-    { bg: '#FAFAFA', accent: '#1D1D1F', gradient: 'linear-gradient(135deg, #FAFAFA 0%, #F5F5F5 100%)' },
-    { bg: '#F8F8FA', accent: '#1D1D1F', gradient: 'linear-gradient(135deg, #F8F8FA 0%, #F2F2F7 100%)' },
-    { bg: '#FAFAFA', accent: '#1D1D1F', gradient: 'linear-gradient(135deg, #FAFAFA 0%, #F5F5F5 100%)' },
-    { bg: '#F8F8FA', accent: '#1D1D1F', gradient: 'linear-gradient(135deg, #F8F8FA 0%, #F2F2F7 100%)' },
-    { bg: '#FAFAFA', accent: '#1D1D1F', gradient: 'linear-gradient(135deg, #FAFAFA 0%, #F5F5F5 100%)' },
-    { bg: '#F8F8FA', accent: '#1D1D1F', gradient: 'linear-gradient(135deg, #F8F8FA 0%, #F2F2F7 100%)' },
+    { bg: '#FFF8F0', accent: '#E8740C', gradient: 'linear-gradient(135deg, #FFF8F0 0%, #FFEDD5 100%)' },
+    { bg: '#F0F7FF', accent: '#0071E3', gradient: 'linear-gradient(135deg, #F0F7FF 0%, #DBEAFE 100%)' },
+    { bg: '#FDF2F8', accent: '#DB2777', gradient: 'linear-gradient(135deg, #FDF2F8 0%, #FCE7F3 100%)' },
+    { bg: '#F0FDF4', accent: '#16A34A', gradient: 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%)' },
+    { bg: '#FAF5FF', accent: '#9333EA', gradient: 'linear-gradient(135deg, #FAF5FF 0%, #F3E8FF 100%)' },
+    { bg: '#FFFBEB', accent: '#D97706', gradient: 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)' },
+    { bg: '#FFF1F2', accent: '#E11D48', gradient: 'linear-gradient(135deg, #FFF1F2 0%, #FFE4E6 100%)' },
+    { bg: '#F0FDFA', accent: '#0D9488', gradient: 'linear-gradient(135deg, #F0FDFA 0%, #CCFBF1 100%)' },
 ];
 function getCatTheme(i) { return CAT_THEMES[i % CAT_THEMES.length]; }
 
@@ -102,8 +102,8 @@ function buildFlashDeals(products) {
     return `<section class="flash-deals">
         <div class="flash-deals__head">
             <div class="flash-deals__left">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                <h2 class="flash-deals__title">Offres limitées</h2>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                <h2 class="flash-deals__title">Flash Deals</h2>
             </div>
             <div class="flash-deals__countdown" id="flashCountdown">
                 <span class="flash-deals__label">Se termine dans</span>
@@ -144,10 +144,10 @@ const BANNERS = [
     `<div class="promo-banner promo-banner--dark">
         <div class="promo-banner__inner">
             <div class="promo-banner__content">
-                <span class="promo-banner__tag">Pour les vendeurs</span>
-                <h3 class="promo-banner__title">Ouvrez votre boutique.<br><em>Zéro commission.</em></h3>
-                <p class="promo-banner__sub">Rejoignez des centaines de vendeurs et touchez de nouveaux clients chaque jour.</p>
-                <a href="login.html" class="promo-banner__btn">Commencer<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+                <span class="promo-banner__tag">Offre spéciale</span>
+                <h3 class="promo-banner__title">Vendez vos produits <em>sans commission</em></h3>
+                <p class="promo-banner__sub">Créez votre boutique en ligne gratuitement et touchez des milliers de clients.</p>
+                <a href="login.html" class="promo-banner__btn">Ouvrir ma boutique<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
             </div>
             <div class="promo-banner__visual"><div class="promo-banner__circle"></div><span class="promo-banner__big">0%</span><span class="promo-banner__label">de commission</span></div>
         </div>
@@ -156,20 +156,20 @@ const BANNERS = [
         <div class="promo-banner__inner">
             <div class="promo-banner__content">
                 <span class="promo-banner__tag">Livraison</span>
-                <h3 class="promo-banner__title">Livraison offerte<br><em>dès 25 000 FCFA</em></h3>
-                <p class="promo-banner__sub">Partout au Cameroun. Paiement à la livraison disponible.</p>
+                <h3 class="promo-banner__title">Livraison <em>gratuite</em> dès 25 000 FCFA</h3>
+                <p class="promo-banner__sub">Recevez vos commandes rapidement. Paiement à la livraison disponible.</p>
                 <a href="#sections-anchor" class="promo-banner__btn promo-banner__btn--white">Voir les produits<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
             </div>
-            <div class="promo-banner__visual"><div class="promo-banner__circle promo-banner__circle--white"></div><svg class="promo-banner__truck" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+            <div class="promo-banner__visual"><div class="promo-banner__circle promo-banner__circle--white"></div><svg class="promo-banner__truck" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
         </div>
     </div>`,
     `<div class="promo-banner promo-banner--light">
         <div class="promo-banner__inner">
             <div class="promo-banner__content">
-                <span class="promo-banner__tag">Support</span>
-                <h3 class="promo-banner__title">Une question ?<br><em>On vous répond.</em></h3>
-                <p class="promo-banner__sub">Notre équipe est disponible sur WhatsApp en moins de 5 minutes.</p>
-                <a href="https://wa.me/237693421348" target="_blank" class="promo-banner__btn promo-banner__btn--dark">Nous contacter<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></a>
+                <span class="promo-banner__tag">WhatsApp</span>
+                <h3 class="promo-banner__title">Besoin d'aide ? <em>Écrivez-nous</em></h3>
+                <p class="promo-banner__sub">Notre équipe vous répond en moins de 5 minutes sur WhatsApp.</p>
+                <a href="https://wa.me/237693421348" target="_blank" class="promo-banner__btn promo-banner__btn--green">Discuter maintenant<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></a>
             </div>
         </div>
     </div>`
@@ -258,14 +258,14 @@ function renderSections() {
 
     // 2 — Coups de cœur
     const featured = allProducts.filter(p => p.badge === 'featured' || p.badge === 'bestseller').slice(0, 10);
-    if (featured.length) html += buildSection({ title: 'Coups de cœur', subtitle: 'Sélectionnés pour vous', products: featured, featured: true });
+    if (featured.length) html += buildSection({ title: 'Coups de cœur', subtitle: 'Les produits les plus populaires', products: featured, featured: true });
 
     // Bannière #1
     html += getBanner(bannerIdx++);
 
     // 3 — Nouveautés
     const newProds = allProducts.filter(p => p.badge === 'new').slice(0, 10);
-    if (newProds.length) html += buildSection({ title: 'Nouveautés', subtitle: 'Récemment ajoutés', products: newProds });
+    if (newProds.length) html += buildSection({ title: 'Nouveautés', subtitle: 'Derniers arrivages', products: newProds });
 
     // 4 — Sections par catégorie
     let catIdx = 0;

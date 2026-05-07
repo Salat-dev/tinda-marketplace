@@ -4,45 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tinda — Marketplace</title>
-
-     <!-- Favicon principal - SVG (navigateurs modernes) -->
     <link rel="icon" type="image/svg+xml" href="images/logo/icon_tinda.svg" />
-    
-    <!-- Favicon de fallback - PNG 32x32 -->
-    <link rel="icon" type="image/png" sizes="32x32" href="images/logo/icon_tinda.svg" />
-    <link rel="icon" type="image/png" sizes="16x16" href="images/logo/icon_tinda.svg" />
-    
-    <!-- Apple iOS -->
     <link rel="apple-touch-icon" sizes="180x180" href="images/logo/icon_tinda.svg" />
-    
-    <!-- Android/Chrome -->
-    <link rel="icon" type="image/png" sizes="192x192" href="images/logo/icon_tinda.svg" />
-    <link rel="icon" type="image/png" sizes="512x512" href="images/logo/icon_tinda.svg" />
-    
-    <!-- Microsoft -->
-    <meta name="msapplication-TileImage" content="images/logo/icon_tinda.svg" />
-    <meta name="msapplication-TileColor" content="#2563eb" />
-    
-    <!-- Couleur du thème (barre de navigation mobile) -->
-    <meta name="theme-color" content="#2563eb" />
-    
-    <!-- Manifest pour PWA -->
-    <link rel="manifest" href="site.webmanifest" />
-
-    <!-- Anime.js pour les animations -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-
-<!-- Styles pour les animations UX -->
-<link rel="stylesheet" href="css/ux-animations.css">
-
-<!-- À la fin du body, après les autres scripts -->
-<script src="js/ux-animations.js"></script>
-    
+    <meta name="theme-color" content="#1D1D1F" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="css/shop.css">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="css/logo.css">
+    <link rel="stylesheet" href="css/ux-animations.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
@@ -50,7 +20,7 @@
     <!-- TOPBAR -->
     <div class="topbar">
         <div class="topbar__inner">
-            <div class="topbar__promo"><span class="topbar__dot"></span>Livraison gratuite dès <strong>25 000 FCFA</strong> — Partout au Cameroun</div>
+            <div class="topbar__promo"><span class="topbar__dot"></span>Livraison offerte dès <strong>25 000 FCFA</strong> — Tout le Cameroun</div>
             <div class="topbar__links"><a href="login.html" class="topbar__link">Espace vendeur</a> <span class="topbar__sep">·</span> <a href="help.html" class="topbar__link">Aide</a></div>
         </div>
     </div>
@@ -59,13 +29,12 @@
     <nav class="navbar">
         <div class="navbar__inner">
             <a href="/" class="navbar__logo">
-                    <img src="images/logo/logo1.svg" alt="Tinda Marketplace" class="navbar__logo-svg" />
-
+                <img src="images/logo/logo1.svg" alt="Tinda" class="navbar__logo-svg" />
             </a>
             <form class="navbar__search" id="searchForm">
                 <button type="submit" class="navbar__search-btn" aria-label="Rechercher"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
                 <input id="searchInput" type="search" placeholder="Rechercher un produit, une boutique…" autocomplete="off" />
-                <kbd class="navbar__search-kbd">⌘ K</kbd>
+                <kbd class="navbar__search-kbd">⌘K</kbd>
             </form>
             <div class="navbar__actions">
                 <a href="login.html" class="navbar__action"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Vendeur</span></a>
@@ -79,13 +48,16 @@
         <div class="mega__bar">
             <div class="mega__bar-inner">
                 <button class="mega__toggle" id="megaToggle" aria-label="Catégories">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-                    Toutes les catégories
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="14" y2="12"/><line x1="3" y1="18" x2="18" y2="18"/></svg>
+                    Catégories
                     <svg class="mega__chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
                 <div class="mega__links" id="megaLinks"></div>
                 <div class="mega__right">
-                    <a href="help.html" class="mega__promo-link"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Devenir vendeur</a>
+                    <a href="help.html" class="mega__promo-link">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        Vendre sur Tinda
+                    </a>
                 </div>
             </div>
         </div>
@@ -93,39 +65,40 @@
         <div class="mega__overlay" id="megaOverlay"></div>
     </nav>
 
-    <!-- ═══ HERO — Double panneau e-commerce ═══ -->
+    <!-- HERO -->
     <section class="hero">
         <div class="hero__inner">
-            <!-- Panneau principal gauche -->
             <div class="hero__main">
                 <div class="hero__main-content">
-                    <span class="hero__badge">🔥 Flash Deals</span>
-                    <h1 class="hero__title">Jusqu'à <em>-50%</em><br>sur l'Électronique</h1>
-                    <p class="hero__sub">Smartphones, accessoires et gadgets aux meilleurs prix. Offre limitée.</p>
+                    <span class="hero__badge">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                        Offres du moment
+                    </span>
+                    <h1 class="hero__title">Jusqu'à <em>−50%</em><br>sur l'Électronique</h1>
+                    <p class="hero__sub">Smartphones, accessoires et gadgets aux meilleurs prix du marché.</p>
                     <a href="#sections-anchor" class="hero__cta">
-                        Voir les offres
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                        Découvrir
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                     </a>
                 </div>
                 <div class="hero__main-img">
                     <img src="./images/phone.jpg" alt="Smartphone" />
                 </div>
             </div>
-            <!-- Panneaux droits empilés -->
             <div class="hero__side">
-                <a href="#sections-anchor" class="hero__card hero__card--warm">
+                <a href="#sections-anchor" class="hero__card">
                     <div class="hero__card-text">
                         <span class="hero__card-tag">Cuisine</span>
                         <strong>Équipements<br>de cuisine</strong>
-                        <span class="hero__card-link">Explorer →</span>
+                        <span class="hero__card-link">Explorer<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
                     </div>
                     <img src="./images/kitchen.jpg" alt="Cuisine" />
                 </a>
-                <a href="#sections-anchor" class="hero__card hero__card--pink">
+                <a href="#sections-anchor" class="hero__card">
                     <div class="hero__card-text">
                         <span class="hero__card-tag">Beauté</span>
                         <strong>Soins &<br>cosmétiques</strong>
-                        <span class="hero__card-link">Explorer →</span>
+                        <span class="hero__card-link">Explorer<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
                     </div>
                     <img src="./images/beauty.jpg" alt="Beauté" />
                 </a>
@@ -133,32 +106,20 @@
         </div>
     </section>
 
-    <!-- ═══ GRILLE CATÉGORIES VISUELLES ═══
-    <section class="cat-grid-section">
-        <div class="cat-grid-section__inner">
-            <div class="cat-grid-section__head">
-                <h2 class="cat-grid-section__title">Parcourir par catégorie</h2>
-                <p class="cat-grid-section__sub">Trouvez exactement ce que vous cherchez</p>
-            </div>
-            <div class="cat-grid" id="catGrid">
-            </div>
-        </div>
-    </section> -->
-
     <!-- TRUST BAR -->
     <div class="trust-bar">
         <div class="trust-bar__inner">
-            <div class="trust-bar__item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg><div><strong>Livraison rapide</strong><span>Partout au Cameroun</span></div></div>
-            <div class="trust-bar__item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><div><strong>Paiement sécurisé</strong><span>MoMo · OM · Cash</span></div></div>
-            <div class="trust-bar__item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><div><strong>Vendeurs vérifiés</strong><span>100% de confiance</span></div></div>
-            <div class="trust-bar__item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><div><strong>Support WhatsApp</strong><span>Réponse en 5 min</span></div></div>
+            <div class="trust-bar__item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg><div><strong>Livraison rapide</strong><span>Tout le Cameroun</span></div></div>
+            <div class="trust-bar__item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><div><strong>Paiement sécurisé</strong><span>MoMo · OM · Cash</span></div></div>
+            <div class="trust-bar__item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><div><strong>Vendeurs vérifiés</strong><span>Profils certifiés</span></div></div>
+            <div class="trust-bar__item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><div><strong>Support direct</strong><span>WhatsApp 5 min</span></div></div>
         </div>
     </div>
 
-    <!-- CATEGORY NAV (scroll spy) -->
+    <!-- CATEGORY NAV -->
     <div class="cat-nav" id="catNav" hidden><div class="cat-nav__inner" id="catNavInner"></div></div>
 
-    <!-- MAIN CONTENT — sections dynamiques -->
+    <!-- MAIN -->
     <main class="page">
         <span id="sections-anchor" style="display:block;height:0;margin-top:-24px;"></span>
         <div id="sections"></div>
@@ -168,12 +129,12 @@
     <section class="newsletter">
         <div class="newsletter__inner">
             <div class="newsletter__text">
-                <h3 class="newsletter__title">Restez informé des nouveautés</h3>
-                <p class="newsletter__sub">Recevez les meilleures offres et les nouveaux arrivages directement sur WhatsApp.</p>
+                <h3 class="newsletter__title">Restez informé</h3>
+                <p class="newsletter__sub">Offres exclusives et nouveaux arrivages, directement sur WhatsApp.</p>
             </div>
-            <a href="https://wa.me/237693421348?text=Je%20veux%20recevoir%20les%20offres%20Tindamba" class="newsletter__btn" target="_blank" rel="noopener">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.616l4.573-1.46A11.934 11.934 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.239 0-4.308-.724-5.993-1.953l-.422-.305-2.714.867.89-2.633-.332-.449A9.956 9.956 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
-                Rejoindre sur WhatsApp
+            <a href="https://wa.me/237693421348?text=Je%20veux%20recevoir%20les%20offres%20Tinda" class="newsletter__btn" target="_blank" rel="noopener">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+                Rejoindre
             </a>
         </div>
     </section>
@@ -182,19 +143,19 @@
     <footer class="footer">
         <div class="footer__main">
             <div class="footer__brand">
-                    <img src="images/logo/logo1.svg" alt="Tindamba Marketplace" class="footer__logo-svg" />
-
-                <p class="footer__brand-desc">La marketplace africaine qui connecte vendeurs locaux et acheteurs à travers l'Afrique Centrale.</p>
+                <img src="images/logo/logo1.svg" alt="Tinda" class="footer__logo-svg" />
+                <p class="footer__brand-desc">La marketplace qui connecte vendeurs locaux et acheteurs à travers l'Afrique Centrale.</p>
             </div>
-            <div class="footer__col"><h4 class="footer__col-title">Navigation</h4><ul class="footer__links"><li><a href="shop.html">Boutique</a></li><li><a href="cart.html">Mon panier</a></li><li><a href="checkout.html">Commander</a></li></ul></div>
-            <div class="footer__col"><h4 class="footer__col-title">Vendeurs</h4><ul class="footer__links"><li><a href="login.html">Créer ma boutique</a></li><li><a href="login.html">Se connecter</a></li></ul></div>
-            <div class="footer__col"><h4 class="footer__col-title">Support</h4><ul class="footer__links"><li><a href="https://wa.me/237693421348">WhatsApp direct</a></li><li><a href="faqs.html">FAQ</a></li><li><a href="conditions.html">Conditions</a></li></ul></div>
+            <div class="footer__col"><h4 class="footer__col-title">Navigation</h4><ul class="footer__links"><li><a href="shop.html">Boutique</a></li><li><a href="cart.html">Panier</a></li><li><a href="checkout.html">Commander</a></li></ul></div>
+            <div class="footer__col"><h4 class="footer__col-title">Vendeurs</h4><ul class="footer__links"><li><a href="login.html">Ouvrir une boutique</a></li><li><a href="login.html">Connexion</a></li></ul></div>
+            <div class="footer__col"><h4 class="footer__col-title">Support</h4><ul class="footer__links"><li><a href="https://wa.me/237693421348">WhatsApp</a></li><li><a href="faqs.html">FAQ</a></li><li><a href="conditions.html">Conditions</a></li></ul></div>
         </div>
-        <div class="footer__bottom"><p>© 2025 Tindamba — Marketplace africaine de confiance.</p><div class="footer__payment"><span class="footer__payment-badge">MTN MoMo</span><span class="footer__payment-badge">Orange Money</span><span class="footer__payment-badge">Paiement cash</span></div></div>
+        <div class="footer__bottom"><p>© 2025 Tinda</p><div class="footer__payment"><span class="footer__payment-badge">MTN MoMo</span><span class="footer__payment-badge">Orange Money</span><span class="footer__payment-badge">Cash</span></div></div>
     </footer>
 
     <div class="toast-container" id="toastContainer"></div>
     <script src="js/shop.js"></script>
     <script src="js/responsive.js"></script>
+    <script src="js/ux-animations.js"></script>
 </body>
 </html>
