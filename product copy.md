@@ -826,172 +826,33 @@
         }
         .btn-outline:hover { background: var(--color-bg-secondary); border-color: var(--color-text); }
 
-        /* ═══════════════════════════════════════════════════════════
-           RESPONSIVE — Product Page
-           ═══════════════════════════════════════════════════════════ */
-
-        /* ─── ≤ 1024px — Tablette ─── */
+        /* ─── RESPONSIVE ─── */
         @media (max-width: 1024px) {
-            .product-layout { gap: 48px; }
             .trust-strip__inner { grid-template-columns: repeat(2, 1fr); }
             .footer__main { grid-template-columns: 1fr 1fr; }
             .related__grid { grid-template-columns: repeat(3, 1fr); }
-            .desc-content { grid-template-columns: 1fr; gap: 28px; }
+            .desc-content { grid-template-columns: 1fr; gap: 32px; }
             .shipping-grid { grid-template-columns: repeat(2, 1fr); }
-            .page { padding: var(--space-lg) 24px 120px; }
-            .navbar__inner { padding: 0 24px; }
-            .topbar { padding: 10px 24px; }
         }
-
-        /* ─── ≤ 840px — Passage en 1 colonne ─── */
         @media (max-width: 840px) {
-            .product-layout { grid-template-columns: 1fr; gap: 28px; }
+            .product-layout { grid-template-columns: 1fr; gap: 32px; }
             .gallery { position: static; }
-            .gallery__main { max-width: 100%; border-radius: var(--radius-md); }
             .sticky-cta { display: flex; }
             .cta-group { display: none; }
-            .related__grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+            .related__grid { grid-template-columns: repeat(2, 1fr); }
             .desc-tab { padding: 14px 18px; font-size: 13px; }
             .vendor-profile { flex-direction: column; gap: 20px; }
-            .description-zone { margin-top: 48px; padding-top: 32px; }
-            .related { margin-top: 48px; padding-top: 32px; }
-            .product-info__title { font-size: clamp(24px, 5vw, 36px); }
         }
-
-        /* ─── ≤ 768px — Mobile large ─── */
-        @media (max-width: 768px) {
-            .topbar { padding: 6px 16px; }
-            .topbar__links { display: none; }
-            .topbar__promo { font-size: 11px; }
-            .navbar__inner { padding: 0 16px; height: 56px; gap: 12px; }
-            .navbar__logo-svg { height: 26px; }
-            .navbar__back span { display: none; }
-            .page { padding: 16px 16px 110px; }
-            .breadcrumb { font-size: 12px; margin-bottom: var(--space-md); gap: 6px; }
-            .product-info__title { font-size: 22px; margin-bottom: 14px; }
-            .product-info__price { margin-bottom: 20px; padding-bottom: 20px; gap: 10px; }
-            .product-info__price-current { font-size: 28px; }
-            .product-info__price-old { font-size: 16px; }
-            .product-info__price-tag { font-size: 11px; padding: 4px 10px; }
-            .product-info__desc-short { font-size: 14px; margin-bottom: 18px; }
-            .product-info__vendor { font-size: 10px; margin-bottom: 10px; }
-            .product-info__stock { font-size: 12px; margin-bottom: 18px; }
-            .product-info__label { font-size: 12px; margin-bottom: 8px; }
-            .color-selector { gap: 8px; margin-bottom: 18px; }
-            .color-btn { width: 28px; height: 28px; }
-            .qty-row { gap: 12px; margin-bottom: 20px; }
-            .qty-btn { width: 40px; height: 42px; }
-            .qty-val { min-width: 42px; height: 42px; font-size: 14px; }
-            .qty-subtotal { font-size: 13px; }
-            .product-meta__row { padding: 12px 14px; font-size: 12px; }
-            .gallery__thumbs { gap: 8px; margin-top: 10px; }
-            .gallery__thumb { flex: 0 0 60px; height: 60px; }
-            .gallery__badge { font-size: 9px; padding: 5px 10px; top: 10px; left: 10px; }
-            .desc-tabs { overflow-x: auto; scrollbar-width: none; border-bottom-width: 1px; }
-            .desc-tabs::-webkit-scrollbar { display: none; }
-            .desc-tab { white-space: nowrap; flex-shrink: 0; padding: 12px 16px; font-size: 12px; }
-            .desc-panel { padding: 24px 0; }
-            .desc-text { font-size: 14px; line-height: 1.75; }
-            .desc-highlight { padding: 14px 16px; gap: 12px; }
-            .desc-highlight__icon { width: 34px; height: 34px; }
-            .desc-highlight__text h4 { font-size: 12px; }
-            .desc-highlight__text p { font-size: 11px; }
-            .shipping-grid { grid-template-columns: 1fr; gap: 12px; }
-            .shipping-card { padding: 18px; text-align: left; display: flex; align-items: center; gap: 16px; }
-            .shipping-card__icon { margin: 0; width: 42px; height: 42px; flex-shrink: 0; }
-            .shipping-card h4 { font-size: 13px; margin-bottom: 3px; }
-            .shipping-card p { font-size: 11px; }
-            .vendor-avatar { width: 60px; height: 60px; font-size: 24px; border-radius: var(--radius-md); }
-            .vendor-details h3 { font-size: 18px; }
-            .vendor-details__city { font-size: 12px; margin-bottom: 12px; }
-            .vendor-badge { font-size: 10px; padding: 5px 10px; }
-            .related__title { font-size: 20px; }
-            .related__sub { font-size: 12px; }
-            .related__head { margin-bottom: 20px; }
-            .mi-card { border-radius: var(--radius-md); }
-            .mi-card__body { padding: 10px 12px 14px; gap: 3px; }
-            .mi-card__vendor { font-size: 9px; }
-            .mi-card__name { font-size: 13px; }
-            .mi-card__desc { display: none; }
-            .mi-card__price-current { font-size: 15px; }
-            .mi-card__price-old { font-size: 11px; }
-            .mi-card__price-discount { font-size: 10px; padding: 1px 6px; }
-            .badge { font-size: 8px; padding: 4px 8px; top: 8px; left: 8px; }
+        @media (max-width: 600px) {
+            .page { padding: 20px 16px 120px; }
             .trust-strip__inner { grid-template-columns: 1fr; }
-            .trust-item { border-right: none; border-bottom: 1px solid var(--color-border-light); padding: 10px 16px; }
-            .trust-item:last-child { border-bottom: none; }
-            .footer { padding: var(--space-xl) 16px var(--space-md); }
-            .footer__main { grid-template-columns: 1fr; gap: var(--space-lg); }
-            .footer__bottom { flex-direction: column; gap: 12px; text-align: center; }
-            .footer__payment { justify-content: center; flex-wrap: wrap; }
-            .sticky-cta { padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); gap: 10px; }
-            .sticky-cta__price { font-size: 16px; }
-            .sticky-cta__price-old { font-size: 11px; }
-            .sticky-cta__btn { height: 44px; padding: 0 18px; font-size: 13px; gap: 6px; border-radius: var(--radius-md); }
-            .toast-container { bottom: calc(72px + env(safe-area-inset-bottom)); right: 16px; left: 16px; }
-            .toast { font-size: 13px; padding: 12px 16px; }
-            /* Lightbox */
-            .lightbox__img { max-width: 95vw; max-height: 80vh; border-radius: var(--radius-sm); }
-            .lightbox__close { top: 12px; right: 12px; width: 38px; height: 38px; }
-            .lightbox__nav { width: 40px; height: 40px; }
-            .lightbox__nav--prev { left: 8px; }
-            .lightbox__nav--next { right: 8px; }
-            .lightbox__counter { bottom: 16px; font-size: 12px; }
-        }
-
-        /* ─── ≤ 480px — Petit mobile ─── */
-        @media (max-width: 480px) {
-            .page { padding: 12px 12px 100px; }
-            .product-info__title { font-size: 20px; margin-bottom: 12px; }
-            .product-info__price-current { font-size: 24px; }
-            .product-info__price-old { font-size: 14px; }
-            .product-info__desc-short { font-size: 13px; }
-            .gallery__thumb { flex: 0 0 52px; height: 52px; }
-            .gallery__thumbs { gap: 6px; }
-            .qty-btn { width: 36px; height: 38px; }
-            .qty-val { min-width: 38px; height: 38px; font-size: 13px; }
-            .related__grid { gap: 8px; }
-            .mi-card__body { padding: 8px 10px 12px; }
-            .mi-card__name { font-size: 12px; -webkit-line-clamp: 1; }
-            .mi-card__price-current { font-size: 14px; }
-            .mi-card__rating { display: none; }
-            .description-zone { margin-top: 32px; padding-top: 24px; }
-            .related { margin-top: 32px; padding-top: 24px; }
-            .sticky-cta__price { font-size: 15px; }
-            .sticky-cta__btn { height: 40px; padding: 0 14px; font-size: 12px; }
-            .breadcrumb { font-size: 11px; }
-            .topbar__promo { font-size: 10px; gap: 8px; }
-        }
-
-        /* ─── ≤ 360px — Très petit mobile ─── */
-        @media (max-width: 360px) {
-            .navbar__inner { height: 48px; gap: 8px; }
-            .navbar__logo-svg { height: 22px; }
-            .product-info__title { font-size: 18px; }
-            .product-info__price-current { font-size: 22px; }
-            .gallery__thumb { flex: 0 0 46px; height: 46px; }
-            .color-btn { width: 24px; height: 24px; }
-            .mi-card__name { font-size: 11px; }
-            .mi-card__price-current { font-size: 13px; }
-            .footer__bottom p { font-size: 10px; }
-        }
-
-        /* ─── Touch devices: désactiver les hovers ─── */
-        @media (hover: none) {
-            .mi-card:hover { transform: none; box-shadow: none; }
-            .mi-card:hover .mi-card__media img { transform: none; }
-            .gallery__main:hover img { transform: none; }
-            .gallery__thumb:hover { transform: none; }
-            .desc-highlight:hover { transform: none; box-shadow: none; }
-            .shipping-card:hover { transform: none; box-shadow: none; }
-        }
-
-        /* ─── Print ─── */
-        @media print {
-            .topbar, .navbar, .sticky-cta, .trust-strip,
-            .toast-container, .lightbox { display: none !important; }
-            .page { padding: 20px !important; }
-            .product-layout { grid-template-columns: 1fr 1fr !important; }
+            .trust-item { border-right: none; border-bottom: 1px solid var(--color-border-light); }
+            .footer__main { grid-template-columns: 1fr; }
+            .shipping-grid { grid-template-columns: 1fr; }
+            .desc-tabs { overflow-x: auto; scrollbar-width: none; }
+            .desc-tabs::-webkit-scrollbar { display: none; }
+            .desc-tab { white-space: nowrap; flex-shrink: 0; padding: 12px 16px; }
+            .related__grid { gap: 12px; }
         }
     </style>
 </head>
