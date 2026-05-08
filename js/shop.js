@@ -141,7 +141,7 @@ function startFlashCountdown() {
    ═══════════════════════════════════════════════════════════ */
 
 const BANNERS = [
-    `<div class="promo-banner promo-banner--dark">
+   /* `<div class="promo-banner promo-banner--dark">
         <div class="promo-banner__inner">
             <div class="promo-banner__content">
                 <span class="promo-banner__tag">Pour les vendeurs</span>
@@ -156,13 +156,14 @@ const BANNERS = [
         <div class="promo-banner__inner">
             <div class="promo-banner__content">
                 <span class="promo-banner__tag">Livraison</span>
-                <h3 class="promo-banner__title">Livraison offerte<br><em>dès 25 000 FCFA</em></h3>
+                <h3 class="promo-banner__title">Livraison offerte<br><em>dès 50 000 FCFA</em></h3>
                 <p class="promo-banner__sub">Partout au Cameroun. Paiement à la livraison disponible.</p>
                 <a href="#sections-anchor" class="promo-banner__btn promo-banner__btn--white">Voir les produits<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
             </div>
             <div class="promo-banner__visual"><div class="promo-banner__circle promo-banner__circle--white"></div><svg class="promo-banner__truck" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
         </div>
     </div>`,
+
     `<div class="promo-banner promo-banner--light">
         <div class="promo-banner__inner">
             <div class="promo-banner__content">
@@ -172,7 +173,7 @@ const BANNERS = [
                 <a href="https://wa.me/237693421348" target="_blank" class="promo-banner__btn promo-banner__btn--dark">Nous contacter<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></a>
             </div>
         </div>
-    </div>`
+    </div>`*/
 ];
 function getBanner(i) { return i < BANNERS.length ? BANNERS[i] : ''; }
 
@@ -186,9 +187,6 @@ function cardHTML(p, showDiscount = false) {
     const isOut = p.stock <= 0 || p.badge === 'out_of_stock';
     const discount = hasPromo ? Math.round((1 - p.price / p.old_price) * 100) : 0;
     const desc = p.description || `Vendu par ${p.vendors?.shop_name || 'Tindamba'}`;
-    const rating = p.rating || (3.5 + Math.random() * 1.5).toFixed(1);
-    const reviews = p.reviews_count || Math.floor(10 + Math.random() * 200);
-    const stars = '★'.repeat(Math.round(rating)) + '☆'.repeat(5 - Math.round(rating));
 
     let badgeHTML = '';
     if (p.badge && p.badge !== 'out_of_stock') badgeHTML = `<span class="badge badge--${p.badge}">${escapeHTML(badgeLabel(p.badge))}</span>`;
@@ -202,9 +200,8 @@ function cardHTML(p, showDiscount = false) {
         stockBar = `<div class="mi-card__stock-bar"><div class="mi-card__stock-fill" style="width:${sold}%"></div><span class="mi-card__stock-text">${sold}% vendus</span></div>`;
     }
 
-    return `<a href="product.html?id=${p.id}" class="mi-card${isOut?' mi-card--out':''}" aria-label="${escapeHTML(p.name)}"><div class="mi-card__media">${badgeHTML}<button class="mi-card__wish" onclick="event.preventDefault();event.stopPropagation();"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button><img src="${escapeHTML(img)}" alt="${escapeHTML(p.name)}" loading="lazy" onerror="this.src='${IMG_FALLBACK}'"><button class="mi-card__atc" onclick="event.preventDefault();event.stopPropagation();quickAddToCart('${p.id}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 6L8 16H20L22 6H6Z"/><path d="M6 6L4 2H2"/><circle cx="10" cy="20" r="1.5" fill="currentColor" stroke="none"/><circle cx="18" cy="20" r="1.5" fill="currentColor" stroke="none"/></svg>Ajouter</button></div><div class="mi-card__body"><div class="mi-card__vendor">${escapeHTML(p.vendors?.shop_name||'Tindamba')}</div><h3 class="mi-card__name">${escapeHTML(p.name)}</h3><p class="mi-card__desc">${escapeHTML(desc)}</p>${renderSwatches(p.colors)}<div class="mi-card__rating"><span class="mi-card__stars">${stars}</span><span>${rating} (${reviews})</span></div><div class="mi-card__price"><span class="mi-card__price-current">${formatXAF(p.price)}</span>${hasPromo?`<span class="mi-card__price-old">${formatXAF(p.old_price)}</span>`:''}${hasPromo?`<span class="mi-card__price-discount">−${discount}%</span>`:''}</div>${stockBar}</div></a>`;
+    return `<a href="product.html?id=${p.id}" class="mi-card${isOut?' mi-card--out':''}" aria-label="${escapeHTML(p.name)}"><div class="mi-card__media">${badgeHTML}<button class="mi-card__wish" onclick="event.preventDefault();event.stopPropagation();"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button><img src="${escapeHTML(img)}" alt="${escapeHTML(p.name)}" loading="lazy" onerror="this.src='${IMG_FALLBACK}'"><button class="mi-card__atc" onclick="event.preventDefault();event.stopPropagation();quickAddToCart('${p.id}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 6L8 16H20L22 6H6Z"/><path d="M6 6L4 2H2"/><circle cx="10" cy="20" r="1.5" fill="currentColor" stroke="none"/><circle cx="18" cy="20" r="1.5" fill="currentColor" stroke="none"/></svg>Ajouter</button></div><div class="mi-card__body"><div class="mi-card__vendor">${escapeHTML(p.vendors?.shop_name||'Tindamba')}</div><h3 class="mi-card__name">${escapeHTML(p.name)}</h3><p class="mi-card__desc">${escapeHTML(desc)}</p>${renderSwatches(p.colors)}<div class="mi-card__price"><span class="mi-card__price-current">${formatXAF(p.price)}</span>${hasPromo?`<span class="mi-card__price-old">${formatXAF(p.old_price)}</span>`:''}${hasPromo?`<span class="mi-card__price-discount">−${discount}%</span>`:''}</div>${stockBar}</div></a>`;
 }
-
 /* ═══════════════════════════════════════════════════════════
    SLIDER + CART
    ═══════════════════════════════════════════════════════════ */
