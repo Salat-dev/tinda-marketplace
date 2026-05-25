@@ -10,8 +10,8 @@
             { category: 'paiement', question: 'Le paiement en ligne est-il sécurisé ?', answer: 'Oui, toutes les transactions sont cryptées et sécurisées. Nous ne stockons jamais vos informations bancaires.' },
             { category: 'retours', question: 'Quelle est la politique de retour ?', answer: 'Vous disposez de 30 jours après réception pour retourner un produit qui ne correspond pas à sa description. Contactez le vendeur pour organiser le retour.' },
             { category: 'retours', question: 'Comment obtenir un remboursement ?', answer: 'Le remboursement est effectué sous 7 jours ouvrés après réception et vérification du produit retourné.' },
-            { category: 'vendeurs', question: 'Comment devenir vendeur sur Tindamba ?', answer: 'Cliquez sur "Espace vendeur" dans le menu, puis sur "Inscription". Remplissez le formulaire avec le nom de votre boutique, votre email et votre numéro WhatsApp.' },
-            { category: 'vendeurs', question: 'Y a-t-il des frais pour vendre sur Tindamba ?', answer: 'Non, l\'inscription et la publication de produits sont entièrement gratuites. Nous prélevons 0% de commission sur vos ventes.' },
+            { category: 'vendeurs', question: 'Comment devenir vendeur sur Tinda  ?', answer: 'Cliquez sur "Espace vendeur" dans le menu, puis sur "Inscription". Remplissez le formulaire avec le nom de votre boutique, votre email et votre numéro WhatsApp.' },
+            { category: 'vendeurs', question: 'Y a-t-il des frais pour vendre sur Tinda ?', answer: 'Non, l\'inscription et la publication de produits sont entièrement gratuites. Nous prélevons 0% de commission sur vos ventes.' },
             { category: 'vendeurs', question: 'Comment gérer mes produits ?', answer: 'Connectez-vous à votre dashboard vendeur. Vous pourrez ajouter, modifier ou supprimer vos produits, gérer vos commandes et suivre vos ventes.' }
         ];
 
