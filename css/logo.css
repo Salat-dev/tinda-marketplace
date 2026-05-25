@@ -17,8 +17,8 @@
 }
 
 .navbar__logo-svg {
-    width: 82px;
-    height: 54px;
+    width: 90px;
+    height: auto;
     display: block;
     /* Permet de contrôler la couleur du SVG via CSS si le SVG utilise currentColor */
     color: var(--color-primary, #2563eb);
@@ -63,7 +63,7 @@
 
 .footer__logo-svg {
     width: 82px;
-    height: 54px;
+    height: auto;
     display: block;
     color: var(--color-primary, #2563eb);
 }

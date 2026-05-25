@@ -2,51 +2,1099 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Dashboard · Tindamba</title>
 
-     <!-- Favicon principal - SVG (navigateurs modernes) -->
-    <link rel="icon" type="image/svg+xml" href="images/logo/icon_tinda.svg" />
-    
-    <!-- Favicon de fallback - PNG 32x32 -->
-    <link rel="icon" type="image/png" sizes="32x32" href="images/logo/icon_tinda.svg" />
-    <link rel="icon" type="image/png" sizes="16x16" href="images/logo/icon_tinda.svg" />
-    
-    <!-- Apple iOS -->
-    <link rel="apple-touch-icon" sizes="180x180" href="images/logo/icon_tinda.svg" />
-    
-    <!-- Android/Chrome -->
-    <link rel="icon" type="image/png" sizes="192x192" href="images/logo/icon_tinda.svg" />
-    <link rel="icon" type="image/png" sizes="512x512" href="images/logo/icon_tinda.svg" />
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/icons/icon_tinda.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon_tinda.svg" />
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon_tinda.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/icon_tinda.svg" />
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon_tinda.svg" />
+    <link rel="icon" type="image/png" sizes="512x512" href="assets/icons/icon_tinda.svg" />
     
     <!-- Microsoft -->
     <meta name="msapplication-TileImage" content="images/logo/icon_tinda.svg" />
     <meta name="msapplication-TileColor" content="#2563eb" />
-    
-    <!-- Couleur du thème (barre de navigation mobile) -->
     <meta name="theme-color" content="#2563eb" />
-    
-    <!-- Manifest pour PWA -->
-    <link rel="manifest" href="site.webmanifest" />
     <meta name="description" content="Gérez votre boutique Tindamba – Produits, commandes, catégories.">
-<!-- Anime.js pour les animations -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 
-<!-- Styles pour les animations UX -->
-<link rel="stylesheet" href="css/ux-animations.css">
-
-<!-- À la fin du body, après les autres scripts -->
-<script src="js/ux-animations.js"></script>
-    <!-- Fonts : identiques à category.html -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="css/dashboard.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap" rel="stylesheet">
+    
+    <!-- Anime.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/ux-animations.css">
+    <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/responsive.css">
 
+    <style>
+        /* ===== DESIGN SYSTEM VARIABLES ===== */
+        :root {
+            --color-primary: #2563eb;
+            --color-primary-hover: #1d4ed8;
+            --color-primary-light: rgba(37, 99, 235, 0.1);
+            --color-success: #10b981;
+            --color-warning: #f59e0b;
+            --color-danger: #ef4444;
+            --color-danger-hover: #dc2626;
+            
+            --color-bg: #f8fafc;
+            --color-surface: #ffffff;
+            --color-surface-hover: #f1f5f9;
+            --color-border: #e2e8f0;
+            --color-border-light: #f1f5f9;
+            
+            --color-text: #0f172a;
+            --color-text-secondary: #475569;
+            --color-text-tertiary: #94a3b8;
+            --color-text-inverse: #ffffff;
+            
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --radius-full: 9999px;
+            
+            --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-serif: 'Cormorant Garamond', Georgia, serif;
+            
+            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ===== RESET & BASE ===== */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        img, svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            border: none;
+            background: none;
+            font-size: inherit;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        input, textarea, select {
+            font-family: inherit;
+            font-size: inherit;
+        }
+
+        /* ===== UTILITY CLASSES ===== */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* ===== TOPBAR ===== */
+        .topbar {
+            background: var(--color-text);
+            color: var(--color-text-inverse);
+            font-size: 0.8125rem;
+            padding: 0.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .topbar__inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .topbar__promo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 300;
+            letter-spacing: 0.02em;
+        }
+
+        .topbar__dot {
+            width: 6px;
+            height: 6px;
+            background: var(--color-success);
+            border-radius: 50%;
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        .topbar__links {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .topbar__link {
+            color: rgba(255, 255, 255, 0.8);
+            transition: color var(--transition-fast);
+            font-size: 0.8125rem;
+        }
+
+        .topbar__link:hover {
+            color: #fff;
+        }
+
+        .topbar__sep {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            background: var(--color-surface);
+            border-bottom: 1px solid var(--color-border);
+            position: sticky;
+            top: 33px;
+            z-index: 99;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .navbar__inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .navbar__logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: opacity var(--transition-fast);
+        }
+
+        .navbar__logo:hover {
+            opacity: 0.8;
+        }
+
+        .navbar__logo-mark {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--color-primary), #7c3aed);
+            color: white;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+            font-family: var(--font-serif);
+        }
+
+        .navbar__logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .navbar__logo-name {
+            font-weight: 700;
+            font-size: 1.125rem;
+            letter-spacing: -0.02em;
+        }
+
+        .navbar__logo-tagline {
+            font-size: 0.6875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--color-text-tertiary);
+            font-weight: 500;
+        }
+
+        .navbar__spacer {
+            flex: 1;
+        }
+
+        .navbar__user {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 200px;
+        }
+
+        .navbar__shop-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-full);
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+        }
+
+        .navbar__shop-link:hover {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+        }
+
+        .btn--primary {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .btn--primary:hover {
+            background: var(--color-primary-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn--ghost {
+            background: transparent;
+            color: var(--color-text-secondary);
+            border: 1px solid var(--color-border);
+        }
+
+        .btn--ghost:hover {
+            background: var(--color-surface-hover);
+            border-color: var(--color-text-tertiary);
+        }
+
+        .btn--danger {
+            background: var(--color-danger);
+            color: white;
+        }
+
+        .btn--danger:hover {
+            background: var(--color-danger-hover);
+        }
+
+        .btn--sm {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.8125rem;
+        }
+
+        .btn--lg {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+        }
+
+        /* ===== DASHBOARD LAYOUT ===== */
+        .dash {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .dash__side {
+            background: var(--color-surface);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            position: sticky;
+            top: calc(33px + 69px + 1.5rem);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--color-border-light);
+        }
+
+        .dash__side h2 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-text-tertiary);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .dash__nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-md);
+            color: var(--color-text-secondary);
+            font-weight: 500;
+            font-size: 0.9375rem;
+            transition: all var(--transition-fast);
+            margin-bottom: 0.25rem;
+        }
+
+        .dash__nav-btn:hover {
+            background: var(--color-surface-hover);
+            color: var(--color-text);
+        }
+
+        .dash__nav-btn.is-active {
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+            font-weight: 600;
+        }
+
+        .dash__nav-btn svg {
+            flex-shrink: 0;
+            opacity: 0.7;
+        }
+
+        .dash__nav-btn.is-active svg {
+            opacity: 1;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .dash__main {
+            min-width: 0;
+        }
+
+        .dash__main h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+        }
+
+        /* ===== TABS ===== */
+        .dash__tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            padding: 0.25rem;
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border-light);
+            width: fit-content;
+        }
+
+        .dash__tab {
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+        }
+
+        .dash__tab:hover {
+            color: var(--color-text);
+            background: var(--color-surface-hover);
+        }
+
+        .dash__tab.is-active {
+            background: var(--color-primary);
+            color: white;
+            font-weight: 600;
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* ===== CARD LIST ===== */
+        .card-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1rem;
+        }
+
+        .card {
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+            border: 1px solid var(--color-border-light);
+            transition: all var(--transition-fast);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        /* ===== FORM ELEMENTS ===== */
+        .field {
+            margin-bottom: 1rem;
+        }
+
+        .field label {
+            display: block;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            margin-bottom: 0.375rem;
+            letter-spacing: 0.02em;
+        }
+
+        .input, .textarea, .select {
+            width: 100%;
+            padding: 0.625rem 0.875rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            background: var(--color-surface);
+            color: var(--color-text);
+            transition: all var(--transition-fast);
+            font-size: 0.9375rem;
+        }
+
+        .input:focus, .textarea:focus, .select:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px var(--color-primary-light);
+        }
+
+        .textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* ===== PRODUCT MODAL ===== */
+        .product-modal {
+            background: var(--color-surface);
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--color-border-light);
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .product-modal__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--color-border-light);
+            background: var(--color-bg);
+        }
+
+        .product-modal__header h2 {
+            font-size: 1.125rem;
+            font-weight: 700;
+        }
+
+        .product-modal__body {
+            padding: 1.5rem;
+        }
+
+        .form-section {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--color-border-light);
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .form-section__title {
+            font-size: 0.9375rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--color-text);
+        }
+
+        /* ===== BADGE CHIPS ===== */
+        .badge-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .badge-chip {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .badge-chip:hover {
+            border-color: var(--color-primary);
+            background: var(--color-primary-light);
+        }
+
+        .badge-chip input[type="radio"] {
+            accent-color: var(--color-primary);
+        }
+
+        .badge-chip:has(input:checked) {
+            border-color: var(--color-primary);
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+            font-weight: 600;
+        }
+
+        /* ===== UPLOAD ZONE ===== */
+        .upload-zone {
+            border: 2px dashed var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            background: var(--color-bg);
+        }
+
+        .upload-zone:hover {
+            border-color: var(--color-primary);
+            background: var(--color-primary-light);
+        }
+
+        .upload-zone__icon {
+            color: var(--color-text-tertiary);
+            margin-bottom: 0.75rem;
+        }
+
+        .upload-zone p {
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-zone strong {
+            color: var(--color-primary);
+        }
+
+        .upload-zone small {
+            color: var(--color-text-tertiary);
+            font-size: 0.8125rem;
+        }
+
+        .upload-progress {
+            margin-top: 1rem;
+            height: 4px;
+            background: var(--color-border-light);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+        }
+
+        .upload-progress__bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-primary), #7c3aed);
+            border-radius: var(--radius-full);
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .image-previews {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .image-previews img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: var(--radius-md);
+            border: 2px solid var(--color-border-light);
+        }
+
+        /* ===== COLOR PICKER ===== */
+        .color-picker-row {
+            display: flex;
+            align-items: end;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .color-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .color-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 0.75rem;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-full);
+            font-size: 0.8125rem;
+        }
+
+        .color-tag__swatch {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid rgba(0,0,0,0.1);
+        }
+
+        .color-tag__remove {
+            cursor: pointer;
+            opacity: 0.5;
+            transition: opacity var(--transition-fast);
+        }
+
+        .color-tag__remove:hover {
+            opacity: 1;
+            color: var(--color-danger);
+        }
+
+        /* ===== TOGGLE SWITCH ===== */
+        .toggle-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .toggle-row small {
+            display: block;
+            color: var(--color-text-tertiary);
+            font-size: 0.8125rem;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 28px;
+            cursor: pointer;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .switch__track {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--color-border);
+            border-radius: var(--radius-full);
+            transition: all var(--transition-fast);
+        }
+
+        .switch__track::before {
+            content: '';
+            position: absolute;
+            height: 22px;
+            width: 22px;
+            left: 3px;
+            bottom: 3px;
+            background: white;
+            border-radius: 50%;
+            transition: all var(--transition-fast);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .switch input:checked + .switch__track {
+            background: var(--color-primary);
+        }
+
+        .switch input:checked + .switch__track::before {
+            transform: translateX(20px);
+        }
+
+        /* ===== CAT CREATE BOX ===== */
+        .cat-create-box {
+            margin-top: 0.75rem;
+            padding: 1rem;
+            background: var(--color-bg);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border-light);
+        }
+
+        .cat-create-box p {
+            font-size: 0.8125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        /* ===== TOAST ===== */
+        .toast-container {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            max-width: 400px;
+            width: calc(100% - 3rem);
+        }
+
+        .toast {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: 1rem 1.25rem;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            animation: slideInRight 0.3s ease;
+            font-size: 0.9375rem;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .toast--success {
+            border-left: 4px solid var(--color-success);
+        }
+
+        .toast--error {
+            border-left: 4px solid var(--color-danger);
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 1024px) {
+            .dash {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+                gap: 1rem;
+            }
+
+            .dash__side {
+                position: static;
+                display: flex;
+                gap: 0.5rem;
+                padding: 0.75rem;
+                overflow-x: auto;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .dash__side h2 {
+                display: none;
+            }
+
+            .dash__nav-btn {
+                flex-shrink: 0;
+                width: auto;
+                margin-bottom: 0;
+                padding: 0.5rem 1rem;
+            }
+
+            .card-list {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .topbar {
+                font-size: 0.75rem;
+            }
+
+            .topbar__inner {
+                padding: 0 1rem;
+            }
+
+            .topbar__links {
+                gap: 0.5rem;
+            }
+
+            .navbar__inner {
+                padding: 0.625rem 1rem;
+                gap: 0.75rem;
+            }
+
+            .navbar__logo-text {
+                display: none;
+            }
+
+            .navbar__user {
+                display: none;
+            }
+
+            .navbar__shop-link span {
+                display: none;
+            }
+
+            .navbar__shop-link {
+                padding: 0.5rem;
+            }
+
+            .dash {
+                padding: 0.75rem;
+                gap: 0.75rem;
+            }
+
+            .dash__main h1 {
+                font-size: 1.375rem;
+                margin-bottom: 1rem;
+            }
+
+            .row {
+                grid-template-columns: 1fr;
+            }
+
+            .card-list {
+                grid-template-columns: 1fr;
+            }
+
+            .product-modal__body {
+                padding: 1rem;
+            }
+
+            .product-modal__header {
+                padding: 1rem;
+            }
+
+            .badge-chips {
+                gap: 0.375rem;
+            }
+
+            .badge-chip {
+                padding: 0.375rem 0.75rem;
+                font-size: 0.8125rem;
+            }
+
+            .dash__tabs {
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .dash__tab {
+                flex-shrink: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .topbar__promo {
+                font-size: 0.6875rem;
+            }
+
+            .topbar__links {
+                display: none;
+            }
+
+            .navbar__inner {
+                padding: 0.5rem 0.75rem;
+            }
+
+            .navbar__logo-mark {
+                width: 32px;
+                height: 32px;
+                font-size: 1rem;
+            }
+
+            .btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.8125rem;
+                gap: 0.375rem;
+            }
+
+            .btn--lg {
+                padding: 0.625rem 1.25rem;
+                font-size: 0.875rem;
+            }
+
+            .dash {
+                padding: 0.5rem;
+                gap: 0.5rem;
+            }
+
+            .dash__side {
+                padding: 0.5rem;
+            }
+
+            .dash__nav-btn {
+                font-size: 0.8125rem;
+                padding: 0.5rem 0.75rem;
+            }
+
+            .product-modal {
+                border-radius: var(--radius-lg);
+            }
+
+            .product-modal__body {
+                padding: 0.75rem;
+            }
+
+            .image-previews {
+                grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+            }
+
+            .image-previews img {
+                height: 70px;
+            }
+
+            .toast-container {
+                bottom: 0.75rem;
+                right: 0.75rem;
+                left: 0.75rem;
+                width: auto;
+            }
+        }
+
+        /* ===== TABLET LANDSCAPE ===== */
+        @media (min-width: 769px) and (max-width: 1024px) and (orientation: landscape) {
+            .dash {
+                grid-template-columns: 240px 1fr;
+            }
+
+            .dash__side {
+                position: sticky;
+                display: block;
+            }
+
+            .dash__side h2 {
+                display: block;
+            }
+
+            .dash__nav-btn {
+                width: 100%;
+                margin-bottom: 0.25rem;
+            }
+        }
+
+        /* ===== PRINT STYLES ===== */
+        @media print {
+            .topbar,
+            .navbar,
+            .dash__side,
+            .btn,
+            .toast-container {
+                display: none !important;
+            }
+
+            .dash {
+                grid-template-columns: 1fr;
+                padding: 0;
+            }
+
+            .card {
+                break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+        }
+
+        /* ===== DARK MODE SUPPORT ===== */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-bg: #0f172a;
+                --color-surface: #1e293b;
+                --color-surface-hover: #334155;
+                --color-border: #334155;
+                --color-border-light: #1e293b;
+                
+                --color-text: #f1f5f9;
+                --color-text-secondary: #94a3b8;
+                --color-text-tertiary: #64748b;
+                --color-text-inverse: #0f172a;
+                
+                --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+                --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+                --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            }
+
+            .navbar {
+                background: rgba(30, 41, 59, 0.95);
+            }
+
+            .input, .textarea, .select {
+                background: var(--color-bg);
+                color: var(--color-text);
+            }
+
+            .upload-zone {
+                background: var(--color-bg);
+            }
+
+            .product-modal__header {
+                background: var(--color-bg);
+            }
+        }
+    </style>
 </head>
 <body>
-
     <!-- ═══ TOPBAR ═══ -->
     <div class="topbar">
         <div class="topbar__inner">
@@ -72,34 +1120,37 @@
                     <span class="navbar__logo-tagline">Dashboard</span>
                 </div>
             </a>
+            
             <div class="navbar__spacer"></div>
-            <span class="navbar__user" id="userEmail"></span>
+            
+            <span class="navbar__user" id="userEmail">utilisateur@email.com</span>
+            
             <a href="shop.html" class="navbar__shop-link">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
                     <polyline points="9 22 9 12 15 12 15 22"/>
                 </svg>
-                Boutique
+                <span>Boutique</span>
             </a>
+            
             <button id="logoutBtn" class="btn btn--ghost btn--sm">Déconnexion</button>
         </div>
     </nav>
 
     <!-- ═══ DASHBOARD ═══ -->
     <div class="dash">
-
         <!-- ─── SIDEBAR ─── -->
         <aside class="dash__side">
             <h2>Gestion</h2>
-            <button data-view="orders" class="dash__nav-btn is-active">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <button data-view="orders" class="dash__nav-btn is-active" aria-current="page">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
                     <rect x="9" y="3" width="6" height="4" rx="1"/>
                 </svg>
                 Commandes
             </button>
             <button data-view="products" class="dash__nav-btn">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <path d="m7.5 4.27 9 5.15"/>
                     <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>
                     <path d="m3.3 7 8.7 5 8.7-5"/>
@@ -108,7 +1159,7 @@
                 Produits
             </button>
             <button data-view="categories" class="dash__nav-btn">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <rect x="3" y="3" width="7" height="7"/>
                     <rect x="14" y="3" width="7" height="7"/>
                     <rect x="14" y="14" width="7" height="7"/>
@@ -120,25 +1171,24 @@
 
         <!-- ─── MAIN ─── -->
         <main class="dash__main">
-
             <!-- ══ VIEW: ORDERS ══ -->
-            <section id="view-orders">
-                <h1>Commandes reçues</h1>
-                <div class="dash__tabs">
-                    <button class="dash__tab is-active" data-filter="all">Toutes</button>
-                    <button class="dash__tab" data-filter="pending">En attente</button>
-                    <button class="dash__tab" data-filter="accepted">Acceptées</button>
-                    <button class="dash__tab" data-filter="rejected">Refusées</button>
+            <section id="view-orders" aria-labelledby="orders-title">
+                <h1 id="orders-title">Commandes reçues</h1>
+                <div class="dash__tabs" role="tablist" aria-label="Filtrer les commandes">
+                    <button class="dash__tab is-active" role="tab" aria-selected="true" data-filter="all">Toutes</button>
+                    <button class="dash__tab" role="tab" aria-selected="false" data-filter="pending">En attente</button>
+                    <button class="dash__tab" role="tab" aria-selected="false" data-filter="accepted">Acceptées</button>
+                    <button class="dash__tab" role="tab" aria-selected="false" data-filter="rejected">Refusées</button>
                 </div>
-                <div id="ordersList" class="card-list"></div>
+                <div id="ordersList" class="card-list" role="list" aria-label="Liste des commandes"></div>
             </section>
 
             <!-- ══ VIEW: PRODUCTS ══ -->
-            <section id="view-products" hidden>
+            <section id="view-products" hidden aria-labelledby="products-title">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:12px;">
-                    <h1 style="margin:0;">Mes produits</h1>
-                    <button class="btn btn--primary" id="newProductBtn">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                    <h1 id="products-title" style="margin:0;">Mes produits</h1>
+                    <button class="btn btn--primary" id="newProductBtn" aria-expanded="false" aria-controls="productFormWrap">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
                             <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
                         </svg>
                         Ajouter un produit
@@ -146,49 +1196,49 @@
                 </div>
 
                 <!-- Formulaire produit (collapsible) -->
-                <div id="productFormWrap" class="product-modal" style="display:none;">
+                <div id="productFormWrap" class="product-modal" style="display:none;" aria-hidden="true">
                     <div class="product-modal__header">
                         <h2 id="modalTitle">Nouveau produit</h2>
-                        <button class="btn btn--ghost btn--sm" id="cancelBtn">✕ Annuler</button>
+                        <button class="btn btn--ghost btn--sm" id="cancelBtn" aria-label="Annuler et fermer le formulaire">✕ Annuler</button>
                     </div>
                     <div class="product-modal__body">
-                        <form id="productForm" autocomplete="off">
+                        <form id="productForm" autocomplete="off" novalidate>
                             <input type="hidden" name="id">
 
                             <!-- 1. Informations -->
                             <div class="form-section">
                                 <p class="form-section__title">Informations principales</p>
                                 <div class="field">
-                                    <label>Nom du produit *</label>
-                                    <input class="input" name="name" required placeholder="Ex : Samsung Galaxy A55 5G">
+                                    <label for="productName">Nom du produit *</label>
+                                    <input class="input" id="productName" name="name" required placeholder="Ex : Samsung Galaxy A55 5G">
                                 </div>
                                 <div class="field">
-                                    <label>Description *</label>
-                                    <textarea class="textarea" name="description" required placeholder="Décrivez votre produit : caractéristiques, état, garantie…"></textarea>
+                                    <label for="productDescription">Description *</label>
+                                    <textarea class="textarea" id="productDescription" name="description" required placeholder="Décrivez votre produit : caractéristiques, état, garantie…"></textarea>
                                 </div>
                                 <div class="row">
                                     <div class="field">
-                                        <label>Prix (FCFA) *</label>
-                                        <input class="input" name="price" type="number" min="0" required placeholder="Ex : 185000">
+                                        <label for="productPrice">Prix (FCFA) *</label>
+                                        <input class="input" id="productPrice" name="price" type="number" min="0" step="1" required placeholder="Ex : 185000">
                                     </div>
                                     <div class="field">
-                                        <label>Ancien prix (barré)</label>
-                                        <input class="input" name="old_price" type="number" min="0" placeholder="Ex : 220000">
+                                        <label for="productOldPrice">Ancien prix (barré)</label>
+                                        <input class="input" id="productOldPrice" name="old_price" type="number" min="0" step="1" placeholder="Ex : 220000">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="field">
-                                        <label>Stock *</label>
-                                        <input class="input" name="stock" type="number" min="0" required placeholder="0">
+                                        <label for="productStock">Stock *</label>
+                                        <input class="input" id="productStock" name="stock" type="number" min="0" step="1" required placeholder="0">
                                     </div>
                                     <div class="field">
-                                        <label>Catégorie</label>
+                                        <label for="categorySelect">Catégorie</label>
                                         <div style="display:flex; gap:8px; align-items:center;">
                                             <select class="select" name="category_id" id="categorySelect" style="flex:1;">
                                                 <option value="">— Sans catégorie —</option>
                                             </select>
-                                            <button type="button" class="btn btn--ghost btn--sm" id="openCatCreate" title="Créer une catégorie">
-                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                                            <button type="button" class="btn btn--ghost btn--sm" id="openCatCreate" title="Créer une catégorie" aria-label="Créer une nouvelle catégorie">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
                                                     <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
                                                 </svg>
                                             </button>
@@ -199,7 +1249,7 @@
                                             <div style="display:flex; gap:8px;">
                                                 <input class="input" id="newCatName" placeholder="Nom de la catégorie" style="flex:1; height:38px;">
                                                 <button type="button" class="btn btn--primary btn--sm" id="saveCatBtn">Créer</button>
-                                                <button type="button" class="btn btn--ghost btn--sm" id="closeCatCreate">✕</button>
+                                                <button type="button" class="btn btn--ghost btn--sm" id="closeCatCreate" aria-label="Fermer">✕</button>
                                             </div>
                                         </div>
                                     </div>
@@ -210,9 +1260,9 @@
                             <div class="form-section">
                                 <p class="form-section__title">Badge produit</p>
                                 <p style="font-size:13px; color:var(--color-text-tertiary); margin-bottom:14px;">Sélectionnez un badge à afficher sur la carte produit :</p>
-                                <div class="badge-chips" id="badgeChips">
+                                <div class="badge-chips" id="badgeChips" role="radiogroup" aria-label="Sélectionner un badge">
                                     <label class="badge-chip" data-badge="">
-                                        <input type="radio" name="badge" value=""> Aucun
+                                        <input type="radio" name="badge" value="" checked> Aucun
                                     </label>
                                     <label class="badge-chip" data-badge="new">
                                         <input type="radio" name="badge" value="new"> Nouveau
@@ -243,9 +1293,9 @@
                                 <p class="form-section__title">Images du produit</p>
                                 <p style="font-size:13px; color:var(--color-text-tertiary); margin-bottom:14px;">Maximum 5 images. La première image est l'image principale affichée sur les cartes.</p>
 
-                                <div class="upload-zone" id="uploadZone">
-                                    <input type="file" id="fileInput" accept="image/jpeg,image/png,image/svg+xml" multiple style="display:none;">
-                                    <div class="upload-zone__icon">
+                                <div class="upload-zone" id="uploadZone" role="button" tabindex="0" aria-label="Télécharger des images du produit">
+                                    <input type="file" id="fileInput" accept="image/jpeg,image/png,image/svg+xml" multiple style="display:none;" aria-hidden="true">
+                                    <div class="upload-zone__icon" aria-hidden="true">
                                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
                                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
                                         </svg>
@@ -254,11 +1304,11 @@
                                     <small>JPG, PNG, SVG · Max 5 Mo par image · Max 5 images</small>
                                 </div>
 
-                                <div class="upload-progress" id="uploadProgress" style="display:none;">
-                                    <div class="upload-progress__bar" id="uploadProgressBar"></div>
+                                <div class="upload-progress" id="uploadProgress" style="display:none;" aria-hidden="true">
+                                    <div class="upload-progress__bar" id="uploadProgressBar" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
 
-                                <div class="image-previews" id="imagePreviews"></div>
+                                <div class="image-previews" id="imagePreviews" aria-label="Aperçu des images"></div>
                             </div>
 
                             <!-- 4. Couleurs / Variantes -->
@@ -266,18 +1316,18 @@
                                 <p class="form-section__title">Couleurs disponibles</p>
                                 <div class="color-picker-row">
                                     <div>
-                                        <label style="font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--color-text-secondary); display:block; margin-bottom:5px;">Couleur</label>
+                                        <label for="colorPicker" style="font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--color-text-secondary); display:block; margin-bottom:5px;">Couleur</label>
                                         <input type="color" class="input" id="colorPicker" value="#F97316" style="width:50px; height:42px; padding:4px; cursor:pointer;">
                                     </div>
                                     <div style="flex:1; min-width:140px;">
-                                        <label style="font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--color-text-secondary); display:block; margin-bottom:5px;">Nom</label>
+                                        <label for="colorName" style="font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--color-text-secondary); display:block; margin-bottom:5px;">Nom</label>
                                         <input class="input" id="colorName" placeholder="Ex : Bleu nuit, Rouge, Or…">
                                     </div>
                                     <div>
                                         <button type="button" class="btn btn--ghost btn--sm" id="addColorBtn" style="height:42px;">+ Ajouter</button>
                                     </div>
                                 </div>
-                                <div class="color-tags" id="colorTags"></div>
+                                <div class="color-tags" id="colorTags" aria-label="Couleurs ajoutées"></div>
                             </div>
 
                             <!-- 5. Paramètres -->
@@ -285,10 +1335,10 @@
                                 <p class="form-section__title">Paramètres</p>
                                 <div class="toggle-row">
                                     <div>
-                                        <label>Produit actif</label>
+                                        <label for="activeToggle">Produit actif</label>
                                         <small>Visible dans la boutique</small>
                                     </div>
-                                    <label class="switch">
+                                    <label class="switch" aria-label="Activer ou désactiver le produit">
                                         <input type="checkbox" name="active" id="activeToggle" checked>
                                         <span class="switch__track"></span>
                                     </label>
@@ -298,7 +1348,7 @@
                             <!-- Actions -->
                             <div style="display:flex; gap:10px; flex-wrap:wrap; padding-top:8px;">
                                 <button class="btn btn--primary" id="submitBtn" type="submit">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
                                         <polyline points="20 6 9 17 4 12"/>
                                     </svg>
                                     Enregistrer le produit
@@ -309,15 +1359,15 @@
                     </div>
                 </div>
 
-                <div id="productsList" class="card-list"></div>
+                <div id="productsList" class="card-list" role="list" aria-label="Liste des produits"></div>
             </section>
 
             <!-- ══ VIEW: CATEGORIES ══ -->
-            <section id="view-categories" hidden>
+            <section id="view-categories" hidden aria-labelledby="categories-title">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:12px;">
-                    <h1 style="margin:0;">Catégories</h1>
-                    <button class="btn btn--primary" id="newCatBtnMain">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                    <h1 id="categories-title" style="margin:0;">Catégories</h1>
+                    <button class="btn btn--primary" id="newCatBtnMain" aria-expanded="false" aria-controls="catFormWrap">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
                             <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
                         </svg>
                         Nouvelle catégorie
@@ -325,19 +1375,19 @@
                 </div>
 
                 <!-- New category form -->
-                <div id="catFormWrap" class="product-modal" style="display:none; margin-bottom:20px;">
+                <div id="catFormWrap" class="product-modal" style="display:none; margin-bottom:20px;" aria-hidden="true">
                     <div class="product-modal__header">
                         <h2>Nouvelle catégorie</h2>
-                        <button class="btn btn--ghost btn--sm" id="catFormCancel">✕ Annuler</button>
+                        <button class="btn btn--ghost btn--sm" id="catFormCancel" aria-label="Annuler">✕ Annuler</button>
                     </div>
                     <div class="product-modal__body">
                         <div class="row">
                             <div class="field">
-                                <label>Nom *</label>
-                                <input class="input" id="catFormName" placeholder="Ex : Smartphones">
+                                <label for="catFormName">Nom *</label>
+                                <input class="input" id="catFormName" placeholder="Ex : Smartphones" required>
                             </div>
                             <div class="field">
-                                <label>Icône (emoji)</label>
+                                <label for="catFormIcon">Icône (emoji)</label>
                                 <input class="input" id="catFormIcon" placeholder="Ex : 📱" style="font-size:20px;">
                             </div>
                         </div>
@@ -347,22 +1397,218 @@
                     </div>
                 </div>
 
-                <div id="categoriesList" class="card-list"></div>
+                <div id="categoriesList" class="card-list" role="list" aria-label="Liste des catégories"></div>
             </section>
-
         </main>
     </div>
 
     <!-- Toast container -->
-    <div class="toast-container" id="toastContainer"></div>
+    <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
 
-    <!-- ═══ SCRIPTS (conservés de l'original) ═══ -->
+    <!-- ═══ SCRIPTS ═══ -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase.js"></script>
     <script src="js/ui.js"></script>
     <script src="js/upload.js"></script>
     <script src="js/dashboard.js"></script>
-        <script src="js/responsive.js"></script>
+    <script src="js/responsive.js"></script>
+    <script src="js/ux-animations.js"></script>
 
+    <script>
+        // ===== RESPONSIVE SIDEBAR TOGGLE =====
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gestion de la sidebar responsive
+            const sidebar = document.querySelector('.dash__side');
+            const navButtons = document.querySelectorAll('.dash__nav-btn');
+            
+            // Navigation entre les vues
+            navButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Mise à jour des états actifs
+                    navButtons.forEach(b => {
+                        b.classList.remove('is-active');
+                        b.removeAttribute('aria-current');
+                    });
+                    this.classList.add('is-active');
+                    this.setAttribute('aria-current', 'page');
+                    
+                    // Afficher la vue correspondante
+                    const view = this.dataset.view;
+                    document.querySelectorAll('section[id^="view-"]').forEach(section => {
+                        section.hidden = true;
+                    });
+                    const targetView = document.getElementById(`view-${view}`);
+                    if (targetView) {
+                        targetView.hidden = false;
+                    }
+                    
+                    // Animation de défilement vers la section sur mobile
+                    if (window.innerWidth <= 1024) {
+                        targetView?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+
+            // Gestion des tabs de commandes
+            const tabs = document.querySelectorAll('.dash__tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    tabs.forEach(t => {
+                        t.classList.remove('is-active');
+                        t.setAttribute('aria-selected', 'false');
+                    });
+                    this.classList.add('is-active');
+                    this.setAttribute('aria-selected', 'true');
+                    
+                    // Logique de filtrage (à implémenter selon vos besoins)
+                    const filter = this.dataset.filter;
+                    console.log('Filtre appliqué:', filter);
+                });
+            });
+
+            // Gestion du bouton nouvelle catégorie dans le formulaire produit
+            const openCatCreateBtn = document.getElementById('openCatCreate');
+            const catCreateBox = document.getElementById('catCreateBox');
+            const closeCatCreateBtn = document.getElementById('closeCatCreate');
+            
+            if (openCatCreateBtn && catCreateBox) {
+                openCatCreateBtn.addEventListener('click', function() {
+                    catCreateBox.style.display = 'block';
+                    openCatCreateBtn.setAttribute('aria-expanded', 'true');
+                });
+                
+                if (closeCatCreateBtn) {
+                    closeCatCreateBtn.addEventListener('click', function() {
+                        catCreateBox.style.display = 'none';
+                        openCatCreateBtn.setAttribute('aria-expanded', 'false');
+                    });
+                }
+            }
+
+            // Gestion du formulaire produit (affichage/masquage)
+            const newProductBtn = document.getElementById('newProductBtn');
+            const productFormWrap = document.getElementById('productFormWrap');
+            const cancelBtn = document.getElementById('cancelBtn');
+            const cancelBtn2 = document.getElementById('cancelBtn2');
+            
+            function showProductForm() {
+                if (productFormWrap) {
+                    productFormWrap.style.display = 'block';
+                    productFormWrap.setAttribute('aria-hidden', 'false');
+                    if (newProductBtn) newProductBtn.setAttribute('aria-expanded', 'true');
+                    // Scroll vers le formulaire sur mobile
+                    if (window.innerWidth <= 768) {
+                        productFormWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            }
+            
+            function hideProductForm() {
+                if (productFormWrap) {
+                    productFormWrap.style.display = 'none';
+                    productFormWrap.setAttribute('aria-hidden', 'true');
+                    if (newProductBtn) newProductBtn.setAttribute('aria-expanded', 'false');
+                }
+            }
+            
+            if (newProductBtn) newProductBtn.addEventListener('click', showProductForm);
+            if (cancelBtn) cancelBtn.addEventListener('click', hideProductForm);
+            if (cancelBtn2) cancelBtn2.addEventListener('click', hideProductForm);
+
+            // Gestion de l'upload par drag & drop
+            const uploadZone = document.getElementById('uploadZone');
+            const fileInput = document.getElementById('fileInput');
+            
+            if (uploadZone && fileInput) {
+                uploadZone.addEventListener('click', () => fileInput.click());
+                
+                uploadZone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    uploadZone.style.borderColor = 'var(--color-primary)';
+                    uploadZone.style.background = 'var(--color-primary-light)';
+                });
+                
+                uploadZone.addEventListener('dragleave', () => {
+                    uploadZone.style.borderColor = 'var(--color-border)';
+                    uploadZone.style.background = 'var(--color-bg)';
+                });
+                
+                uploadZone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    uploadZone.style.borderColor = 'var(--color-border)';
+                    uploadZone.style.background = 'var(--color-bg)';
+                    const files = e.dataTransfer.files;
+                    handleFiles(files);
+                });
+                
+                fileInput.addEventListener('change', (e) => {
+                    handleFiles(e.target.files);
+                });
+                
+                // Accessibilité clavier
+                uploadZone.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        fileInput.click();
+                    }
+                });
+            }
+            
+            function handleFiles(files) {
+                // Logique de gestion des fichiers (à implémenter selon vos besoins)
+                console.log('Fichiers sélectionnés:', files.length);
+            }
+
+            // Gestion des catégories
+            const newCatBtnMain = document.getElementById('newCatBtnMain');
+            const catFormWrap = document.getElementById('catFormWrap');
+            const catFormCancel = document.getElementById('catFormCancel');
+            
+            function showCatForm() {
+                if (catFormWrap) {
+                    catFormWrap.style.display = 'block';
+                    catFormWrap.setAttribute('aria-hidden', 'false');
+                    if (newCatBtnMain) newCatBtnMain.setAttribute('aria-expanded', 'true');
+                    if (window.innerWidth <= 768) {
+                        catFormWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            }
+            
+            function hideCatForm() {
+                if (catFormWrap) {
+                    catFormWrap.style.display = 'none';
+                    catFormWrap.setAttribute('aria-hidden', 'true');
+                    if (newCatBtnMain) newCatBtnMain.setAttribute('aria-expanded', 'false');
+                }
+            }
+            
+            if (newCatBtnMain) newCatBtnMain.addEventListener('click', showCatForm);
+            if (catFormCancel) catFormCancel.addEventListener('click', hideCatForm);
+
+            // Redimensionnement responsive
+            let resizeTimeout;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    // Ajustements responsives si nécessaire
+                    if (window.innerWidth > 1024) {
+                        // Réinitialiser les styles mobiles si nécessaire
+                    }
+                }, 250);
+            });
+        });
+
+        // ===== SERVICE WORKER REGISTRATION (PWA) =====
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js').then(registration => {
+                    console.log('Service Worker enregistré avec succès:', registration.scope);
+                }).catch(error => {
+                    console.log('Échec de l\'enregistrement du Service Worker:', error);
+                });
+            });
+        }
+    </script>
 </body>
 </html>

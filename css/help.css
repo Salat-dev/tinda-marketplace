@@ -9,7 +9,7 @@
             --color-accent-hover: #0077ED;
             --color-border: #E8E8ED;
             --color-border-light: #F2F2F7;
-            --font-display: 'Outfit', system-ui;
+            --font-display: 'inter', system-ui;
             --space-xs: 0.5rem; --space-sm: 1rem; --space-md: 1.5rem; --space-lg: 2.5rem; --space-xl: 4rem; --space-2xl: 6rem;
             --transition-fast: 0.22s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
