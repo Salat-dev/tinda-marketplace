@@ -178,17 +178,10 @@ create policy "prod_vendor_delete" on products
   using (vendor_id in (select id from vendors where auth_user_id = auth.uid()));
 
 -- ---------- ORDERS ----------
-<<<<<<< HEAD
--- Création publique (clients non authentifiés)
-drop policy if exists "order_insert_public" on orders;
-create policy "order_insert_public" on orders
-  for insert to anon, authenticated with check (true);
-=======
 -- Création publique (clients non authentifiés, clé publishable incluse)
 drop policy if exists "order_insert_public" on orders;
 create policy "order_insert_public" on orders
   for insert to public with check (true);
->>>>>>> 325314a (Initial commit)
 
 -- Lecture réservée au vendeur propriétaire
 drop policy if exists "order_vendor_read" on orders;
@@ -205,11 +198,7 @@ create policy "order_vendor_update" on orders
 -- ---------- ORDER ITEMS ----------
 drop policy if exists "oi_insert_public" on order_items;
 create policy "oi_insert_public" on order_items
-<<<<<<< HEAD
-  for insert to anon, authenticated with check (true);
-=======
   for insert to public with check (true);
->>>>>>> 325314a (Initial commit)
 
 drop policy if exists "oi_vendor_read" on order_items;
 create policy "oi_vendor_read" on order_items
