@@ -48,36 +48,222 @@ const Cart = {
 };
 
 /* ══════════════════════════════════════
+   INJECT RESPONSIVE STYLES
+   Injecté une seule fois au chargement.
+   Corrige le débordement des noms longs
+   dans la sidebar et stabilise la grille.
+══════════════════════════════════════ */
+function injectResponsiveStyles() {
+  if (document.getElementById('__tinda_responsive')) return;
+  const s = document.createElement('style');
+  s.id = '__tinda_responsive';
+  s.textContent = `
+
+    /* ── Grille checkout : empêche la sidebar d'étirer la grille ── */
+    .checkout-grid {
+      /* min-width:0 sur les colonnes empêche le débordement */
+      grid-template-columns: minmax(0, 1fr) minmax(0, 380px);
+    }
+
+    /* ── Sidebar : largeur bornée, pas d'expansion parasite ── */
+    .checkout-grid > aside,
+    .checkout-grid > aside .summary {
+      min-width: 0;
+      max-width: 100%;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+
+    /* ── Items du résumé : layout flex robuste ── */
+    .summary-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--color-border-light, #f0f0ee);
+      /* min-width:0 indispensable sur un flex-child pour que
+         les enfants puissent se tronquer correctement */
+      min-width: 0;
+    }
+    .summary-item:last-child { border-bottom: none; }
+
+    /* ── Image : taille fixe, jamais étirable ── */
+    .summary-item__img {
+      width: 52px;
+      height: 52px;
+      min-width: 52px;   /* empêche l'image de rétrécir */
+      object-fit: cover;
+      border-radius: 8px;
+      background: #f5f5f3;
+      border: 1px solid rgba(0,0,0,.06);
+      flex-shrink: 0;    /* ne jamais comprimer l'image */
+    }
+
+    /* ── Corps de l'item : prend tout l'espace disponible
+         et se tronque plutôt que d'étirer le parent ── */
+    .summary-item__body {
+      flex: 1 1 0%;      /* base 0 → respecte le min-width:0 du parent */
+      min-width: 0;      /* INDISPENSABLE pour que overflow:hidden fonctionne */
+      overflow: hidden;
+    }
+
+    /* ── Nom du produit : troncature sur 2 lignes max ── */
+    .summary-item__name {
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.35;
+      color: var(--color-text-primary, #111);
+
+      /* Troncature multi-lignes (2 lignes max) */
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+
+      /* Fallback pour les navigateurs sans -webkit-box */
+      max-height: calc(13px * 1.35 * 2);
+
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+
+    /* ── Méta (qté, couleur, vendeur) : une seule ligne tronquée ── */
+    .summary-item__meta {
+      font-size: 11px;
+      color: var(--color-text-tertiary, #888);
+      margin-top: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+
+    /* ── Prix : ne jamais rétrécir, aligné à droite ── */
+    .summary-item__price {
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
+      padding-left: 6px;
+      align-self: center;
+    }
+
+    /* ══ RESPONSIVE ≤ 768px ══
+       La sidebar passe au-dessus du form,
+       les items s'adaptent à la largeur disponible */
+    @media (max-width: 768px) {
+      .checkout-grid {
+        grid-template-columns: 1fr !important;
+      }
+      .checkout-grid > aside {
+        order: -1; /* sidebar en haut sur mobile */
+      }
+      .summary-item__img {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+      }
+      .summary-item__name {
+        font-size: 12px;
+      }
+    }
+
+    /* ══ RESPONSIVE ≤ 480px ══ */
+    @media (max-width: 480px) {
+      .summary-item {
+        gap: 8px;
+      }
+      .summary-item__img {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+      }
+      .summary-item__price {
+        font-size: 12px;
+      }
+    }
+  `;
+  document.head.appendChild(s);
+}
+
+/* ══════════════════════════════════════
    RENDER SUMMARY
+   ─────────────────────────────────────
+   FIX PRINCIPAL : les éléments de texte
+   ont maintenant des contraintes claires
+   (min-width:0, overflow:hidden, clamp)
+   qui empêchent tout débordement.
 ══════════════════════════════════════ */
 function renderSummary() {
   const items = Cart.get();
   if (!items.length) { window.location.href = 'cart.html'; return; }
 
-  document.getElementById('cartCount').textContent     = Cart.count();
-  document.getElementById('summaryCount').textContent  = Cart.count() + ' article' + (Cart.count() > 1 ? 's' : '');
+  document.getElementById('cartCount').textContent       = Cart.count();
+  document.getElementById('summaryCount').textContent    = Cart.count() + ' article' + (Cart.count() > 1 ? 's' : '');
   document.getElementById('summarySubtotal').textContent = formatXAF(Cart.subtotal());
   document.getElementById('summaryTotal').textContent    = formatXAF(Cart.subtotal());
 
-  document.getElementById('summaryItems').innerHTML = items.map(item => `
-    <div class="summary-item">
-      <img class="summary-item__img"
-           src="${esc(item.image || IMG_FALLBACK)}"
-           alt="${esc(item.name)}"
-           onerror="this.src='${IMG_FALLBACK}'">
-      <div class="summary-item__body">
-        <div class="summary-item__name">${esc(item.name)}</div>
-        <div class="summary-item__meta">
-          Qté ${item.qty}
-          ${item.color
-            ? ` · <span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${esc(item.color)};vertical-align:middle;border:1px solid rgba(0,0,0,.12)"></span>`
-            : ''}
-          ${item.vendor ? ` · <span style="font-size:10px;opacity:.7">${esc(item.vendor)}</span>` : ''}
+  document.getElementById('summaryItems').innerHTML = items.map(item => {
+
+    /* ── Tronquer le nom si > 60 caractères (sécurité texte brut) ── */
+    const rawName    = String(item.name || 'Article');
+    const displayName = rawName.length > 80
+      ? rawName.slice(0, 80) + '…'
+      : rawName;
+
+    /* ── Couleur avec indicateur visuel ── */
+    const colorDot = item.color
+      ? `<span style="
+            display:inline-block;
+            width:9px; height:9px;
+            border-radius:50%;
+            background:${esc(item.color)};
+            vertical-align:middle;
+            flex-shrink:0;
+            border:1px solid rgba(0,0,0,.12)
+          "></span>`
+      : '';
+
+    /* ── Vendeur tronqué à 20 chars ── */
+    const vendorText = item.vendor
+      ? `<span style="
+            display:inline-block;
+            max-width:80px;
+            overflow:hidden;
+            text-overflow:ellipsis;
+            white-space:nowrap;
+            vertical-align:bottom;
+            font-size:10px;
+            opacity:.7
+          ">${esc(item.vendor)}</span>`
+      : '';
+
+    return `
+      <div class="summary-item">
+
+        <img class="summary-item__img"
+             src="${esc(item.image || IMG_FALLBACK)}"
+             alt=""
+             aria-hidden="true"
+             loading="lazy"
+             decoding="async"
+             width="52"
+             height="52"
+             onerror="this.src='${IMG_FALLBACK}'">
+
+        <div class="summary-item__body">
+          <div class="summary-item__name" title="${esc(rawName)}">${esc(displayName)}</div>
+          <div class="summary-item__meta">
+            Qté&nbsp;${item.qty}
+            ${colorDot ? ' · ' + colorDot : ''}
+            ${vendorText ? ' · ' + vendorText : ''}
+          </div>
         </div>
-      </div>
-      <div class="summary-item__price">${formatXAF(item.price * item.qty)}</div>
-    </div>`
-  ).join('');
+
+        <div class="summary-item__price">${formatXAF(item.price * item.qty)}</div>
+
+      </div>`;
+  }).join('');
 }
 
 /* ══════════════════════════════════════
@@ -99,8 +285,7 @@ function validateForm() {
     else el.classList.remove('is-error');
   });
 
-  // Validation basique du téléphone (min 9 chiffres)
-  const phoneEl = document.getElementById('customer_phone');
+  const phoneEl     = document.getElementById('customer_phone');
   const phoneDigits = phoneEl.value.replace(/\D/g, '');
   if (ok && phoneDigits.length < 9) {
     phoneEl.classList.add('is-error');
@@ -113,8 +298,6 @@ function validateForm() {
 
 /* ══════════════════════════════════════
    FETCH VENDOR WHATSAPP
-   Récupère le numéro WhatsApp du vendeur
-   pour lui notifier directement
 ══════════════════════════════════════ */
 async function fetchVendorPhone(vendorId) {
   if (!vendorId || vendorId === '__unknown__') return null;
@@ -133,17 +316,12 @@ async function fetchVendorPhone(vendorId) {
 
 /* ══════════════════════════════════════
    NOTIFY VENDOR VIA WHATSAPP
-   Ouvre un lien WA vers le vendeur
-   (en arrière-plan sans bloquer le flux)
 ══════════════════════════════════════ */
 function notifyVendorWhatsApp(vendor, orderNumber, fd, vendorItems) {
   const phone = vendor?.whatsapp || vendor?.phone;
-  if (!phone) return; // pas de numéro → pas de notif directe
+  if (!phone) return;
 
-  const lines = vendorItems.map(i =>
-    `• ${i.name} × ${i.qty} — ${formatXAF(i.price * i.qty)}`
-  ).join('\n');
-
+  const lines    = vendorItems.map(i => `• ${i.name} × ${i.qty} — ${formatXAF(i.price * i.qty)}`).join('\n');
   const subtotal = vendorItems.reduce((s, i) => s + i.price * i.qty, 0);
 
   const msg = [
@@ -162,7 +340,6 @@ function notifyVendorWhatsApp(vendor, orderNumber, fd, vendorItems) {
     '_Paiement à la livraison. Contactez le client pour organiser la livraison._',
   ].filter(Boolean).join('\n');
 
-  // Ouvre dans un nouvel onglet sans bloquer le checkout
   const cleanPhone = phone.replace(/\D/g, '');
   window.open(
     `https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`,
@@ -173,14 +350,10 @@ function notifyVendorWhatsApp(vendor, orderNumber, fd, vendorItems) {
 
 /* ══════════════════════════════════════
    SUBMIT → SUPABASE
-   Groupé par vendor_id — chaque vendeur
-   reçoit sa propre commande
 ══════════════════════════════════════ */
 async function submitOrder(fd) {
   const items = Cart.get();
 
-  // Grouper les articles par vendeur
-  // ⚠️ orders.vendor_id est NOT NULL → on rejette les articles sans vendor_id
   const itemsWithoutVendor = items.filter(i => !i.vendor_id);
   if (itemsWithoutVendor.length) {
     console.warn('[Tindamba] Articles sans vendor_id ignorés :', itemsWithoutVendor.map(i => i.name));
@@ -188,7 +361,7 @@ async function submitOrder(fd) {
 
   const byVendor = new Map();
   for (const item of items) {
-    if (!item.vendor_id) continue; // skip — ne peut pas être inséré
+    if (!item.vendor_id) continue;
     if (!byVendor.has(item.vendor_id)) byVendor.set(item.vendor_id, []);
     byVendor.get(item.vendor_id).push(item);
   }
@@ -197,14 +370,13 @@ async function submitOrder(fd) {
     return { results: [], errors: ['Aucun article valide (vendor_id manquant sur tous les produits).'] };
   }
 
-  const results  = []; // { orderNumber, vendorId, vendorItems, vendorInfo }
-  const errors   = [];
+  const results = [];
+  const errors  = [];
 
   for (const [vendorId, vendorItems] of byVendor) {
     const orderNumber = genOrderNumber();
     const orderTotal  = vendorItems.reduce((s, i) => s + i.price * i.qty, 0);
 
-    // ── Insérer la commande (sans auth requise grâce aux RLS fixes) ──
     const { data: order, error: oErr } = await sb
       .from('orders')
       .insert({
@@ -227,7 +399,6 @@ async function submitOrder(fd) {
       continue;
     }
 
-    // ── Insérer les lignes de commande ──
     const { error: iErr } = await sb
       .from('order_items')
       .insert(vendorItems.map(item => ({
@@ -245,9 +416,7 @@ async function submitOrder(fd) {
       continue;
     }
 
-    // ── Récupérer les infos vendeur pour la notification WA ──
     const vendorInfo = await fetchVendorPhone(vendorId);
-
     results.push({ orderNumber, vendorId, vendorItems, vendorInfo });
   }
 
@@ -255,27 +424,25 @@ async function submitOrder(fd) {
 }
 
 /* ══════════════════════════════════════
-   SUCCESS SCREEN (step 3)
+   SUCCESS SCREEN
 ══════════════════════════════════════ */
 function showSuccess(results, fd) {
   const orderNumbers = results.map(r => r.orderNumber);
-  const num    = orderNumbers[0] || '—';
-  const totalAmount = Cart.subtotal(); // capture avant clear
+  const num          = orderNumbers[0] || '—';
+  const totalAmount  = Cart.subtotal();
 
-  // Message WA support général
   const waText = encodeURIComponent(
     `Bonjour, j'ai passé une commande Tindamba.\nNom : ${fd.customer_name}\nTél : ${fd.customer_phone}\nCommande : ${orderNumbers.join(', ')}\nTotal : ${formatXAF(totalAmount)}`
   );
   const waLink = `https://wa.me/${SUPPORT_WHATSAPP.replace(/\D/g, '')}?text=${waText}`;
 
-  // Résumé des commandes par vendeur
   const orderSummaryHTML = results.length > 1
     ? `<div style="margin-bottom:20px;text-align:left;background:var(--color-bg-secondary);border:1px solid var(--color-border-light);border-radius:var(--radius-md);padding:14px 18px;">
         <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--color-text-tertiary);margin-bottom:10px;">Détail par vendeur</p>
         ${results.map(r => `
           <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:6px 0;border-bottom:1px solid var(--color-border-light);">
-            <span>${esc(r.vendorInfo?.shop_name || 'Boutique')}</span>
-            <span style="font-weight:600;color:var(--color-accent)">${esc(r.orderNumber)}</span>
+            <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:60%">${esc(r.vendorInfo?.shop_name || 'Boutique')}</span>
+            <span style="font-weight:600;color:var(--color-accent);white-space:nowrap;padding-left:8px">${esc(r.orderNumber)}</span>
           </div>`).join('')}
       </div>`
     : '';
@@ -337,8 +504,6 @@ function showSuccess(results, fd) {
   Cart.clear();
   document.getElementById('cartCount').textContent = '0';
 
-  // ── Notifier chaque vendeur par WhatsApp (silencieux) ──
-  // Un léger délai pour ne pas bloquer le rendu de la page succès
   setTimeout(() => {
     for (const r of results) {
       if (r.vendorInfo?.whatsapp || r.vendorInfo?.phone) {
@@ -381,7 +546,6 @@ document.getElementById('checkoutForm').addEventListener('submit', async functio
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
       Confirmer la commande`;
 
-    // Message d'erreur plus lisible
     const errMsg = errors[0].includes('row-level security')
       ? 'Erreur de configuration serveur. Utilisez WhatsApp à la place.'
       : 'Erreur : ' + errors[0];
@@ -389,7 +553,6 @@ document.getElementById('checkoutForm').addEventListener('submit', async functio
     return;
   }
 
-  // Succès (même partiel si certains vendeurs ont échoué)
   if (errors.length && results.length) {
     toast(`${results.length} commande(s) enregistrée(s). ${errors.length} erreur(s) ignorée(s).`, 'info');
   }
@@ -399,7 +562,6 @@ document.getElementById('checkoutForm').addEventListener('submit', async functio
 
 /* ══════════════════════════════════════
    WHATSAPP DIRECT (fallback)
-   Commande sans passer par Supabase
 ══════════════════════════════════════ */
 document.getElementById('whatsappBtn').addEventListener('click', function () {
   const name    = document.getElementById('customer_name').value.trim()    || '(non renseigné)';
@@ -437,4 +599,5 @@ document.getElementById('whatsappBtn').addEventListener('click', function () {
 /* ══════════════════════════════════════
    INIT
 ══════════════════════════════════════ */
+injectResponsiveStyles();
 renderSummary();
