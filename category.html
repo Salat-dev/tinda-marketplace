@@ -974,7 +974,7 @@
    <footer class="footer">
         <div class="footer__main">
             <div class="footer__brand">
-                    <img src="assets/icons/tinda.svg" alt="Tindamba Marketplace" class="footer__logo-svg" />
+                    <img src="assets/icons/tinda.svg" alt="Tinda Marketplace" class="footer__logo-svg" />
 
                 <p class="footer__brand-desc">La marketplace africaine qui connecte vendeurs locaux et acheteurs à travers l'Afrique Centrale.</p>
             </div>
@@ -1018,15 +1018,15 @@
 
         /* ── CART (identique) ── */
         const Cart = {
-            get()      { try { return JSON.parse(localStorage.getItem('tindamba_cart')||'[]'); } catch{ return []; } },
-            save(c)    { localStorage.setItem('tindamba_cart', JSON.stringify(c)); },
+            get()      { try { return JSON.parse(localStorage.getItem('tinda_cart')||'[]'); } catch{ return []; } },
+            save(c)    { localStorage.setItem('tinda_cart', JSON.stringify(c)); },
             count()    { return this.get().reduce((s,i)=>s+i.qty,0); },
             add(product, qty=1) {
                 const cart = this.get();
                 const key = String(product.id);
                 const ex = cart.find(i => i._key === key);
                 if (ex) { ex.qty += qty; }
-                else { cart.push({ _key: key, id: product.id, vendor_id: product.vendor_id||null, vendor: product.vendors?.shop_name||'Tindamba', name: product.name, price: product.price, image: (Array.isArray(product.images)&&product.images[0])||product.image_url||'', color: null, qty }); }
+                else { cart.push({ _key: key, id: product.id, vendor_id: product.vendor_id||null, vendor: product.vendors?.shop_name||'Tinda', name: product.name, price: product.price, image: (Array.isArray(product.images)&&product.images[0])||product.image_url||'', color: null, qty }); }
                 this.save(cart);
                 document.getElementById('cartCount').textContent = this.count();
             }
@@ -1184,7 +1184,7 @@
             const isOut = p.stock <= 0 || p.badge === 'out_of_stock';
             const showBadge = p.badge && p.badge !== 'out_of_stock';
             const discount = hasPromo ? Math.round((1 - p.price / p.old_price) * 100) : 0;
-            const desc = p.description || `Vendu par ${p.vendors?.shop_name || 'Tindamba'}`;
+            const desc = p.description || `Vendu par ${p.vendors?.shop_name || 'Tinda'}`;
             const rating = (3.5 + Math.random() * 1.5).toFixed(1);
             const reviews = Math.floor(10 + Math.random() * 200);
             const stars = '★'.repeat(Math.round(rating)) + '☆'.repeat(5 - Math.round(rating));

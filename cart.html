@@ -261,8 +261,8 @@
         }
 
         const Cart = {
-            get()       { try { return JSON.parse(localStorage.getItem('tindamba_cart') || '[]'); } catch { return []; } },
-            save(c)     { localStorage.setItem('tindamba_cart', JSON.stringify(c)); },
+            get()       { try { return JSON.parse(localStorage.getItem('tinda_cart') || '[]'); } catch { return []; } },
+            save(c)     { localStorage.setItem('tinda_cart', JSON.stringify(c)); },
             count()     { return this.get().reduce((s, i) => s + i.qty, 0); },
             subtotal()  { return this.get().reduce((s, i) => s + i.price * i.qty, 0); },
 

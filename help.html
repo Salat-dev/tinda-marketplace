@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Aide Vendeur · Tindamba</title>
+    <title>Aide Vendeur · Tinda</title>
      <!-- Favicon principal - SVG (navigateurs modernes) -->
   <link rel="icon" type="image/svg+xml" href="assets/icons/icon_tinda.svg" />    
     <!-- Favicon de fallback - PNG 32x32 -->
@@ -41,7 +41,7 @@
 <!-- À la fin du body, après les autres scripts -->
 <script src="js/ux-animations.js"></script>
 
-    <meta name="description" content="Guide complet pour devenir vendeur sur Tindamba — Démo, tutoriel, avantages, FAQ." />
+    <meta name="description" content="Guide complet pour devenir vendeur sur Tinda — Démo, tutoriel, avantages, FAQ." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
@@ -75,7 +75,7 @@
     <section class="help-hero">
         <div class="help-hero__eyebrow"><span class="help-hero__eyebrow-line"></span>Guide vendeur</div>
         <h1 class="help-hero__title">Lancez votre boutique<br>en quelques minutes</h1>
-        <p class="help-hero__sub">Tout ce que vous devez savoir pour vendre sur Tindamba : démo, étapes, avantages et astuces.</p>
+        <p class="help-hero__sub">Tout ce que vous devez savoir pour vendre sur Tinda : démo, étapes, avantages et astuces.</p>
         <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
             <a href="login.html" class="btn btn--white">Créer ma boutique</a>
             <a href="#demo" class="btn btn--outline">Voir la démo</a>
@@ -141,7 +141,7 @@
         <div style="max-width:1100px; margin:0 auto; padding:0 24px;">
             <div class="section__header">
                 <div class="section__eyebrow">Avantages</div>
-                <h2 class="section__title">Pourquoi vendre sur Tindamba ?</h2>
+                <h2 class="section__title">Pourquoi vendre sur Tinda ?</h2>
                 <p class="section__sub">La marketplace pensée pour les vendeurs africains</p>
             </div>
             <div class="benefits-grid">
@@ -170,14 +170,14 @@
     <!-- CTA -->
     <section class="cta-section">
         <h2 class="cta-section__title">Prêt à lancer votre boutique ?</h2>
-        <p class="cta-section__text">Rejoignez des centaines de vendeurs qui ont déjà choisi Tindamba</p>
+        <p class="cta-section__text">Rejoignez des centaines de vendeurs qui ont déjà choisi Tinda</p>
         <a href="login.html" class="btn btn--white">Créer ma boutique gratuitement</a>
     </section>
 
    <footer class="footer">
         <div class="footer__main">
             <div class="footer__brand">
-                    <img src="assets/icons/tinda.svg" alt="Tindamba Marketplace" class="footer__logo-svg" />
+                    <img src="assets/icons/tinda.svg" alt="Tinda Marketplace" class="footer__logo-svg" />
 
                 <p class="footer__brand-desc">La marketplace africaine qui connecte vendeurs locaux et acheteurs à travers l'Afrique Centrale.</p>
             </div>
@@ -194,7 +194,7 @@
             item.classList.toggle('is-open');
         };
         document.getElementById('cartCount').textContent = (() => {
-            try { return JSON.parse(localStorage.getItem('tindamba_cart')||'[]').reduce((s,i)=>s+i.qty,0); }
+            try { return JSON.parse(localStorage.getItem('tinda_cart')||'[]').reduce((s,i)=>s+i.qty,0); }
             catch { return 0; }
         })();
     </script>

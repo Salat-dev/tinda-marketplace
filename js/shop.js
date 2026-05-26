@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════
-   TINDAMBA · shop.js — E-commerce page complète
+   Tinda · shop.js — E-commerce page complète
    ══════════════════════════════════════════════════════════ */
 
 const IMG_FALLBACK = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200"%3E%3Crect fill="%23F2F2EF" width="200" height="200"/%3E%3C/svg%3E';
@@ -186,7 +186,7 @@ function cardHTML(p, showDiscount = false) {
     const hasPromo = p.old_price && p.old_price > p.price;
     const isOut = p.stock <= 0 || p.badge === 'out_of_stock';
     const discount = hasPromo ? Math.round((1 - p.price / p.old_price) * 100) : 0;
-    const desc = p.description || `Vendu par ${p.vendors?.shop_name || 'Tindamba'}`;
+    const desc = p.description || `Vendu par ${p.vendors?.shop_name || 'Tinda'}`;
 
     let badgeHTML = '';
     if (p.badge && p.badge !== 'out_of_stock') badgeHTML = `<span class="badge badge--${p.badge}">${escapeHTML(badgeLabel(p.badge))}</span>`;
@@ -200,7 +200,7 @@ function cardHTML(p, showDiscount = false) {
         stockBar = `<div class="mi-card__stock-bar"><div class="mi-card__stock-fill" style="width:${sold}%"></div><span class="mi-card__stock-text">${sold}% vendus</span></div>`;
     }
 
-    return `<a href="product.html?id=${p.id}" class="mi-card${isOut?' mi-card--out':''}" aria-label="${escapeHTML(p.name)}"><div class="mi-card__media">${badgeHTML}<button class="mi-card__wish" onclick="event.preventDefault();event.stopPropagation();"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button><img src="${escapeHTML(img)}" alt="${escapeHTML(p.name)}" loading="lazy" onerror="this.src='${IMG_FALLBACK}'"><button class="mi-card__atc" onclick="event.preventDefault();event.stopPropagation();quickAddToCart('${p.id}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 6L8 16H20L22 6H6Z"/><path d="M6 6L4 2H2"/><circle cx="10" cy="20" r="1.5" fill="currentColor" stroke="none"/><circle cx="18" cy="20" r="1.5" fill="currentColor" stroke="none"/></svg>Ajouter</button></div><div class="mi-card__body"><div class="mi-card__vendor">${escapeHTML(p.vendors?.shop_name||'Tindamba')}</div><h3 class="mi-card__name">${escapeHTML(p.name)}</h3><p class="mi-card__desc">${escapeHTML(desc)}</p>${renderSwatches(p.colors)}<div class="mi-card__price"><span class="mi-card__price-current">${formatXAF(p.price)}</span>${hasPromo?`<span class="mi-card__price-old">${formatXAF(p.old_price)}</span>`:''}${hasPromo?`<span class="mi-card__price-discount">−${discount}%</span>`:''}</div>${stockBar}</div></a>`;
+    return `<a href="product.html?id=${p.id}" class="mi-card${isOut?' mi-card--out':''}" aria-label="${escapeHTML(p.name)}"><div class="mi-card__media">${badgeHTML}<button class="mi-card__wish" onclick="event.preventDefault();event.stopPropagation();"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button><img src="${escapeHTML(img)}" alt="${escapeHTML(p.name)}" loading="lazy" onerror="this.src='${IMG_FALLBACK}'"><button class="mi-card__atc" onclick="event.preventDefault();event.stopPropagation();quickAddToCart('${p.id}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 6L8 16H20L22 6H6Z"/><path d="M6 6L4 2H2"/><circle cx="10" cy="20" r="1.5" fill="currentColor" stroke="none"/><circle cx="18" cy="20" r="1.5" fill="currentColor" stroke="none"/></svg>Ajouter</button></div><div class="mi-card__body"><div class="mi-card__vendor">${escapeHTML(p.vendors?.shop_name||'Tinda')}</div><h3 class="mi-card__name">${escapeHTML(p.name)}</h3><p class="mi-card__desc">${escapeHTML(desc)}</p>${renderSwatches(p.colors)}<div class="mi-card__price"><span class="mi-card__price-current">${formatXAF(p.price)}</span>${hasPromo?`<span class="mi-card__price-old">${formatXAF(p.old_price)}</span>`:''}${hasPromo?`<span class="mi-card__price-discount">−${discount}%</span>`:''}</div>${stockBar}</div></a>`;
 }
 /* ═══════════════════════════════════════════════════════════
    SLIDER + CART
@@ -211,10 +211,10 @@ window.slideSection = slideSection;
 
 let allProducts = [], allCategories = [];
 const Cart = {
-    get() { try { return JSON.parse(localStorage.getItem('tindamba_cart')||'[]'); } catch { return []; } },
-    save(c) { localStorage.setItem('tindamba_cart', JSON.stringify(c)); },
+    get() { try { return JSON.parse(localStorage.getItem('tinda_cart')||'[]'); } catch { return []; } },
+    save(c) { localStorage.setItem('tinda_cart', JSON.stringify(c)); },
     count() { return this.get().reduce((s,i) => s + i.qty, 0); },
-    add(product, qty = 1) { const cart = this.get(); const key = String(product.id); const ex = cart.find(i => i._key === key); if (ex) ex.qty += qty; else cart.push({ _key: key, id: product.id, vendor_id: product.vendor_id, vendor: product.vendors?.shop_name || 'Tindamba', name: product.name, price: product.price, image: (Array.isArray(product.images) && product.images[0]) || product.image_url || '', color: null, qty }); this.save(cart); document.getElementById('cartCount').textContent = this.count(); }
+    add(product, qty = 1) { const cart = this.get(); const key = String(product.id); const ex = cart.find(i => i._key === key); if (ex) ex.qty += qty; else cart.push({ _key: key, id: product.id, vendor_id: product.vendor_id, vendor: product.vendors?.shop_name || 'Tinda', name: product.name, price: product.price, image: (Array.isArray(product.images) && product.images[0]) || product.image_url || '', color: null, qty }); this.save(cart); document.getElementById('cartCount').textContent = this.count(); }
 };
 document.getElementById('cartCount').textContent = Cart.count();
 window.quickAddToCart = (pid) => { const p = allProducts.find(x => x.id == pid); if (!p) { toast('Produit introuvable','error'); return; } if (p.stock<=0||p.badge==='out_of_stock') { toast('Rupture de stock','error'); return; } Cart.add(p,1); toast(`"${p.name}" ajouté au panier ✓`,'success'); };

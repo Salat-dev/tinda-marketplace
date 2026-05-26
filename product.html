@@ -1127,7 +1127,7 @@
     <footer class="footer">
         <div class="footer__main">
             <div class="footer__brand">
-                <img src="assets/icons/tinda.svg" alt="Tindamba Marketplace" class="footer__logo-svg" />
+                <img src="assets/icons/tinda.svg" alt="Tinda Marketplace" class="footer__logo-svg" />
                 <p class="footer__brand-desc">La marketplace africaine qui connecte vendeurs locaux et acheteurs à travers l'Afrique Centrale.</p>
             </div>
             <div class="footer__col"><h4 class="footer__col-title">Navigation</h4><ul class="footer__links"><li><a href="shop.html">Boutique</a></li><li><a href="cart.html">Mon panier</a></li><li><a href="checkout.html">Commander</a></li></ul></div>
@@ -1135,7 +1135,7 @@
             <div class="footer__col"><h4 class="footer__col-title">Support</h4><ul class="footer__links"><li><a href="https://wa.me/237693421348">WhatsApp direct</a></li><li><a href="faqs.html">FAQ</a></li><li><a href="conditions.html">Conditions</a></li></ul></div>
         </div>
         <div class="footer__bottom">
-            <p>© 2025 Tindamba — Marketplace africaine de confiance.</p>
+            <p>© 2025 Tinda — Marketplace africaine de confiance.</p>
             <div class="footer__payment">
                 <span class="footer__payment-badge">MTN MoMo</span>
                 <span class="footer__payment-badge">Orange Money</span>
@@ -1178,15 +1178,15 @@
         }
 
         const Cart = {
-            get() { try { return JSON.parse(localStorage.getItem("tindamba_cart") || "[]"); } catch { return []; } },
-            save(c) { localStorage.setItem("tindamba_cart", JSON.stringify(c)); },
+            get() { try { return JSON.parse(localStorage.getItem("tinda_cart") || "[]"); } catch { return []; } },
+            save(c) { localStorage.setItem("tinda_cart", JSON.stringify(c)); },
             count() { return this.get().reduce((s, i) => s + i.qty, 0); },
             add(product, qty = 1, color = null) {
                 const cart = this.get();
                 const key = color ? `${product.id}__${color}` : product.id;
                 const ex = cart.find(i => i._key === key);
                 if (ex) ex.qty += qty;
-                else cart.push({ _key: key, id: product.id, vendor_id: product.vendor_id || null, vendor: product.vendors?.shop_name || "Tindamba", name: product.name, price: product.price, image: product.image_url, color, qty });
+                else cart.push({ _key: key, id: product.id, vendor_id: product.vendor_id || null, vendor: product.vendors?.shop_name || "Tinda", name: product.name, price: product.price, image: product.image_url, color, qty });
                 this.save(cart);
                 document.getElementById("cartCount").textContent = this.count();
             }
@@ -1266,7 +1266,7 @@
 
             document.getElementById("breadcrumbCat").textContent = p.categories?.name || "Catégorie";
             document.getElementById("breadcrumbName").textContent = p.name;
-            document.title = `${p.name} · Tindamba`;
+            document.title = `${p.name} · Tinda`;
 
             let stockHTML, stockClass;
             if (isOut) {
@@ -1295,7 +1295,7 @@
             }
 
             const wa = p.vendors?.whatsapp || SUPPORT_WHATSAPP;
-            const waText = encodeURIComponent(`Bonjour, je suis intéressé par "${p.name}" sur Tindamba.`);
+            const waText = encodeURIComponent(`Bonjour, je suis intéressé par "${p.name}" sur Tinda.`);
             const waLink = `https://wa.me/${wa.replace(/\D/g, "")}?text=${waText}`;
 
             const thumbs = images.map((src, i) =>
@@ -1325,7 +1325,7 @@
                 <div class="product-info">
                     <div class="product-info__vendor">
                         <span class="product-info__vendor-dot"></span>
-                        ${esc(p.vendors?.shop_name || "Tindamba")}
+                        ${esc(p.vendors?.shop_name || "Tinda")}
                         ${p.vendors?.city ? `· ${esc(p.vendors.city)}` : ""}
                     </div>
 
@@ -1411,7 +1411,7 @@
         function renderDescription() {
             const p = product;
             const desc = p.description || "Aucune description disponible pour ce produit.";
-            const vendorName = p.vendors?.shop_name || "Tindamba";
+            const vendorName = p.vendors?.shop_name || "Tinda";
             const vendorCity = p.vendors?.city || "";
             const vendorInitial = vendorName.charAt(0).toUpperCase();
 

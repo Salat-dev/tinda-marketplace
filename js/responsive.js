@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════════
-   TINDAMBA — responsive.js
+   Tinda — responsive.js
    Script responsif centralisé pour TOUTES les pages.
    Inclure dans chaque page : <script src="js/responsive.js"></script>
    (après le CDN Supabase si nécessaire)
@@ -39,7 +39,7 @@
        ───────────────────────────────────────────────────────── */
     function getCartCount() {
         try {
-            const cart = JSON.parse(localStorage.getItem('tindamba_cart') || localStorage.getItem('tinda_cart') || '[]');
+            const cart = JSON.parse(localStorage.getItem('tinda_cart') || localStorage.getItem('tinda_cart') || '[]');
             return cart.reduce((s, i) => s + (i.qty || 0), 0);
         } catch {
             return 0;
@@ -383,13 +383,13 @@
 
     // Écouter les changements du panier (multi-tabs)
     window.addEventListener('storage', (e) => {
-        if (e.key === 'tindamba_cart' || e.key === 'tinda_cart') {
+        if (e.key === 'tinda_cart' || e.key === 'tinda_cart') {
             updateAllCartBadges();
         }
     });
 
     // Export pour usage externe
-    window.TindambaResponsive = {
+    window.TindaResponsive = {
         updateCartBadges: updateAllCartBadges,
         getCartCount: getCartCount,
         adaptLayout: adaptLayout,

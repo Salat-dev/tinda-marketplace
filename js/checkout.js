@@ -41,8 +41,8 @@ function toast(msg, type = 'info') {
    CART
 ══════════════════════════════════════ */
 const Cart = {
-  get()      { try { return JSON.parse(localStorage.getItem('tindamba_cart') || '[]'); } catch { return []; } },
-  clear()    { localStorage.removeItem('tindamba_cart'); },
+  get()      { try { return JSON.parse(localStorage.getItem('tinda_cart') || '[]'); } catch { return []; } },
+  clear()    { localStorage.removeItem('tinda_cart'); },
   count()    { return this.get().reduce((s, i) => s + i.qty, 0); },
   subtotal() { return this.get().reduce((s, i) => s + i.price * i.qty, 0); },
 };
@@ -325,7 +325,7 @@ function notifyVendorWhatsApp(vendor, orderNumber, fd, vendorItems) {
   const subtotal = vendorItems.reduce((s, i) => s + i.price * i.qty, 0);
 
   const msg = [
-    `🛍️ *Nouvelle commande Tindamba — ${orderNumber}*`,
+    `🛍️ *Nouvelle commande Tinda — ${orderNumber}*`,
     '',
     `👤 Client : ${fd.customer_name}`,
     `📞 Tél : ${fd.customer_phone}`,
@@ -356,7 +356,7 @@ async function submitOrder(fd) {
 
   const itemsWithoutVendor = items.filter(i => !i.vendor_id);
   if (itemsWithoutVendor.length) {
-    console.warn('[Tindamba] Articles sans vendor_id ignorés :', itemsWithoutVendor.map(i => i.name));
+    console.warn('[Tinda] Articles sans vendor_id ignorés :', itemsWithoutVendor.map(i => i.name));
   }
 
   const byVendor = new Map();
@@ -394,7 +394,7 @@ async function submitOrder(fd) {
       .single();
 
     if (oErr || !order) {
-      console.error('[Tindamba] Order insert error:', oErr);
+      console.error('[Tinda] Order insert error:', oErr);
       errors.push(oErr?.message || 'Erreur création commande');
       continue;
     }
@@ -411,7 +411,7 @@ async function submitOrder(fd) {
       })));
 
     if (iErr) {
-      console.error('[Tindamba] Order items insert error:', iErr);
+      console.error('[Tinda] Order items insert error:', iErr);
       errors.push(iErr.message);
       continue;
     }
@@ -432,7 +432,7 @@ function showSuccess(results, fd) {
   const totalAmount  = Cart.subtotal();
 
   const waText = encodeURIComponent(
-    `Bonjour, j'ai passé une commande Tindamba.\nNom : ${fd.customer_name}\nTél : ${fd.customer_phone}\nCommande : ${orderNumbers.join(', ')}\nTotal : ${formatXAF(totalAmount)}`
+    `Bonjour, j'ai passé une commande Tinda.\nNom : ${fd.customer_name}\nTél : ${fd.customer_phone}\nCommande : ${orderNumbers.join(', ')}\nTotal : ${formatXAF(totalAmount)}`
   );
   const waLink = `https://wa.me/${SUPPORT_WHATSAPP.replace(/\D/g, '')}?text=${waText}`;
 
@@ -575,7 +575,7 @@ document.getElementById('whatsappBtn').addEventListener('click', function () {
   ).join('\n');
 
   const msg = [
-    '🛍️ *Nouvelle commande Tindamba*',
+    '🛍️ *Nouvelle commande Tinda*',
     '',
     `👤 ${name}`,
     `📞 ${phone}`,

@@ -113,7 +113,7 @@
 
         // Panier
         document.getElementById('cartCount').textContent = (() => {
-            try { return JSON.parse(localStorage.getItem('tindamba_cart') || '[]').reduce((s, i) => s + i.qty, 0); }
+            try { return JSON.parse(localStorage.getItem('tinda_cart') || '[]').reduce((s, i) => s + i.qty, 0); }
             catch { return 0; }
         })();
 
