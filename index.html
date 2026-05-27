@@ -52,12 +52,21 @@
            DESIGN SYSTEM Mayi
         ══════════════════════════════════════════════════════════ */
         :root {
-            --color-bg: #FFFFFF;
-            --color-text: #1D1D1F;
-            --color-text-secondary: #6E6E73;
-            --color-text-tertiary: #86868B;
-            --color-accent: #0071E3;
-            --color-accent-hover: #0077ED;
+       --color-bg: #FFFFFF;
+    --color-bg-secondary: #FAFAFA;
+    --color-bg-tertiary: #F5F5F5;
+
+    --color-text: #000000;
+    --color-text-secondary: #4B5563;
+    --color-text-tertiary: #6B7280;
+
+    /* ===== BRAND ===== */
+    --color-accent: #076128;
+    --color-accent-hover: #15803D;
+
+    /* ===== CTA / PROMO ===== */
+    --color-orange: #F97316;
+    --color-orange-hover: #EA580C;
             --font-display: 'inter', system-ui;
         }
 
@@ -123,7 +132,7 @@
             width: 32px;
             height: 32px;
             border: 3px solid #E8E8ED;
-            border-top-color: #0071E3;
+            border-top-color: #076128;
             border-radius: 50%;
             animation: spin 0.8s cubic-bezier(0.5, 0.1, 0.5, 0.9) infinite;
         }
@@ -149,7 +158,7 @@
             font-weight: 600;
             letter-spacing: 0.07em;
             text-transform: uppercase;
-            background: #0071E3;
+            background: #076128;
             color: white;
             border: none;
             border-radius: 6px;
@@ -160,7 +169,7 @@
         }
 
         .splash__btn:hover {
-            background: #0077ED;
+            background: #15803D;
             transform: translateY(-1px);
             box-shadow: 0 8px 24px rgba(0, 113, 227, 0.4);
         }
