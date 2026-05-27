@@ -1,25 +1,72 @@
-      :root {
-            --color-bg: #FFFFFF;
-            --color-bg-secondary: #FAFAFA;
-            --color-text: #1D1D1F;
-            --color-text-secondary: #6E6E73;
-            --color-text-tertiary: #86868B;
-            --color-accent: #0071E3;
-            --color-accent-hover: #0077ED;
-            --color-border: #E8E8ED;
-            --color-border-light: #F2F2F7;
-            --font-display: 'inter', system-ui;
-            --space-xs: 0.5rem;
-            --space-sm: 1rem;
-            --space-md: 1.5rem;
-            --space-lg: 2.5rem;
-            --space-xl: 4rem;
-            --space-2xl: 6rem;
-            --transition-fast: 0.22s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            --radius-sm: 3px;
-            --radius-md: 6px;
-            --radius-full: 999px;
-        }
+:root {
+    /* =========================
+       BACKGROUNDS
+    ========================== */
+
+    --color-bg: #FFFFFF;
+    --color-bg-secondary: #FAFAFA;
+
+    /* =========================
+       TEXT
+    ========================== */
+
+    --color-text: #000000;
+    --color-text-secondary: #4B5563;
+    --color-text-tertiary: #6B7280;
+
+    /* =========================
+       BRAND (MIAGU)
+    ========================== */
+
+    --color-accent: #076128;
+    --color-accent-hover: #15803D;
+    --color-accent-soft: rgba(7, 97, 40, 0.08);
+
+    /* =========================
+       ORANGE (ACTIONS)
+    ========================== */
+
+    --color-orange: #F97316;
+    --color-orange-hover: #EA580C;
+
+    /* =========================
+       BORDERS
+    ========================== */
+
+    --color-border: #E5E7EB;
+    --color-border-light: #F3F4F6;
+
+    /* =========================
+       TYPOGRAPHY
+    ========================== */
+
+    --font-display: 'Inter', system-ui, sans-serif;
+
+    /* =========================
+       SPACING
+    ========================== */
+
+    --space-xs: 0.5rem;
+    --space-sm: 1rem;
+    --space-md: 1.5rem;
+    --space-lg: 2.5rem;
+    --space-xl: 4rem;
+    --space-2xl: 6rem;
+
+    /* =========================
+       TRANSITIONS
+    ========================== */
+
+    --transition-fast: 0.22s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+    /* =========================
+       RADIUS
+    ========================== */
+
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-full: 999px;
+}
 
         * { margin:0; padding:0; box-sizing:border-box; }
         html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }

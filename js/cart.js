@@ -21,8 +21,8 @@
         }
 
         const Cart = {
-            get()       { try { return JSON.parse(localStorage.getItem('Tinda_cart') || '[]'); } catch { return []; } },
-            save(c)     { localStorage.setItem('Tinda_cart', JSON.stringify(c)); },
+            get()       { try { return JSON.parse(localStorage.getItem('mayi_cart') || '[]'); } catch { return []; } },
+            save(c)     { localStorage.setItem('mayi_cart', JSON.stringify(c)); },
             count()     { return this.get().reduce((s, i) => s + i.qty, 0); },
             subtotal()  { return this.get().reduce((s, i) => s + i.price * i.qty, 0); },
 
@@ -113,7 +113,7 @@
                          onerror="this.src='${IMG_FALLBACK}'">
 
                     <div class="cart-item__body">
-                        <div class="cart-item__vendor">${esc(item.vendor || 'Tinda')}</div>
+                        <div class="cart-item__vendor">${esc(item.vendor || 'Mayi')}</div>
                         <div class="cart-item__name">${esc(item.name)}</div>
                         ${colorDot}
                         <div class="cart-item__unit-price" style="margin-top:4px">${formatXAF(item.price)} / unité</div>

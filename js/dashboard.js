@@ -1,5 +1,5 @@
 /* =============================================================
-   dashboard.js — Tinda
+   dashboard.js — Mayi
    Gestion vendeur : commandes · produits · catégories
 ============================================================= */
 

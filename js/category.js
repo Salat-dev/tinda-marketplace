@@ -28,15 +28,15 @@
 
         /* ── CART (identique) ── */
         const Cart = {
-            get()      { try { return JSON.parse(localStorage.getItem('Tinda_cart')||'[]'); } catch{ return []; } },
-            save(c)    { localStorage.setItem('Tinda_cart', JSON.stringify(c)); },
+            get()      { try { return JSON.parse(localStorage.getItem('mayi_cart')||'[]'); } catch{ return []; } },
+            save(c)    { localStorage.setItem('mayi_cart', JSON.stringify(c)); },
             count()    { return this.get().reduce((s,i)=>s+i.qty,0); },
             add(product, qty=1) {
                 const cart = this.get();
                 const key = String(product.id);
                 const ex = cart.find(i => i._key === key);
                 if (ex) { ex.qty += qty; }
-                else { cart.push({ _key: key, id: product.id, vendor_id: product.vendor_id||null, vendor: product.vendors?.shop_name||'Tinda', name: product.name, price: product.price, image: (Array.isArray(product.images)&&product.images[0])||product.image_url||'', color: null, qty }); }
+                else { cart.push({ _key: key, id: product.id, vendor_id: product.vendor_id||null, vendor: product.vendors?.shop_name||'Mayi', name: product.name, price: product.price, image: (Array.isArray(product.images)&&product.images[0])||product.image_url||'', color: null, qty }); }
                 this.save(cart);
                 document.getElementById('cartCount').textContent = this.count();
             }
@@ -61,7 +61,7 @@
                 return;
             }
             document.getElementById('catTitle').textContent = catData.name;
-            document.title = `${catData.name} · Tinda`;
+            document.title = `${catData.name} · Mayi`;
 
             // Charger les produits
             const { data: products, error } = await sb
@@ -154,7 +154,7 @@
             const isOut = p.stock <= 0 || p.badge === 'out_of_stock';
             const showBadge = p.badge && p.badge !== 'out_of_stock';
             const discount = hasPromo ? Math.round((1 - p.price / p.old_price) * 100) : 0;
-            const desc = p.description || `Vendu par ${p.vendors?.shop_name || 'Tinda'}`;
+            const desc = p.description || `Vendu par ${p.vendors?.shop_name || 'Mayi'}`;
             const rating = (3.5 + Math.random() * 1.5).toFixed(1);
             const reviews = Math.floor(10 + Math.random() * 200);
             const stars = '★'.repeat(Math.round(rating)) + '☆'.repeat(5 - Math.round(rating));
@@ -188,7 +188,7 @@
                     </button>
                 </div>
                 <div class="mi-card__body">
-                    <div class="mi-card__vendor">${esc(p.vendors?.shop_name || 'Tinda')}</div>
+                    <div class="mi-card__vendor">${esc(p.vendors?.shop_name || 'Mayi')}</div>
                     <h3 class="mi-card__name">${esc(p.name)}</h3>
                     <p class="mi-card__desc">${esc(desc)}</p>
                     ${swatchesHTML}

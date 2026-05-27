@@ -41,8 +41,8 @@ function toast(msg, type = 'info') {
    CART
 ══════════════════════════════════════ */
 const Cart = {
-  get()      { try { return JSON.parse(localStorage.getItem('tinda_cart') || '[]'); } catch { return []; } },
-  clear()    { localStorage.removeItem('tinda_cart'); },
+  get()      { try { return JSON.parse(localStorage.getItem('mayi_cart') || '[]'); } catch { return []; } },
+  clear()    { localStorage.removeItem('mayi_cart'); },
   count()    { return this.get().reduce((s, i) => s + i.qty, 0); },
   subtotal() { return this.get().reduce((s, i) => s + i.price * i.qty, 0); },
 };
@@ -54,9 +54,9 @@ const Cart = {
    dans la sidebar et stabilise la grille.
 ══════════════════════════════════════ */
 function injectResponsiveStyles() {
-  if (document.getElementById('__tinda_responsive')) return;
+  if (document.getElementById('__Mayi_responsive')) return;
   const s = document.createElement('style');
-  s.id = '__tinda_responsive';
+  s.id = '__Mayi_responsive';
   s.textContent = `
 
     /* ── Grille checkout : empêche la sidebar d'étirer la grille ── */
@@ -325,7 +325,7 @@ function notifyVendorWhatsApp(vendor, orderNumber, fd, vendorItems) {
   const subtotal = vendorItems.reduce((s, i) => s + i.price * i.qty, 0);
 
   const msg = [
-    `🛍️ *Nouvelle commande Tinda — ${orderNumber}*`,
+    `🛍️ *Nouvelle commande Mayi — ${orderNumber}*`,
     '',
     `👤 Client : ${fd.customer_name}`,
     `📞 Tél : ${fd.customer_phone}`,
@@ -356,7 +356,7 @@ async function submitOrder(fd) {
 
   const itemsWithoutVendor = items.filter(i => !i.vendor_id);
   if (itemsWithoutVendor.length) {
-    console.warn('[Tinda] Articles sans vendor_id ignorés :', itemsWithoutVendor.map(i => i.name));
+    console.warn('[Mayi] Articles sans vendor_id ignorés :', itemsWithoutVendor.map(i => i.name));
   }
 
   const byVendor = new Map();
@@ -394,7 +394,7 @@ async function submitOrder(fd) {
       .single();
 
     if (oErr || !order) {
-      console.error('[Tinda] Order insert error:', oErr);
+      console.error('[Mayi] Order insert error:', oErr);
       errors.push(oErr?.message || 'Erreur création commande');
       continue;
     }
@@ -411,7 +411,7 @@ async function submitOrder(fd) {
       })));
 
     if (iErr) {
-      console.error('[Tinda] Order items insert error:', iErr);
+      console.error('[Mayi] Order items insert error:', iErr);
       errors.push(iErr.message);
       continue;
     }
@@ -432,7 +432,7 @@ function showSuccess(results, fd) {
   const totalAmount  = Cart.subtotal();
 
   const waText = encodeURIComponent(
-    `Bonjour, j'ai passé une commande Tinda.\nNom : ${fd.customer_name}\nTél : ${fd.customer_phone}\nCommande : ${orderNumbers.join(', ')}\nTotal : ${formatXAF(totalAmount)}`
+    `Bonjour, j'ai passé une commande Mayi.\nNom : ${fd.customer_name}\nTél : ${fd.customer_phone}\nCommande : ${orderNumbers.join(', ')}\nTotal : ${formatXAF(totalAmount)}`
   );
   const waLink = `https://wa.me/${SUPPORT_WHATSAPP.replace(/\D/g, '')}?text=${waText}`;
 
@@ -575,7 +575,7 @@ document.getElementById('whatsappBtn').addEventListener('click', function () {
   ).join('\n');
 
   const msg = [
-    '🛍️ *Nouvelle commande Tinda*',
+    '🛍️ *Nouvelle commande Mayi*',
     '',
     `👤 ${name}`,
     `📞 ${phone}`,

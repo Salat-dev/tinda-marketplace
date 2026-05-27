@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════════
-   Tinda — responsive.js
+   Mayi — responsive.js
    Script responsif centralisé pour TOUTES les pages.
    Inclure dans chaque page : <script src="js/responsive.js"></script>
    (après le CDN Supabase si nécessaire)
@@ -39,7 +39,7 @@
        ───────────────────────────────────────────────────────── */
     function getCartCount() {
         try {
-            const cart = JSON.parse(localStorage.getItem('tinda_cart') || localStorage.getItem('tinda_cart') || '[]');
+            const cart = JSON.parse(localStorage.getItem('mayi_cart') || localStorage.getItem('mayi_cart') || '[]');
             return cart.reduce((s, i) => s + (i.qty || 0), 0);
         } catch {
             return 0;
@@ -116,7 +116,7 @@
                 <div class="mobile-sidebar__panel">
                     <div class="mobile-sidebar__header">
                         <a href="shop.html" class="mobile-sidebar__logo">
-                            <img src="assets/icons/tinda.svg" alt="Tinda" class="mobile-sidebar__logo-svg" />
+                            <img src="assets/icons/logo.svg" alt="Mayi" class="mobile-sidebar__logo-svg" />
                         </a>
                         <button class="mobile-sidebar__close" id="sidebarClose" aria-label="Fermer le menu">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -150,7 +150,7 @@
                         </a>
                     </nav>
                     <div class="mobile-sidebar__footer">
-                        <p>© 2025 Tinda</p>
+                        <p>© 2025 Mayi</p>
                     </div>
                 </div>
             `;
@@ -383,13 +383,13 @@
 
     // Écouter les changements du panier (multi-tabs)
     window.addEventListener('storage', (e) => {
-        if (e.key === 'tinda_cart' || e.key === 'tinda_cart') {
+        if (e.key === 'mayi_cart' || e.key === 'mayi_cart') {
             updateAllCartBadges();
         }
     });
 
     // Export pour usage externe
-    window.TindaResponsive = {
+    window.MayiResponsive = {
         updateCartBadges: updateAllCartBadges,
         getCartCount: getCartCount,
         adaptLayout: adaptLayout,

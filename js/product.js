@@ -29,15 +29,15 @@
         }
 
         const Cart = {
-            get() { try { return JSON.parse(localStorage.getItem("tinda_cart") || "[]"); } catch { return []; } },
-            save(c) { localStorage.setItem("tinda_cart", JSON.stringify(c)); },
+            get() { try { return JSON.parse(localStorage.getItem("mayi_cart") || "[]"); } catch { return []; } },
+            save(c) { localStorage.setItem("mayi_cart", JSON.stringify(c)); },
             count() { return this.get().reduce((s, i) => s + i.qty, 0); },
             add(product, qty = 1, color = null) {
                 const cart = this.get();
                 const key = color ? `${product.id}__${color}` : product.id;
                 const ex = cart.find(i => i._key === key);
                 if (ex) ex.qty += qty;
-                else cart.push({ _key: key, id: product.id, vendor_id: product.vendor_id || null, vendor: product.vendors?.shop_name || "Tinda", name: product.name, price: product.price, image: product.image_url, color, qty });
+                else cart.push({ _key: key, id: product.id, vendor_id: product.vendor_id || null, vendor: product.vendors?.shop_name || "Mayi", name: product.name, price: product.price, image: product.image_url, color, qty });
                 this.save(cart);
                 document.getElementById("cartCount").textContent = this.count();
             }
@@ -90,7 +90,7 @@
 
             document.getElementById("breadcrumbCat").textContent = p.categories?.name || "Catégorie";
             document.getElementById("breadcrumbName").textContent = p.name;
-            document.title = `${p.name} · Tinda`;
+            document.title = `${p.name} · Mayi`;
 
             let stockHTML, stockClass;
             if (isOut) {
@@ -121,7 +121,7 @@
             }
 
             const wa = p.vendors?.whatsapp || SUPPORT_WHATSAPP;
-            const waText = encodeURIComponent(`Bonjour, je suis intéressé par "${p.name}" sur Tinda.`);
+            const waText = encodeURIComponent(`Bonjour, je suis intéressé par "${p.name}" sur Mayi.`);
             const waLink = `https://wa.me/${wa.replace(/\D/g, "")}?text=${waText}`;
 
             const thumbs = images.map((src, i) =>
@@ -148,7 +148,7 @@
                 <div class="product-info">
                     <div class="product-info__vendor">
                         <span class="product-info__vendor-dot"></span>
-                        ${esc(p.vendors?.shop_name || "Tinda")}
+                        ${esc(p.vendors?.shop_name || "Mayi")}
                         ${p.vendors?.city ? `· ${esc(p.vendors.city)}` : ""}
                     </div>
 

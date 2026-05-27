@@ -1,5 +1,5 @@
 /* =============================================================
-   upload.js — Tinda
+   upload.js — Mayi
    Compression + upload d'images vers Supabase Storage
 ============================================================= */
 

@@ -1,31 +1,90 @@
 /* ══════════════════════════════════════════════════════════
-   DESIGN SYSTEM Tinda
+   DESIGN SYSTEM Mayi
 ══════════════════════════════════════════════════════════ */
 :root {
+    /* =========================
+       COLORS
+    ========================== */
+
     --color-bg: #FFFFFF;
     --color-bg-secondary: #FAFAFA;
     --color-bg-tertiary: #F5F5F5;
-    --color-text: #1D1D1F;
-    --color-text-secondary: #6E6E73;
-    --color-text-tertiary: #86868B;
-    --color-accent: #0071E3;
-    --color-accent-hover: #0077ED;
-    --color-border: #E8E8ED;
-    --color-border-light: #F2F2F7;
-    --font-display: 'Outfit', system-ui;
+
+    --color-text: #000000;
+    --color-text-secondary: #4B5563;
+    --color-text-tertiary: #6B7280;
+
+    /* ===== BRAND ===== */
+    --color-accent: #076128;
+    --color-accent-hover: #15803D;
+
+    /* ===== CTA / PROMO ===== */
+    --color-orange: #F97316;
+    --color-orange-hover: #EA580C;
+
+    /* ===== BORDERS ===== */
+    --color-border: #E5E7EB;
+    --color-border-light: #F3F4F6;
+
+    /* =========================
+       TYPOGRAPHY
+    ========================== */
+
+    --font-display: 'General Sans', 'Inter', system-ui, sans-serif;
+
+    /* =========================
+       SPACING
+    ========================== */
+
     --space-xs: 0.5rem;
     --space-sm: 1rem;
     --space-md: 1.5rem;
     --space-lg: 2.5rem;
     --space-xl: 4rem;
     --space-2xl: 6rem;
-    --transition-fast: 0.22s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    --transition-base: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    --transition-slow: 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
-    --shadow-md: 0 8px 32px rgba(0,0,0,0.08);
-    --shadow-lg: 0 20px 60px rgba(0,0,0,0.10);
-    --shadow-xl: 0 40px 100px rgba(0,0,0,0.13);
+
+    /* =========================
+       TRANSITIONS
+    ========================== */
+
+    --transition-fast: 0.2s ease;
+    --transition-base: 0.3s ease;
+    --transition-slow: 0.5s ease;
+
+    /* =========================
+       SHADOWS
+    ========================== */
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
+
+    --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.08);
+
+    --shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.10);
+
+    /* =========================
+       RADIUS
+    ========================== */
+
+    --radius-sm: 10px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-xl: 32px;
+
+    /* =========================
+       STATES
+    ========================== */
+
+    --color-success: #16A34A;
+    --color-success-light: #DCFCE7;
+
+    --color-warning: #F97316;
+    --color-warning-light: #FFEDD5;
+
+    --color-error: #DC2626;
+    --color-error-light: #FEE2E2;
+
     --radius-sm: 3px;
     --radius-md: 6px;
     --radius-full: 999px;

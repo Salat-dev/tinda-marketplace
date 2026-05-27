@@ -1,6 +1,6 @@
 {
-    "name": "Tinda Marketplace",
-    "short_name": "Tinda ",
+    "name": "Mayi Marketplace",
+    "short_name": "Mayi ",
     "description": "Le meilleur ecommerce de l'Afrique Centrale",
     "start_url": "/",
     "display": "standalone",
@@ -18,13 +18,13 @@
             "type": "image/svg+xml"
         },
         {
-            "src": "images/logo/icone phone.svg",
+            "src": "assets/icons/icone phone.svg",
             "sizes": "180x180",
             "type": "image/svg+xml",
             "purpose": "apple touch icon"
         },
         {
-            "src": "images/logo/icone phone.svg",
+            "src": "assets/icons/icone phone.svg",
             "sizes": "any",
             "type": "image/svg+xml",
             "purpose": "any maskable"
