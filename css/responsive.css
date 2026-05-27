@@ -154,6 +154,12 @@
 }
 
 
+.mobile-sidebar__logo-svg  {
+    width: 52px;
+    height: auto;
+    display: block;
+    color: var(--color-primary, #2563eb);
+}
 
 .mobile-sidebar__close {
     width: 36px;

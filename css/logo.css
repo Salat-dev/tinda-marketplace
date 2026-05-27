@@ -17,7 +17,7 @@
 }
 
 .navbar__logo-svg {
-    width: 90px;
+    width: 82px;
     height: auto;
     display: block;
     /* Permet de contrôler la couleur du SVG via CSS si le SVG utilise currentColor */
@@ -31,22 +31,6 @@
     line-height: 1.2;
 }
 
-.navbar__logo-name {
-    font-family: 'Outfit', sans-serif;
-    font-weight: 700;
-    font-size: 1.25rem;
-    color: var(--color-text-primary, #1a1a2e);
-    letter-spacing: -0.02em;
-}
-
-.navbar__logo-tagline {
-    font-family: 'Outfit', sans-serif;
-    font-weight: 400;
-    font-size: 0.6875rem;
-    color: var(--color-text-secondary, #6b7280);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-}
 
 /* --- Logo dans le footer --- */
 .footer__logo {
@@ -68,16 +52,7 @@
     color: var(--color-primary, #2563eb);
 }
 
-/* Le span à côté du logo dans le footer */
-.footer__logo span {
-    font-family: 'Outfit', sans-serif;
-    font-weight: 700;
-    font-size: 1.125rem;
-    color: var(--color-text-primary, #1a1a2e);
-}
 
-/* --- Optimisation pour le SVG --- */
-/* Assure que le SVG s'adapte proprement */
 .navbar__logo-svg,
 .footer__logo-svg {
     flex-shrink: 0;
@@ -97,8 +72,8 @@
 /* --- Version responsive --- */
 @media (max-width: 768px) {
     .navbar__logo-svg {
-        width: 158px;
-        height: 63px;
+        width: 42px;
+        height: auto;
     }
     
     .navbar__logo-name {
@@ -110,19 +85,18 @@
     }
     
     .footer__logo-svg {
-        width: 28px;
+        width: 32px;
         height: 28px;
     }
 }
 
 @media (max-width: 480px) {
     .navbar__logo-svg {
-        width: 79px;
-        height: 32px;
+        width: 62px;
+        height: auto;
     }
-    
-    /* Possibilité de cacher le tagline sur très petit écran */
-    .navbar__logo-text {
-        /* display: none; */ /* Décommentez si vous voulez masquer le texte */
+     .footer__logo-svg {
+        width: 32px;
+        height: 28px;
     }
 }
