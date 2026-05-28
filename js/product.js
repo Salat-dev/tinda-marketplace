@@ -1,4 +1,4 @@
-      const SUPABASE_URL = "https://uytrjgtrpsbegifudosi.supabase.co";
+        const SUPABASE_URL = "https://uytrjgtrpsbegifudosi.supabase.co";
         const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_Pj_C1NLwxYiVSNOxuX6kUg_MukIHzga";
         const SUPPORT_WHATSAPP = "237693421348";
 
@@ -49,12 +49,40 @@
         let product = null;
         let selectedColor = null;
         let qty = 1;
+        let allImages = [];
+        let lightboxIndex = 0;
+
+        // ── Lightbox ──
+        function openLightbox(index) {
+            lightboxIndex = index;
+            const lb = document.getElementById("lightbox");
+            document.getElementById("lightboxImg").src = allImages[index] || '';
+            document.getElementById("lightboxCounter").textContent = `${index + 1} / ${allImages.length}`;
+            lb.classList.add("is-open");
+            document.body.style.overflow = "hidden";
+        }
+        function closeLightbox() {
+            document.getElementById("lightbox").classList.remove("is-open");
+            document.body.style.overflow = "";
+        }
+        function lightboxNav(dir) {
+            lightboxIndex = (lightboxIndex + dir + allImages.length) % allImages.length;
+            document.getElementById("lightboxImg").src = allImages[lightboxIndex];
+            document.getElementById("lightboxCounter").textContent = `${lightboxIndex + 1} / ${allImages.length}`;
+        }
+        document.getElementById("lightboxClose").onclick = closeLightbox;
+        document.getElementById("lightboxPrev").onclick = () => lightboxNav(-1);
+        document.getElementById("lightboxNext").onclick = () => lightboxNav(1);
+        document.getElementById("lightbox").addEventListener("click", e => { if (e.target === e.currentTarget) closeLightbox(); });
+        document.addEventListener("keydown", e => {
+            if (!document.getElementById("lightbox").classList.contains("is-open")) return;
+            if (e.key === "Escape") closeLightbox();
+            if (e.key === "ArrowLeft") lightboxNav(-1);
+            if (e.key === "ArrowRight") lightboxNav(1);
+        });
 
         async function loadProduct() {
-            if (!productId) {
-                showError("Produit introuvable", "Aucun identifiant fourni dans l'URL.");
-                return;
-            }
+            if (!productId) { showError("Produit introuvable", "Aucun identifiant fourni dans l'URL."); return; }
             const { data, error } = await sb.from("products").select(`
                 id, name, description, price, old_price,
                 image_url, images, colors, badge, stock,
@@ -63,10 +91,7 @@
                 categories ( id, name, slug )
             `).eq("id", productId).single();
 
-            if (error || !data) {
-                showError("Produit introuvable", "Ce produit n'existe pas ou a été supprimé.");
-                return;
-            }
+            if (error || !data) { showError("Produit introuvable", "Ce produit n'existe pas ou a été supprimé."); return; }
 
             product = data;
             if (typeof product.colors === "string") {
@@ -76,6 +101,7 @@
             selectedColor = product.colors[0]?.hex || product.colors[0] || null;
 
             renderProduct();
+            renderDescription();
             updateStickyPrice();
             loadRelated();
         }
@@ -83,6 +109,7 @@
         function renderProduct() {
             const p = product;
             const images = Array.isArray(p.images) && p.images.length ? p.images : [p.image_url];
+            allImages = images;
             const hasPromo = p.old_price && p.old_price > p.price;
             const discount = hasPromo ? Math.round((1 - p.price / p.old_price) * 100) : 0;
             const isOut = p.stock <= 0 || p.badge === "out_of_stock";
@@ -110,10 +137,8 @@
                     const hex = c?.hex || c;
                     const label = c?.name || c?.hex || c;
                     return `<button class="color-btn${hex === selectedColor ? " is-active" : ""}"
-                        style="background:${esc(hex)}"
-                        data-color="${esc(hex)}"
-                        title="${esc(label)}"
-                        aria-label="Couleur ${esc(label)}"></button>`;
+                        style="background:${esc(hex)}" data-color="${esc(hex)}"
+                        title="${esc(label)}" aria-label="Couleur ${esc(label)}"></button>`;
                 }).join("");
                 colorsHTML = `
                 <div class="product-info__label">Couleur <span class="product-info__label-val" id="colorLabel">${esc(selectedColor || "")}</span></div>
@@ -134,6 +159,9 @@
             if (showBadge) badgeHTML = `<span class="gallery__badge gallery__badge--${p.badge}">${esc(badgeLabel(p.badge))}</span>`;
             else if (isOut) badgeHTML = `<span class="gallery__badge gallery__badge--out_of_stock">Épuisé</span>`;
             else if (hasPromo) badgeHTML = `<span class="gallery__badge gallery__badge--promo">−${discount}%</span>`;
+
+            // Truncate description for short display
+            const shortDesc = (p.description || "").length > 160 ? (p.description || "").slice(0, 160) + "…" : (p.description || "");
 
             document.getElementById("productZone").innerHTML = `
             <div class="product-layout">
@@ -160,7 +188,7 @@
                         ${hasPromo ? `<span class="product-info__price-tag">−${discount}%</span>` : ""}
                     </div>
 
-                    <p class="product-info__desc">${esc(p.description)}</p>
+                    <p class="product-info__desc-short">${esc(shortDesc)}</p>
 
                     <div class="product-info__stock ${stockClass}">${stockHTML}</div>
 
@@ -200,6 +228,13 @@
                 </div>
             </div>`;
 
+            // Gallery events
+            document.getElementById("galleryMain").addEventListener("click", () => {
+                const currentSrc = document.getElementById("galleryMainImg").src;
+                const idx = allImages.findIndex(s => currentSrc.includes(s.split('/').pop())) || 0;
+                openLightbox(Math.max(0, idx));
+            });
+
             document.querySelectorAll(".gallery__thumb").forEach(t => {
                 t.addEventListener("click", () => {
                     document.querySelectorAll(".gallery__thumb").forEach(x => x.classList.remove("is-active"));
@@ -221,6 +256,135 @@
             const stickyBtn = document.getElementById("stickyAddBtn");
             stickyBtn.disabled = isOut;
             stickyBtn.onclick = addToCart;
+        }
+
+        // ── Description Zone (Tabbed) ──
+        function renderDescription() {
+            const p = product;
+            const desc = p.description || "Aucune description disponible pour ce produit.";
+            const vendorName = p.vendors?.shop_name || "Mayi";
+            const vendorCity = p.vendors?.city || "";
+            const vendorInitial = vendorName.charAt(0).toUpperCase();
+
+            document.getElementById("descriptionZone").innerHTML = `
+            <div class="description-zone">
+                <div class="desc-tabs" id="descTabs">
+                    <button class="desc-tab is-active" data-tab="description">Description</button>
+                    <button class="desc-tab" data-tab="shipping">Livraison & Retours</button>
+                    <button class="desc-tab" data-tab="vendor">Vendeur</button>
+                </div>
+                <div class="desc-panels" id="descPanels">
+
+                    <!-- Description Panel -->
+                    <div class="desc-panel is-active" data-panel="description">
+                        <div class="desc-content">
+                            <div class="desc-text">
+                                ${desc.split(/\n+/).map(p => `<p>${esc(p)}</p>`).join("")}
+                            </div>
+                            <div class="desc-highlights">
+                                <div class="desc-highlight">
+                                    <div class="desc-highlight__icon">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                                    </div>
+                                    <div class="desc-highlight__text">
+                                        <h4>Qualité garantie</h4>
+                                        <p>Chaque produit est vérifié avant expédition pour assurer votre satisfaction.</p>
+                                    </div>
+                                </div>
+                                <div class="desc-highlight">
+                                    <div class="desc-highlight__icon">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                                    </div>
+                                    <div class="desc-highlight__text">
+                                        <h4>Produit local</h4>
+                                        <p>Directement depuis ${esc(vendorCity || "nos vendeurs locaux")} en Afrique Centrale.</p>
+                                    </div>
+                                </div>
+                                <div class="desc-highlight">
+                                    <div class="desc-highlight__icon">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                                    </div>
+                                    <div class="desc-highlight__text">
+                                        <h4>Paiement flexible</h4>
+                                        <p>Payez à la livraison en cash, MTN MoMo ou Orange Money.</p>
+                                    </div>
+                                </div>
+                                <div class="desc-highlight">
+                                    <div class="desc-highlight__icon">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                                    </div>
+                                    <div class="desc-highlight__text">
+                                        <h4>Retour sous 30 jours</h4>
+                                        <p>Retournez le produit facilement si vous n'êtes pas satisfait.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Shipping Panel -->
+                    <div class="desc-panel" data-panel="shipping">
+                        <div class="shipping-grid">
+                            <div class="shipping-card">
+                                <div class="shipping-card__icon">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                                </div>
+                                <h4>Livraison standard</h4>
+                                <p>2 à 5 jours ouvrés selon votre ville. Suivi disponible par WhatsApp.</p>
+                            </div>
+                            <div class="shipping-card">
+                                <div class="shipping-card__icon">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                                </div>
+                                <h4>Paiement à la livraison</h4>
+                                <p>Payez uniquement quand vous recevez votre commande. Cash, MoMo ou OM.</p>
+                            </div>
+                            <div class="shipping-card">
+                                <div class="shipping-card__icon">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                                </div>
+                                <h4>Retours gratuits</h4>
+                                <p>Retournez sous 30 jours. Contactez-nous via WhatsApp pour le processus.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Vendor Panel -->
+                    <div class="desc-panel" data-panel="vendor">
+                        <div class="vendor-profile">
+                            <div class="vendor-avatar">${esc(vendorInitial)}</div>
+                            <div class="vendor-details">
+                                <h3>${esc(vendorName)}</h3>
+                                ${vendorCity ? `<div class="vendor-details__city">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                                    ${esc(vendorCity)}, Cameroun
+                                </div>` : ""}
+                                <div class="vendor-details__badges">
+                                    <span class="vendor-badge vendor-badge--verified">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                                        Vendeur vérifié
+                                    </span>
+                                    <span class="vendor-badge">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/></svg>
+                                        Livraison active
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+
+            // Tab switching
+            document.querySelectorAll(".desc-tab").forEach(tab => {
+                tab.addEventListener("click", () => {
+                    const target = tab.dataset.tab;
+                    document.querySelectorAll(".desc-tab").forEach(t => t.classList.remove("is-active"));
+                    document.querySelectorAll(".desc-panel").forEach(p => p.classList.remove("is-active"));
+                    tab.classList.add("is-active");
+                    document.querySelector(`.desc-panel[data-panel="${target}"]`).classList.add("is-active");
+                });
+            });
         }
 
         function changeQty(delta) {
@@ -245,8 +409,7 @@
         function addToCart() {
             if (!product) return;
             if (product.stock <= 0 || product.badge === "out_of_stock") {
-                toast("Ce produit est en rupture de stock", "error");
-                return;
+                toast("Ce produit est en rupture de stock", "error"); return;
             }
             Cart.add(product, qty, selectedColor);
             toast(`"${product.name}" ajouté au panier ✓`, "success");
@@ -290,8 +453,10 @@
             document.getElementById("relatedZone").innerHTML = `
             <div class="related">
                 <div class="related__head">
-                    <h2 class="related__title">Dans la même catégorie</h2>
-                    <p class="related__sub">${data.length} autres produits similaires</p>
+                    <div>
+                        <h2 class="related__title">Dans la même catégorie</h2>
+                        <p class="related__sub">${data.length} autres produits similaires</p>
+                    </div>
                 </div>
                 <div class="related__grid">${cards}</div>
             </div>`;

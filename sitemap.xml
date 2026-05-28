@@ -4,49 +4,49 @@
     <!-- Pages principales -->
     <url>
         <loc>https://www.mayi.cm/</loc>
-        <lastmod>2025-05-28</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>daily</changefreq>
         <priority>1.0</priority>
     </url>
 
     <url>
         <loc>https://www.mayi.cm/shop.html</loc>
-        <lastmod>2025-05-28</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.9</priority>
     </url>
 
     <url>
         <loc>https://www.mayi.cm/cart.html</loc>
-        <lastmod>2025-05-28</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
 
     <url>
         <loc>https://www.mayi.cm/checkout.html</loc>
-        <lastmod>2025-05-28</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
 
     <url>
         <loc>https://www.mayi.cm/faq.html</loc>
-        <lastmod>2025-05-28</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
     </url>
 
     <url>
         <loc>https://www.mayi.cm/terms.html</loc>
-        <lastmod>2025-05-28</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
 
     <url>
         <loc>https://www.mayi.cm/help.html</loc>
-        <lastmod>2025-05-28</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
     </url>
@@ -54,14 +54,14 @@
     <!-- Pages vendeur -->
     <url>
         <loc>https://www.mayi.cm/login.html</loc>
-        <lastmod>2025-05-28</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
     </url>
 
     <url>
         <loc>https://www.mayi.cm/dashboard.html</loc>
-        <lastmod>2025-05-28</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
@@ -69,21 +69,21 @@
     <!-- Pages du dashboard -->
     <url>
         <loc>https://www.mayi.cm/orders.html</loc>
-        <lastmod>2025-05-28</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
 
     <url>
         <loc>https://www.mayi.cm/products.html</loc>
-        <lastmod>2025-05-28</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
 
     <url>
         <loc>https://www.mayi.cm/categories.html</loc>
-        <lastmod>2025-05-28</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>

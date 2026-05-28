@@ -1,4 +1,4 @@
-    const SUPABASE_URL = 'https://uytrjgtrpsbegifudosi.supabase.co';
+  const SUPABASE_URL = 'https://uytrjgtrpsbegifudosi.supabase.co';
         const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_Pj_C1NLwxYiVSNOxuX6kUg_MukIHzga';
         const { createClient } = supabase;
         const sb = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
@@ -44,7 +44,18 @@
         document.getElementById('cartCount').textContent = Cart.count();
 
         let allProducts = [];
+        let currentView = 'grid';
         const categoryId = new URLSearchParams(location.search).get('id');
+
+        /* ── View toggle ── */
+        function setView(mode) {
+            currentView = mode;
+            const grid = document.getElementById('products');
+            grid.classList.toggle('is-list', mode === 'list');
+            document.getElementById('viewGrid').classList.toggle('is-active', mode === 'grid');
+            document.getElementById('viewList').classList.toggle('is-active', mode === 'list');
+        }
+        window.setView = setView;
 
         async function loadCategory() {
             if (!categoryId) {
@@ -53,7 +64,6 @@
                 return;
             }
 
-            // Charger la catégorie
             const { data: catData } = await sb.from('categories').select('name').eq('id', categoryId).single();
             if (!catData) {
                 document.getElementById('catTitle').textContent = 'Catégorie introuvable';
@@ -61,9 +71,8 @@
                 return;
             }
             document.getElementById('catTitle').textContent = catData.name;
-            document.title = `${catData.name} · Mayi`;
+            document.title = `${catData.name} — Mayi`;
 
-            // Charger les produits
             const { data: products, error } = await sb
                 .from('products')
                 .select('id, name, description, price, old_price, image_url, images, colors, badge, stock, vendor_id, vendors(shop_name)')
@@ -82,71 +91,102 @@
             // Extraire les couleurs uniques
             const colorSet = new Set();
             allProducts.forEach(p => {
-                let colors = p.colors;
-                if (typeof colors === 'string') {
-                    try { colors = JSON.parse(colors); } catch { colors = []; }
-                }
-                if (Array.isArray(colors)) {
-                    colors.forEach(c => {
-                        const hex = c?.hex || c;
-                        if (hex) colorSet.add(hex);
-                    });
-                }
+                parseColors(p).forEach(c => { const hex = c?.hex || c; if (hex) colorSet.add(hex); });
             });
             const colorSelect = document.getElementById('colorFilter');
             colorSelect.innerHTML = '<option value="">Toutes</option>';
             Array.from(colorSet).sort().forEach(hex => {
                 const opt = document.createElement('option');
-                opt.value = hex;
-                opt.textContent = hex;
+                opt.value = hex; opt.textContent = hex;
                 colorSelect.appendChild(opt);
             });
 
-            applyFilters(); // rendu initial
+            // Extraire les vendeurs uniques
+            const vendorSet = new Set();
+            allProducts.forEach(p => { const v = p.vendors?.shop_name; if (v) vendorSet.add(v); });
+            const vendorSelect = document.getElementById('vendorFilter');
+            vendorSelect.innerHTML = '<option value="">Tous</option>';
+            Array.from(vendorSet).sort().forEach(v => {
+                const opt = document.createElement('option');
+                opt.value = v; opt.textContent = v;
+                vendorSelect.appendChild(opt);
+            });
+
+            applyFilters();
         }
 
         function parseColors(product) {
             let colors = product.colors;
-            if (typeof colors === 'string') {
-                try { colors = JSON.parse(colors); } catch { colors = []; }
-            }
+            if (typeof colors === 'string') { try { colors = JSON.parse(colors); } catch { colors = []; } }
             return Array.isArray(colors) ? colors : [];
         }
 
         function applyFilters() {
+            const search = (document.getElementById('searchFilter').value || '').trim().toLowerCase();
             const minPrice = parseFloat(document.getElementById('minPrice').value) || 0;
             const maxPrice = parseFloat(document.getElementById('maxPrice').value) || Infinity;
             const colorFilter = document.getElementById('colorFilter').value;
+            const vendorFilter = document.getElementById('vendorFilter').value;
             const sort = document.getElementById('sortFilter').value;
 
             let filtered = allProducts.filter(p => {
+                if (search && !p.name.toLowerCase().includes(search) && !(p.vendors?.shop_name || '').toLowerCase().includes(search) && !(p.description || '').toLowerCase().includes(search)) return false;
                 const price = p.price || 0;
                 if (price < minPrice || price > maxPrice) return false;
-                if (colorFilter) {
-                    const colors = parseColors(p);
-                    if (!colors.some(c => (c?.hex || c) === colorFilter)) return false;
-                }
+                if (colorFilter) { if (!parseColors(p).some(c => (c?.hex || c) === colorFilter)) return false; }
+                if (vendorFilter) { if ((p.vendors?.shop_name || '') !== vendorFilter) return false; }
                 return true;
             });
 
-            // Tri
             if (sort === 'price_asc') filtered.sort((a,b) => (a.price||0) - (b.price||0));
             else if (sort === 'price_desc') filtered.sort((a,b) => (b.price||0) - (a.price||0));
             else if (sort === 'name') filtered.sort((a,b) => (a.name||'').localeCompare(b.name||''));
-            // 'newest' est déjà l'ordre par défaut (created_at desc)
 
-            document.getElementById('products').innerHTML = filtered.map(cardHTML).join('');
+            // Résultats info
+            const countEl = document.getElementById('resultsCount');
+            countEl.textContent = `${filtered.length} résultat${filtered.length > 1 ? 's' : ''}`;
+
+            // Active filters tags
+            const tagsEl = document.getElementById('activeFilters');
+            let tags = '';
+            if (search) tags += `<span class="active-filter-tag" onclick="document.getElementById('searchFilter').value='';applyFilters();">« ${esc(search)} » ×</span>`;
+            if (minPrice > 0) tags += `<span class="active-filter-tag" onclick="document.getElementById('minPrice').value='';applyFilters();">Min: ${formatXAF(minPrice)} ×</span>`;
+            if (maxPrice < Infinity) tags += `<span class="active-filter-tag" onclick="document.getElementById('maxPrice').value='';applyFilters();">Max: ${formatXAF(maxPrice)} ×</span>`;
+            if (vendorFilter) tags += `<span class="active-filter-tag" onclick="document.getElementById('vendorFilter').value='';applyFilters();">${esc(vendorFilter)} ×</span>`;
+            if (colorFilter) tags += `<span class="active-filter-tag" onclick="document.getElementById('colorFilter').value='';applyFilters();">${esc(colorFilter)} ×</span>`;
+            tagsEl.innerHTML = tags;
+
+            // Render
+            if (!filtered.length) {
+                document.getElementById('products').innerHTML = `<div class="products-empty"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><h3>Aucun produit trouvé</h3><p>Essayez d'ajuster vos filtres.</p></div>`;
+            } else {
+                document.getElementById('products').innerHTML = filtered.map(cardHTML).join('');
+            }
+
+            // Maintain view mode
+            if (currentView === 'list') document.getElementById('products').classList.add('is-list');
         }
 
         function resetFilters() {
+            document.getElementById('searchFilter').value = '';
             document.getElementById('minPrice').value = '';
             document.getElementById('maxPrice').value = '';
             document.getElementById('colorFilter').value = '';
+            document.getElementById('vendorFilter').value = '';
             document.getElementById('sortFilter').value = 'newest';
             applyFilters();
         }
         window.applyFilters = applyFilters;
         window.resetFilters = resetFilters;
+
+        // Auto-apply on any filter change
+        ['searchFilter', 'minPrice', 'maxPrice', 'colorFilter', 'vendorFilter', 'sortFilter'].forEach(id => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const evt = el.tagName === 'SELECT' ? 'change' : 'input';
+            let timer;
+            el.addEventListener(evt, () => { clearTimeout(timer); timer = setTimeout(applyFilters, el.type === 'number' || el.type === 'search' ? 300 : 0); });
+        });
 
         function cardHTML(p) {
             const img = (Array.isArray(p.images) && p.images[0]) || p.image_url || IMG_FALLBACK;
