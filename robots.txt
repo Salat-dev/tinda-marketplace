@@ -1,0 +1,23 @@
+User-agent: *
+Allow: /
+
+# Bloquer les pages d'administration sensibles
+Disallow: /dashboard.html
+Disallow: /orders.html
+Disallow: /products.html
+Disallow: /categories.html
+
+# Bloquer les fichiers de configuration et scripts internes
+Disallow: /js/
+Disallow: /css/
+Disallow: /images/
+Disallow: /fonts/
+
+# Bloquer les pages d'authentification (optionnel)
+Disallow: /login.html
+
+# Laisser l'accès aux pages publiques (déjà autorisé par Allow: /)
+# Shop, cart, checkout, FAQ, etc. sont accessibles
+
+# Emplacement du sitemap
+Sitemap: https://www.mayi.cm/sitemap.xml
