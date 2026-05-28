@@ -86,7 +86,7 @@
             const { data, error } = await sb.from("products").select(`
                 id, name, description, price, old_price,
                 image_url, images, colors, badge, stock,
-                category_id, vendor_id,
+                categories_id, vendor_id,
                 vendors ( id, shop_name, whatsapp, city ),
                 categories ( id, name, slug )
             `).eq("id", productId).single();
@@ -418,8 +418,8 @@
 
         async function loadRelated() {
             const p = product;
-            if (!p.category_id) return;
-            const { data } = await sb.from("products").select("id, name, description, price, old_price, image_url, images, badge, stock, vendor_id, vendors(shop_name)").eq("active", true).eq("category_id", p.category_id).neq("id", p.id).limit(8);
+            if (!p.categories_id) return;
+            const { data } = await sb.from("products").select("id, name, description, price, old_price, image_url, images, badge, stock, vendor_id, vendors(shop_name)").eq("active", true).eq("categories_id", p.categories_id).neq("id", p.id).limit(8);
             if (!data || !data.length) return;
 
             const cards = data.map(rp => {

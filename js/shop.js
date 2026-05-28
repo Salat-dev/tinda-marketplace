@@ -41,20 +41,20 @@ function getCatIcon(name) {
    SECTION BUILDERS
    ═══════════════════════════════════════════════════════════ */
 
-function buildSection({ id, title, subtitle, products, featured = false, total = 0, categoryId, theme = null, catIndex = 0 }) {
+function buildSection({ id, title, subtitle, products, featured = false, total = 0, categoriesId, theme = null, catIndex = 0 }) {
     const idAttr = id ? `id="${id}"` : '';
     const sliderId = id ? `slider-${id}` : `slider-${Math.random().toString(36).slice(2,7)}`;
 
-    // Bouton "Voir plus" — toujours présent, même sans categoryId
+    // Bouton "Voir plus" — toujours présent, même sans categoriesId
     let seeAllBtn = '';
-    if (categoryId && total > products.length) {
-        seeAllBtn = `<a href="category.html?id=${categoryId}" class="section__more-btn">Voir plus<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>`;
-    } else if (categoryId) {
-        seeAllBtn = `<a href="category.html?id=${categoryId}" class="section__more-btn">Voir tout<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>`;
+    if (categoriesId && total > products.length) {
+        seeAllBtn = `<a href="categories.html?id=${categoriesId}" class="section__more-btn">Voir plus<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>`;
+    } else if (categoriesId) {
+        seeAllBtn = `<a href="categories.html?id=${categoriesId}" class="section__more-btn">Voir tout<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>`;
     }
 
-    const seeAllHeader = (categoryId && total > products.length)
-        ? `<a href="category.html?id=${categoryId}" class="cat-section__see-all">Voir tout (${total})<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>`
+    const seeAllHeader = (categoriesId && total > products.length)
+        ? `<a href="categories.html?id=${categoriesId}" class="cat-section__see-all">Voir tout (${total})<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>`
         : '';
 
     const t = theme || getCatTheme(catIndex);
@@ -244,7 +244,7 @@ function render() {
 
 function renderSections() {
     const grouped = new Map();
-    allProducts.forEach(p => { const k = p.category_id || '__none__'; if (!grouped.has(k)) grouped.set(k,[]); grouped.get(k).push(p); });
+    allProducts.forEach(p => { const k = p.categories_id || '__none__'; if (!grouped.has(k)) grouped.set(k,[]); grouped.get(k).push(p); });
 
     let html = '';
     let bannerIdx = 0;
@@ -270,7 +270,7 @@ function renderSections() {
         const all = grouped.get(cat.id) || [];
         if (!all.length) continue;
         if (catIdx > 0 && catIdx % 2 === 0 && bannerIdx < BANNERS.length) html += getBanner(bannerIdx++);
-        html += buildSection({ id: `cat-${cat.id}`, title: cat.name, subtitle: `${all.length} produit${all.length>1?'s':''} disponible${all.length>1?'s':''}`, products: all.slice(0,10), total: all.length, categoryId: cat.id, theme: getCatTheme(catIdx), catIndex: catIdx });
+        html += buildSection({ id: `cat-${cat.id}`, title: cat.name, subtitle: `${all.length} produit${all.length>1?'s':''} disponible${all.length>1?'s':''}`, products: all.slice(0,10), total: all.length, categoriesId: cat.id, theme: getCatTheme(catIdx), catIndex: catIdx });
         catIdx++;
     }
 
@@ -285,7 +285,7 @@ function renderSections() {
 let debounceTimer; searchInput.addEventListener('input', () => { clearTimeout(debounceTimer); debounceTimer = setTimeout(render, 200); }); searchForm.addEventListener('submit', e => { e.preventDefault(); render(); });
 
 /* ═══════════════════════════════════════════════════════════
-   CATEGORY VISUAL GRID
+   categories VISUAL GRID
    ═══════════════════════════════════════════════════════════ */
 
 function buildCatGrid(categories, pbc) {
@@ -295,7 +295,7 @@ function buildCatGrid(categories, pbc) {
         const t = getCatTheme(i);
         const icon = getCatIcon(cat.name);
         const count = pbc.get(cat.id) || 0;
-        return `<a href="category.html?id=${cat.id}" class="cat-tile" style="--tile-accent:${t.accent};--tile-bg:${t.bg};">
+        return `<a href="categories.html?id=${cat.id}" class="cat-tile" style="--tile-accent:${t.accent};--tile-bg:${t.bg};">
             <span class="cat-tile__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">${icon}</svg></span>
             <span class="cat-tile__name">${escapeHTML(cat.name)}</span>
             <span class="cat-tile__count">${count} produit${count>1?'s':''}</span>
@@ -316,8 +316,8 @@ document.addEventListener('keydown', e => { if (e.key==='Escape'&&megaOpen) togg
 
 function buildMegaMenu(categories, pbc) {
     if (!categories.length) return;
-    megaLinks.innerHTML = categories.map(c => { const n = pbc.get(c.id)||0; return `<a href="category.html?id=${c.id}" class="mega__link">${escapeHTML(c.name)}${n?`<span class="mega__link-count">${n}</span>`:''}</a>`; }).join('');
-    megaDropdownInner.innerHTML = `<div class="mega__grid">${categories.map((c,i)=>{ const t=getCatTheme(i); const ic=getCatIcon(c.name); const n=pbc.get(c.id)||0; return `<a href="category.html?id=${c.id}" class="mega__card" style="--card-accent:${t.accent};--card-bg:${t.bg};"><span class="mega__card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">${ic}</svg></span><span class="mega__card-body"><span class="mega__card-name">${escapeHTML(c.name)}</span><span class="mega__card-count">${n} produit${n>1?'s':''}</span></span><svg class="mega__card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>`; }).join('')}</div>`;
+    megaLinks.innerHTML = categories.map(c => { const n = pbc.get(c.id)||0; return `<a href="categories.html?id=${c.id}" class="mega__link">${escapeHTML(c.name)}${n?`<span class="mega__link-count">${n}</span>`:''}</a>`; }).join('');
+    megaDropdownInner.innerHTML = `<div class="mega__grid">${categories.map((c,i)=>{ const t=getCatTheme(i); const ic=getCatIcon(c.name); const n=pbc.get(c.id)||0; return `<a href="categories.html?id=${c.id}" class="mega__card" style="--card-accent:${t.accent};--card-bg:${t.bg};"><span class="mega__card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">${ic}</svg></span><span class="mega__card-body"><span class="mega__card-name">${escapeHTML(c.name)}</span><span class="mega__card-count">${n} produit${n>1?'s':''}</span></span><svg class="mega__card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>`; }).join('')}</div>`;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -332,14 +332,14 @@ function showSkeleton(el, count = 6) { const card = `<div class="skel-card"><div
 async function loadData() {
     showSkeleton(sectionsEl);
     const [pr, cr] = await Promise.all([
-        sb.from('products').select('id,name,description,price,old_price,image_url,images,colors,badge,stock,category_id,vendor_id,vendors(shop_name),categories(id,name,slug)').eq('active', true).order('created_at', { ascending: false }),
+        sb.from('products').select('id,name,description,price,old_price,image_url,images,colors,badge,stock,categories_id,vendor_id,vendors(shop_name),categories(id,name,slug)').eq('active', true).order('created_at', { ascending: false }),
         sb.from('categories').select('id,name,slug,vendor_id,position').order('position', { ascending: true, nullsFirst: false }).order('name')
     ]);
     if (pr.error) { sectionsEl.innerHTML = `<div class="empty">⚠️ Erreur : ${escapeHTML(pr.error.message)}</div>`; return; }
     allProducts = pr.data || [];
     allCategories = cr.data || [];
     const pbc = new Map();
-    allProducts.forEach(p => { if (p.category_id) pbc.set(p.category_id, (pbc.get(p.category_id)||0)+1); });
+    allProducts.forEach(p => { if (p.categories_id) pbc.set(p.categories_id, (pbc.get(p.categories_id)||0)+1); });
     buildMegaMenu(allCategories, pbc);
     buildCatGrid(allCategories, pbc);
     render();

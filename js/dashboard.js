@@ -193,12 +193,12 @@ async function loadCategories() {
 
   if (error) { console.error(error); return; }
   allCategories = data || [];
-  renderCategorySelect();
+  rendercategoriesSelect();
   renderCategoriesList();
 }
 
-function renderCategorySelect() {
-  const sel = document.getElementById('categorySelect');
+function rendercategoriesSelect() {
+  const sel = document.getElementById('categoriesSelect');
   if (!sel) return;
   const current = sel.value;
   sel.innerHTML = '<option value="">— Sans catégorie —</option>' +
@@ -251,7 +251,7 @@ if (catFormCancel) {
   });
 }
 if (catFormSave) {
-  catFormSave.addEventListener('click', () => createCategory(catFormName.value, catFormIcon.value, true));
+  catFormSave.addEventListener('click', () => createcategories(catFormName.value, catFormIcon.value, true));
 }
 
 /* Inline create from product form */
@@ -271,10 +271,10 @@ if (closeCatCreate) {
   closeCatCreate.addEventListener('click', () => { catCreateBox.style.display = 'none'; });
 }
 if (saveCatBtn) {
-  saveCatBtn.addEventListener('click', () => createCategory(newCatNameInp.value, '', false));
+  saveCatBtn.addEventListener('click', () => createcategories(newCatNameInp.value, '', false));
 }
 
-async function createCategory(name, icon, fromMainView = false) {
+async function createcategories(name, icon, fromMainView = false) {
   name = (name || '').trim();
   if (!name) return toast('Donnez un nom à la catégorie', 'error');
 
@@ -292,10 +292,10 @@ async function createCategory(name, icon, fromMainView = false) {
   toast(`Catégorie « ${name} » créée`, 'success');
 
   allCategories.push(data);
-  renderCategorySelect();
+  rendercategoriesSelect();
   renderCategoriesList();
 
-  const sel = document.getElementById('categorySelect');
+  const sel = document.getElementById('categoriesSelect');
   if (sel && !fromMainView) {
     sel.value = data.id;
     catCreateBox.style.display = 'none';
@@ -309,7 +309,7 @@ async function createCategory(name, icon, fromMainView = false) {
   }
 }
 
-/* Delete category */
+/* Delete categories */
 if (categoriesList) {
   categoriesList.addEventListener('click', async (e) => {
     const del = e.target.closest('[data-delcat]');
@@ -397,8 +397,8 @@ function openProductModal(p = null) {
     productForm.stock.value       = p.stock;
     document.getElementById('activeToggle').checked = !!p.active;
 
-    const sel = document.getElementById('categorySelect');
-    if (sel) sel.value = p.category_id || '';
+    const sel = document.getElementById('categoriesSelect');
+    if (sel) sel.value = p.categories_id || '';
   } else {
     document.getElementById('activeToggle').checked = true;
   }
@@ -500,7 +500,7 @@ productForm.addEventListener('submit', async (e) => {
       old_price:   fd.get('old_price') ? parseInt(fd.get('old_price'), 10) : null,
       stock,
       active:      document.getElementById('activeToggle').checked,
-      category_id: fd.get('category_id') || null,
+      categories_id: fd.get('categories_id') || null,
       badge:       fd.get('badge') || null,
       image_url:   imageUrls[0],
       images:      imageUrls,

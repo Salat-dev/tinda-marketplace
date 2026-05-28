@@ -123,9 +123,9 @@
 
         /* ═══ CATÉGORIES FAQ ═══ */
         .faq-categories { display: flex; gap: 8px; margin-bottom: var(--space-xl); flex-wrap: wrap; }
-        .faq-category-btn { padding: 8px 18px; border: 1px solid var(--color-border); border-radius: var(--radius-full); font-size: 13px; font-weight: 500; color: var(--color-text-secondary); background: white; transition: all var(--transition-fast); }
-        .faq-category-btn:hover { border-color: var(--color-text); color: var(--color-text); }
-        .faq-category-btn.is-active { background: var(--color-text); border-color: var(--color-text); color: white; }
+        .faq-categories-btn { padding: 8px 18px; border: 1px solid var(--color-border); border-radius: var(--radius-full); font-size: 13px; font-weight: 500; color: var(--color-text-secondary); background: white; transition: all var(--transition-fast); }
+        .faq-categories-btn:hover { border-color: var(--color-text); color: var(--color-text); }
+        .faq-categories-btn.is-active { background: var(--color-text); border-color: var(--color-text); color: white; }
 
         /* ═══ ACCORDÉON ═══ */
         .faq-section { margin-bottom: var(--space-xl); }
@@ -158,5 +158,5 @@
             .faq-page { padding: var(--space-xl) 16px 100px; }
             .faq-item__question { font-size: 14px; padding: 16px; }
             .faq-categories { gap: 6px; }
-            .faq-category-btn { font-size: 12px; padding: 6px 14px; }
+            .faq-categories-btn { font-size: 12px; padding: 6px 14px; }
         }

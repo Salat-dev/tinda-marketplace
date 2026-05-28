@@ -45,7 +45,7 @@
 
         let allProducts = [];
         let currentView = 'grid';
-        const categoryId = new URLSearchParams(location.search).get('id');
+        const categoriesId = new URLSearchParams(location.search).get('id');
 
         /* ── View toggle ── */
         function setView(mode) {
@@ -57,14 +57,14 @@
         }
         window.setView = setView;
 
-        async function loadCategory() {
-            if (!categoryId) {
+        async function loadcategories() {
+            if (!categoriesId) {
                 document.getElementById('catTitle').textContent = 'Catégorie introuvable';
                 document.getElementById('catCount').textContent = '';
                 return;
             }
 
-            const { data: catData } = await sb.from('categories').select('name').eq('id', categoryId).single();
+            const { data: catData } = await sb.from('categories').select('name').eq('id', categoriesId).single();
             if (!catData) {
                 document.getElementById('catTitle').textContent = 'Catégorie introuvable';
                 document.getElementById('catCount').textContent = '';
@@ -77,7 +77,7 @@
                 .from('products')
                 .select('id, name, description, price, old_price, image_url, images, colors, badge, stock, vendor_id, vendors(shop_name)')
                 .eq('active', true)
-                .eq('category_id', categoryId)
+                .eq('categories_id', categoriesId)
                 .order('created_at', { ascending: false });
 
             if (error) {
@@ -250,4 +250,4 @@
             toast(`"${product.name}" ajouté au panier ✓`, 'success');
         };
 
-        loadCategory();
+        loadcategories();

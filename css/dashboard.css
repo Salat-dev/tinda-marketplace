@@ -1,6 +1,6 @@
 
         /* ══════════════════════════════════════════════════════════
-           Mayi DASHBOARD — Design System (aligné category.html)
+           Mayi DASHBOARD — Design System (aligné categories.html)
         ══════════════════════════════════════════════════════════ */
         :root {
             --color-bg: #FFFFFF;
@@ -48,7 +48,7 @@
         button { font-family: inherit; border: none; background: none; cursor: pointer; }
         input, select, textarea { font-family: var(--font-display); }
 
-        /* ═══ TOPBAR (identique category.html) ═══ */
+        /* ═══ TOPBAR (identique categories.html) ═══ */
         .topbar {
             background: var(--color-text);
             padding: 10px max(48px, env(safe-area-inset-left));
@@ -655,7 +655,7 @@
             transform: translateX(20px);
         }
 
-        /* ─── BUTTONS (identiques category.html) ─── */
+        /* ─── BUTTONS (identiques categories.html) ─── */
         .btn {
             display: inline-flex;
             align-items: center;
@@ -706,7 +706,7 @@
             flex-shrink: 0;
         }
 
-        /* ─── CATEGORY INLINE CREATE ─── */
+        /* ─── categories INLINE CREATE ─── */
         .cat-create-box {
             margin-top: 10px;
             padding: 14px;
