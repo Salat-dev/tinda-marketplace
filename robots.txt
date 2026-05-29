@@ -10,7 +10,7 @@ Disallow: /categories.html
 # Bloquer les fichiers de configuration et scripts internes
 Disallow: /js/
 Disallow: /css/
-Disallow: /images/
+Disallow: /assets/icons/
 Disallow: /fonts/
 
 # Bloquer les pages d'authentification (optionnel)
@@ -21,3 +21,5 @@ Disallow: /login.html
 
 # Emplacement du sitemap
 Sitemap: https://www.mayi.cm/sitemap.xml
+
+
