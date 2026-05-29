@@ -1,17 +1,5 @@
-# Activer le module de réécriture
-RewriteEngine On
+# Fichier .htaccess minimal pour Tinda
+# Ne bloque rien, juste permet l'accès sans .html
 
-# Masquer l'extension .html
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^([^\.]+)$ $1.html [NC,L]
-
-# Rediriger les URLs avec .html vers sans .html (optionnel)
-RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s([^.]+)\.html [NC]
-RewriteRule ^ %1 [R=301,L]
-
-# Page d'accueil par défaut
+Options +MultiViews
 DirectoryIndex index.html
-
-# Gestion des erreurs 404
-ErrorDocument 404 /404.html
