@@ -470,7 +470,7 @@
                 </div>
                 <h3 class="empty__title">${esc(title)}</h3>
                 <p class="empty__sub">${esc(sub)}</p>
-                <a href="shop.html" class="btn-outline">
+                <a href="index.html" class="btn-outline">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
                     Retour à la boutique
                 </a>

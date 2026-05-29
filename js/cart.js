@@ -84,7 +84,7 @@
                     </div>
                     <h2 class="empty-cart__title">Votre panier est vide</h2>
                     <p class="empty-cart__sub">Explorez notre catalogue et ajoutez les produits qui vous plaisent.</p>
-                    <a href="shop.html" class="btn-shop">
+                    <a href="index.html" class="btn-shop">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
                             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
                         </svg>
