@@ -1,7 +1,7 @@
 const CACHE_NAME = 'tinda-v1';
 const urlsToCache = [
     '/',
-    '/index.html',
+    '/shop.html',
     '/cart.html',
     '/checkout.html',
     '/faqs.html',

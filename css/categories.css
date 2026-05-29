@@ -1,5 +1,5 @@
         /* ══════════════════════════════════════════════════════════
-           DESIGN SYSTEM (identique à index.html)
+           DESIGN SYSTEM (identique à shop.html)
         ══════════════════════════════════════════════════════════ */
       :root {
     /* =========================
@@ -515,7 +515,7 @@
         }
         .products-empty p { font-size: 14px; }
 
-        /* ─── MI-CARD (identique à index.html) ─── */
+        /* ─── MI-CARD (identique à shop.html) ─── */
         .mi-card {
             background: white;
             border: 1px solid var(--color-border-light);

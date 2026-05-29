@@ -30,7 +30,7 @@
 
     function getCurrentPage() {
         const path = window.location.pathname;
-        const filename = path.split('/').pop() || 'index.html';
+        const filename = path.split('/').pop() || 'shop.html';
         return filename.replace('.html', '');
     }
 
@@ -115,7 +115,7 @@
                 <div class="mobile-sidebar__overlay" id="sidebarOverlay"></div>
                 <div class="mobile-sidebar__panel">
                     <div class="mobile-sidebar__header">
-                        <a href="index.html" class="mobile-sidebar__logo">
+                        <a href="shop.html" class="mobile-sidebar__logo">
                             <img src="assets/icons/logo.svg" alt="Mayi" class="mobile-sidebar__logo-svg" />
                         </a>
                         <button class="mobile-sidebar__close" id="sidebarClose" aria-label="Fermer le menu">
@@ -123,7 +123,7 @@
                         </button>
                     </div>
                     <nav class="mobile-sidebar__nav">
-                        <a href="index.html" class="mobile-sidebar__link ${page === 'shop' ? 'active' : ''}">
+                        <a href="shop.html" class="mobile-sidebar__link ${page === 'shop' ? 'active' : ''}">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
                             Boutique
                         </a>
@@ -165,7 +165,7 @@
             bottomNav.id = 'bottomNav';
             bottomNav.innerHTML = `
                 <div class="bottom-nav__inner">
-                    <a href="index.html" class="bottom-nav__item ${page === 'shop' || page === 'category' ? 'active' : ''}">
+                    <a href="shop.html" class="bottom-nav__item ${page === 'shop' || page === 'category' ? 'active' : ''}">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
                         <span>Boutique</span>
                     </a>
