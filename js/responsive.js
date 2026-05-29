@@ -401,3 +401,44 @@
     };
 
 })();
+
+// ========================================
+// Masquer les extensions .html automatiquement
+// ========================================
+
+(function() {
+    // Nettoyer l'URL à l'arrivée sur la page
+    if (window.location.pathname.endsWith('.html')) {
+        const cleanPath = window.location.pathname.replace('.html', '');
+        const cleanUrl = cleanPath + window.location.search + window.location.hash;
+        window.history.replaceState({}, document.title, cleanUrl);
+    }
+
+    // Intercepter les clics sur les liens .html
+    document.addEventListener('click', function(e) {
+        const link = e.target.closest('a');
+        if (!link) return;
+        
+        const href = link.getAttribute('href');
+        if (!href || !href.endsWith('.html')) return;
+        
+        // Ne pas intercepter les liens externes
+        if (link.hostname !== window.location.hostname && link.hostname !== '') return;
+        
+        e.preventDefault();
+        
+        // Construire l'URL propre
+        const cleanPath = href.replace('.html', '');
+        
+        // Navigation avec l'URL propre
+        window.history.pushState({}, '', cleanPath);
+        
+        // Charger la page
+        window.location.href = cleanPath;
+    });
+
+    // Gérer le bouton retour du navigateur
+    window.addEventListener('popstate', function() {
+        window.location.href = window.location.pathname;
+    });
+})();
