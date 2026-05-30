@@ -1,7 +1,7 @@
 {
     "name": "Mayi Marketplace",
     "short_name": "Mayi ",
-    "description": "Le meilleur ecommerce de l'Afrique Centrale",
+    "description": "Le meilleure ecommerce de l'Afrique Centrale",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#ffffff",
