@@ -147,7 +147,7 @@
         }
         .navbar__logo { display: flex; align-items: center; gap: 12px; flex-shrink: 0; transition: opacity var(--transition-fast); }
         .navbar__logo:hover { opacity: 0.6; }
-        .navbar__logo-svg { height: 62px; width: auto; }
+        .navbar__logo-svg { height: 70px; width: auto; }
         .navbar__spacer { flex: 1; }
         .navbar__back {
             display: inline-flex; align-items: center; gap: 7px;
