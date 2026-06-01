@@ -6,46 +6,29 @@
     <meta name="google-site-verification" content="g3M5xk7TXMSc_TdOr12yMp2MRjmK4fb336NHOXC3el0" />
     <title>Dashboard · Mayi</title>
 
-     <!-- Favicon principal - SVG (navigateurs modernes) -->
+    <!-- Favicon principal - SVG (navigateurs modernes) -->
     <link rel="icon" type="image/svg+xml" href="images/logo/icon_logo.svg" />
-    
-    <!-- Favicon de fallback - PNG 32x32 -->
     <link rel="icon" type="image/png" sizes="32x32" href="images/logo/icon_logo.svg" />
     <link rel="icon" type="image/png" sizes="16x16" href="images/logo/icon_logo.svg" />
-    
-    <!-- Apple iOS -->
     <link rel="apple-touch-icon" sizes="180x180" href="images/logo/icon_logo.svg" />
-    
-    <!-- Android/Chrome -->
     <link rel="icon" type="image/png" sizes="192x192" href="images/logo/icon_logo.svg" />
     <link rel="icon" type="image/png" sizes="512x512" href="images/logo/icon_logo.svg" />
-    
-    <!-- Microsoft -->
     <meta name="msapplication-TileImage" content="images/logo/icon_logo.svg" />
     <meta name="msapplication-TileColor" content="#F97316" />
-    
-    <!-- Couleur du thème (barre de navigation mobile) -->
     <meta name="theme-color" content="#F97316" />
-    
-    <!-- Manifest pour PWA -->
     <link rel="manifest" href="site.webmanifest" />
     <meta name="description" content="Gérez votre boutique Mayi – Produits, commandes, catégories.">
-<!-- Anime.js pour les animations -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-    <script src="services_worker.js"></script>
 
-<!-- Styles pour les animations UX -->
-<link rel="stylesheet" href="css/ux-animations.css">
-
-<!-- À la fin du body, après les autres scripts -->
-<script src="js/ux-animations.js"></script>
-    <!-- Fonts : identiques à categories.html -->
+    <!-- Anime.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="css/dashboard.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/responsive.css">
-
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
 
@@ -147,7 +130,7 @@
                     </button>
                 </div>
 
-                <!-- Formulaire produit (collapsible) -->
+                <!-- Formulaire produit -->
                 <div id="productFormWrap" class="product-modal" style="display:none;">
                     <div class="product-modal__header">
                         <h2 id="modalTitle">Nouveau produit</h2>
@@ -157,7 +140,6 @@
                         <form id="productForm" autocomplete="off">
                             <input type="hidden" name="id">
 
-                            <!-- 1. Informations -->
                             <div class="form-section">
                                 <p class="form-section__title">Informations principales</p>
                                 <div class="field">
@@ -166,7 +148,7 @@
                                 </div>
                                 <div class="field">
                                     <label>Description *</label>
-                                    <textarea class="textarea" name="description" required placeholder="Décrivez votre produit : caractéristiques, état, garantie…"></textarea>
+                                    <textarea class="textarea" name="description" required placeholder="Décrivez votre produit"></textarea>
                                 </div>
                                 <div class="row">
                                     <div class="field">
@@ -190,12 +172,11 @@
                                                 <option value="">— Sans catégorie —</option>
                                             </select>
                                             <button type="button" class="btn btn--ghost btn--sm" id="openCatCreate" title="Créer une catégorie">
-                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                                                     <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
                                                 </svg>
                                             </button>
                                         </div>
-                                        <!-- Inline cat creation -->
                                         <div id="catCreateBox" class="cat-create-box" style="display:none;">
                                             <p>Nouvelle catégorie</p>
                                             <div style="display:flex; gap:8px;">
@@ -208,10 +189,8 @@
                                 </div>
                             </div>
 
-                            <!-- 2. Badge produit -->
                             <div class="form-section">
                                 <p class="form-section__title">Badge produit</p>
-                                <p style="font-size:13px; color:var(--color-text-tertiary); margin-bottom:14px;">Sélectionnez un badge à afficher sur la carte produit :</p>
                                 <div class="badge-chips" id="badgeChips">
                                     <label class="badge-chip" data-badge="">
                                         <input type="radio" name="badge" value=""> Aucun
@@ -240,40 +219,33 @@
                                 </div>
                             </div>
 
-                            <!-- 3. Images -->
                             <div class="form-section">
                                 <p class="form-section__title">Images du produit</p>
-                                <p style="font-size:13px; color:var(--color-text-tertiary); margin-bottom:14px;">Maximum 5 images. La première image est l'image principale affichée sur les cartes.</p>
-
                                 <div class="upload-zone" id="uploadZone">
                                     <input type="file" id="fileInput" accept="image/jpeg,image/png,image/svg+xml" multiple style="display:none;">
                                     <div class="upload-zone__icon">
-                                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
                                         </svg>
                                     </div>
                                     <p><strong>Glissez vos images ici</strong> ou cliquez pour parcourir</p>
-                                    <small>JPG, PNG, SVG · Max 5 Mo par image · Max 5 images</small>
                                 </div>
-
                                 <div class="upload-progress" id="uploadProgress" style="display:none;">
                                     <div class="upload-progress__bar" id="uploadProgressBar"></div>
                                 </div>
-
                                 <div class="image-previews" id="imagePreviews"></div>
                             </div>
 
-                            <!-- 4. Couleurs / Variantes -->
                             <div class="form-section">
                                 <p class="form-section__title">Couleurs disponibles</p>
                                 <div class="color-picker-row">
                                     <div>
-                                        <label style="font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--color-text-secondary); display:block; margin-bottom:5px;">Couleur</label>
-                                        <input type="color" class="input" id="colorPicker" value="#F97316" style="width:50px; height:42px; padding:4px; cursor:pointer;">
+                                        <label style="font-size:11px; font-weight:700; text-transform:uppercase;">Couleur</label>
+                                        <input type="color" class="input" id="colorPicker" value="#F97316" style="width:50px; height:42px;">
                                     </div>
-                                    <div style="flex:1; min-width:140px;">
-                                        <label style="font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--color-text-secondary); display:block; margin-bottom:5px;">Nom</label>
-                                        <input class="input" id="colorName" placeholder="Ex : Bleu nuit, Rouge, Or…">
+                                    <div style="flex:1;">
+                                        <label style="font-size:11px; font-weight:700; text-transform:uppercase;">Nom</label>
+                                        <input class="input" id="colorName" placeholder="Ex : Bleu nuit">
                                     </div>
                                     <div>
                                         <button type="button" class="btn btn--ghost btn--sm" id="addColorBtn" style="height:42px;">+ Ajouter</button>
@@ -282,7 +254,6 @@
                                 <div class="color-tags" id="colorTags"></div>
                             </div>
 
-                            <!-- 5. Paramètres -->
                             <div class="form-section">
                                 <p class="form-section__title">Paramètres</p>
                                 <div class="toggle-row">
@@ -297,14 +268,8 @@
                                 </div>
                             </div>
 
-                            <!-- Actions -->
-                            <div style="display:flex; gap:10px; flex-wrap:wrap; padding-top:8px;">
-                                <button class="btn btn--primary" id="submitBtn" type="submit">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-                                        <polyline points="20 6 9 17 4 12"/>
-                                    </svg>
-                                    Enregistrer le produit
-                                </button>
+                            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                                <button class="btn btn--primary" id="submitBtn" type="submit">Enregistrer</button>
                                 <button type="button" class="btn btn--ghost" id="cancelBtn2">Annuler</button>
                             </div>
                         </form>
@@ -316,18 +281,17 @@
 
             <!-- ══ VIEW: CATEGORIES ══ -->
             <section id="view-categories" hidden>
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:12px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
                     <h1 style="margin:0;">Catégories</h1>
                     <button class="btn btn--primary" id="newCatBtnMain">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                             <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
                         </svg>
                         Nouvelle catégorie
                     </button>
                 </div>
 
-                <!-- New categories form -->
-                <div id="catFormWrap" class="product-modal" style="display:none; margin-bottom:20px;">
+                <div id="catFormWrap" class="product-modal" style="display:none;">
                     <div class="product-modal__header">
                         <h2>Nouvelle catégorie</h2>
                         <button class="btn btn--ghost btn--sm" id="catFormCancel">✕ Annuler</button>
@@ -340,12 +304,10 @@
                             </div>
                             <div class="field">
                                 <label>Icône (emoji)</label>
-                                <input class="input" id="catFormIcon" placeholder="Ex : 📱" style="font-size:20px;">
+                                <input class="input" id="catFormIcon" placeholder="Ex : 📱">
                             </div>
                         </div>
-                        <div style="display:flex; gap:8px; margin-top:8px;">
-                            <button class="btn btn--primary btn--sm" id="catFormSave">Enregistrer</button>
-                        </div>
+                        <button class="btn btn--primary btn--sm" id="catFormSave">Enregistrer</button>
                     </div>
                 </div>
 
@@ -355,24 +317,11 @@
         </main>
     </div>
 
-    <!-- Toast container -->
     <div class="toast-container" id="toastContainer"></div>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-51D0D2V2VX"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-51D0D2V2VX');
-</script>
-    <!-- ═══ SCRIPTS (conservés de l'original) ═══ -->
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="js/supabase.js"></script>
-    <script src="js/ui.js"></script>
-    <script src="js/upload.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script src="js/dashboard.js"></script>
-        <script src="js/responsive.js"></script>
-
 </body>
 </html>

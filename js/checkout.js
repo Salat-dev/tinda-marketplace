@@ -22,7 +22,7 @@ function formatXAF(n) {
 }
 
 function genOrderNumber() {
-  return 'TND-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).slice(2, 6).toUpperCase();
+  return 'MYI-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).slice(2, 6).toUpperCase();
 }
 
 function toast(msg, type = 'info') {
