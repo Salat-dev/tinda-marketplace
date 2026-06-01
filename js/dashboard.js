@@ -468,7 +468,7 @@ async function generateInvoice(orderId) {
         hour: '2-digit', minute: '2-digit'
     });
     
-    const vendorName = currentVendor?.name || 'MAYI SHOP';
+    const vendorName = currentVendor?.name || 'MAYI MARKETPLACE';
     const vendorNif = currentVendor?.nif || '---------';
     const vendorRccm = currentVendor?.rccm || '---------';
     
