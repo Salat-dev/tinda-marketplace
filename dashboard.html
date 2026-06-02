@@ -291,26 +291,46 @@
                     </button>
                 </div>
 
-                <div id="catFormWrap" class="product-modal" style="display:none;">
-                    <div class="product-modal__header">
-                        <h2>Nouvelle catégorie</h2>
-                        <button class="btn btn--ghost btn--sm" id="catFormCancel">✕ Annuler</button>
-                    </div>
-                    <div class="product-modal__body">
-                        <div class="row">
-                            <div class="field">
-                                <label>Nom *</label>
-                                <input class="input" id="catFormName" placeholder="Ex : Smartphones">
-                            </div>
-                            <div class="field">
-                                <label>Icône (emoji)</label>
-                                <input class="input" id="catFormIcon" placeholder="Ex : 📱">
-                            </div>
-                        </div>
-                        <button class="btn btn--primary btn--sm" id="catFormSave">Enregistrer</button>
-                    </div>
+                <!-- Modal categorie -->
+<div id="catFormWrap" class="product-modal" style="display:none;">
+    <div class="product-modal__header">
+        <h2 id="catModalTitle">Nouvelle categorie</h2>
+        <button class="btn btn--ghost btn--sm" id="catFormCancel">✕ Annuler</button>
+    </div>
+    <div class="product-modal__body">
+        <div class="field">
+            <label>Nom de la categorie *</label>
+            <input class="input" id="catFormName" placeholder="Ex: Smartphones">
+        </div>
+        <div class="field">
+            <label>Icône (emoji)</label>
+            <input class="input" id="catFormIcon" placeholder="Ex: 📱" maxlength="2">
+        </div>
+        <div class="field">
+            <label>Image de la categorie</label>
+            <div id="catThumbnailZone" style="border: 1px dashed var(--color-border); border-radius: 8px; padding: 12px; text-align: center; cursor: pointer; background: var(--color-bg-secondary);">
+                <input type="file" id="catThumbnailInput" accept="image/jpeg,image/png,image/webp" style="display:none;">
+                <div>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="17 8 12 3 7 8"/>
+                        <line x1="12" y1="3" x2="12" y2="15"/>
+                    </svg>
                 </div>
-
+                <p style="font-size:12px; margin-top:4px;">Cliquez pour ajouter une image</p>
+                <small style="font-size:10px; color:var(--color-text-tertiary);">JPG, PNG, WEBP - Max 2MB - Format carre (200x200)</small>
+            </div>
+            <div id="catThumbnailPreview" style="margin-top: 10px; display: none; align-items: center; gap: 10px;">
+                <img id="catThumbnailImg" src="" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px; border: 1px solid var(--color-border);">
+                <button type="button" id="catThumbnailRemove" style="background: none; border: none; cursor: pointer; color: var(--color-danger);">Supprimer</button>
+            </div>
+        </div>
+        <div style="display:flex; gap:10px; margin-top: 16px;">
+            <button class="btn btn--primary" id="catFormSave">Enregistrer</button>
+            <button type="button" class="btn btn--ghost" id="catFormCancel2">Annuler</button>
+        </div>
+    </div>
+</div>
                 <div id="categoriesList" class="card-list"></div>
             </section>
 

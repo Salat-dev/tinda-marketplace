@@ -938,11 +938,16 @@ async function generateInvoice(orderId) {
 
 // Rendre la fonction accessible globalement
 window.generateInvoice = generateInvoice;
-
 /* ══════════════════════════════════════════════════════════════════
-   CATEGORIES
+   CATEGORIES AVEC THUMBNAIL
 ══════════════════════════════════════════════════════════════════ */
+
 const categoriesList = document.getElementById('categoriesList');
+
+// Variables pour le thumbnail
+let catThumbnailFile = null;
+let isEditingCategory = false;
+let editingCategoryId = null;
 
 async function loadCategories() {
     const { data, error } = await sb
@@ -952,7 +957,10 @@ async function loadCategories() {
         .order('position', { ascending: true, nullsFirst: false })
         .order('name');
 
-    if (error) { console.error(error); return; }
+    if (error) { 
+        console.error(error); 
+        return; 
+    }
     allCategories = data || [];
     renderCategoriesSelect();
     renderCategoriesList();
@@ -962,7 +970,7 @@ function renderCategoriesSelect() {
     const sel = document.getElementById('categoriesSelect');
     if (!sel) return;
     const current = sel.value;
-    sel.innerHTML = '<option value="">— Sans catégorie —</option>' +
+    sel.innerHTML = '<option value="">— Sans categorie —</option>' +
         allCategories.map((c) => `<option value="${escapeHTML(c.id)}">${escapeHTML((c.icon ? c.icon + ' ' : '') + c.name)}</option>`).join('');
     if (current) sel.value = current;
 }
@@ -970,116 +978,359 @@ function renderCategoriesSelect() {
 function renderCategoriesList() {
     if (!categoriesList) return;
     if (!allCategories.length) {
-        showEmpty(categoriesList, 'Aucune catégorie. Créez votre première catégorie !');
+        showEmpty(categoriesList, 'Aucune categorie. Creez votre premiere categorie !');
         return;
     }
+    
     categoriesList.innerHTML = `
         <div class="cat-list">
             ${allCategories.map((c) => `
-                <div class="cat-item">
-                    <div>
-                        <div class="cat-item__name">${escapeHTML((c.icon ? c.icon + ' ' : '') + c.name)}</div>
-                        <div class="cat-item__slug">/categories/${escapeHTML(c.slug)}</div>
+                <div class="cat-item" style="display:flex; justify-content:space-between; align-items:center; padding:12px; border:1px solid var(--color-border); border-radius:8px; margin-bottom:8px;">
+                    <div style="display:flex; gap:12px; align-items:center;">
+                        ${c.thumbnail_url ? 
+                            `<img src="${escapeHTML(c.thumbnail_url)}" style="width:45px; height:45px; object-fit:cover; border-radius:8px;" onerror="this.src='${IMG_FALLBACK}'">` :
+                            `<div style="width:45px; height:45px; background:#f0f0f0; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:24px;">${c.icon || '📁'}</div>`
+                        }
+                        <div>
+                            <div class="cat-item__name" style="font-weight:600;">${escapeHTML(c.name)}</div>
+                            <div class="cat-item__slug" style="font-size:11px; color:var(--color-text-tertiary);">/categories/${escapeHTML(c.slug)}</div>
+                        </div>
                     </div>
-                    <div class="cat-item__actions">
+                    <div class="cat-item__actions" style="display:flex; gap:8px;">
+                        <button class="btn btn--ghost btn--sm" data-editcat="${escapeHTML(c.id)}" data-editcat-name="${escapeHTML(c.name)}" data-editcat-icon="${escapeHTML(c.icon || '')}" data-editcat-thumb="${escapeHTML(c.thumbnail_url || '')}">Modifier</button>
                         <button class="btn btn--danger btn--sm" data-delcat="${escapeHTML(c.id)}">Supprimer</button>
                     </div>
                 </div>
             `).join('')}
         </div>
     `;
-}
-
-/* Create from main categories view */
-const newCatBtnMain = document.getElementById('newCatBtnMain');
-const catFormWrap = document.getElementById('catFormWrap');
-const catFormName = document.getElementById('catFormName');
-const catFormIcon = document.getElementById('catFormIcon');
-const catFormSave = document.getElementById('catFormSave');
-const catFormCancel = document.getElementById('catFormCancel');
-
-if (newCatBtnMain) {
-    newCatBtnMain.addEventListener('click', () => {
-        catFormWrap.style.display = 'block';
-        catFormName.focus();
+    
+    // Ajouter les event listeners pour les boutons modifier
+    document.querySelectorAll('[data-editcat]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const id = btn.dataset.editcat;
+            const name = btn.dataset.editcatName;
+            const icon = btn.dataset.editcatIcon;
+            const thumbUrl = btn.dataset.editcatThumb;
+            
+            openEditCategoryModal(id, name, icon, thumbUrl);
+        });
     });
 }
-if (catFormCancel) {
-    catFormCancel.addEventListener('click', () => {
-        catFormWrap.style.display = 'none';
-        catFormName.value = '';
-        catFormIcon.value = '';
-    });
-}
-if (catFormSave) {
-    catFormSave.addEventListener('click', () => createCategory(catFormName.value, catFormIcon.value, true));
+
+// Fonction pour uploader l'image d'une categorie
+async function uploadCategoryThumbnail(file, categoryId) {
+    if (!file) return null;
+    
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+        toast('Format non supporte. Utilisez JPG, PNG ou WEBP', 'error');
+        return null;
+    }
+    
+    if (file.size > 2 * 1024 * 1024) {
+        toast('Image trop volumineuse. Maximum 2MB', 'error');
+        return null;
+    }
+    
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${categoryId}-${Date.now()}.${fileExt}`;
+    const filePath = `categories/${fileName}`;
+    
+    try {
+        const { error } = await sb.storage
+            .from('category-thumbnails')
+            .upload(filePath, file, {
+                cacheControl: '3600',
+                upsert: true
+            });
+        
+        if (error) throw error;
+        
+        const { data: urlData } = sb.storage
+            .from('category-thumbnails')
+            .getPublicUrl(filePath);
+        
+        return urlData.publicUrl;
+        
+    } catch (error) {
+        console.error('Erreur upload:', error);
+        toast('Erreur lors de l\'upload de l\'image', 'error');
+        return null;
+    }
 }
 
-/* Inline create from product form */
-const openCatCreate = document.getElementById('openCatCreate');
-const catCreateBox = document.getElementById('catCreateBox');
-const newCatNameInp = document.getElementById('newCatName');
-const saveCatBtn = document.getElementById('saveCatBtn');
-const closeCatCreate = document.getElementById('closeCatCreate');
-
-if (openCatCreate) {
-    openCatCreate.addEventListener('click', () => {
-        catCreateBox.style.display = catCreateBox.style.display === 'none' ? 'block' : 'none';
-        if (catCreateBox.style.display === 'block') newCatNameInp.focus();
-    });
-}
-if (closeCatCreate) {
-    closeCatCreate.addEventListener('click', () => { catCreateBox.style.display = 'none'; });
-}
-if (saveCatBtn) {
-    saveCatBtn.addEventListener('click', () => createCategory(newCatNameInp.value, '', false));
+// Fonction pour supprimer une thumbnail
+async function deleteCategoryThumbnail(thumbnailUrl) {
+    if (!thumbnailUrl) return;
+    
+    try {
+        const urlParts = thumbnailUrl.split('/');
+        const filePath = urlParts.slice(urlParts.indexOf('category-thumbnails') + 1).join('/');
+        
+        if (filePath && filePath.includes('categories/')) {
+            await sb.storage
+                .from('category-thumbnails')
+                .remove([filePath]);
+        }
+    } catch (error) {
+        console.error('Erreur suppression:', error);
+    }
 }
 
-async function createCategory(name, icon, fromMainView = false) {
+// Fonction pour creer une categorie
+async function createCategoryWithThumbnail(name, icon, thumbnailFile) {
     name = (name || '').trim();
-    if (!name) return toast('Donnez un nom à la catégorie', 'error');
+    if (!name) {
+        toast('Donnez un nom a la categorie', 'error');
+        return false;
+    }
 
     const slug = name.toLowerCase()
         .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
         .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
-    const { data, error } = await sb.from('categories').insert({
+    const { data: newCategory, error: insertError } = await sb.from('categories').insert({
         vendor_id: currentVendor.id,
-        name, slug,
+        name: name,
+        slug: slug,
         icon: icon || null,
+        thumbnail_url: null
     }).select().single();
 
-    if (error) return toast(error.message, 'error');
-    toast(`Catégorie « ${name} » créée`, 'success');
-
-    allCategories.push(data);
+    if (insertError) {
+        toast(insertError.message, 'error');
+        return false;
+    }
+    
+    // Upload thumbnail si presente
+    if (thumbnailFile) {
+        const thumbnailUrl = await uploadCategoryThumbnail(thumbnailFile, newCategory.id);
+        
+        if (thumbnailUrl) {
+            const { error: updateError } = await sb
+                .from('categories')
+                .update({ thumbnail_url: thumbnailUrl })
+                .eq('id', newCategory.id);
+            
+            if (!updateError) {
+                newCategory.thumbnail_url = thumbnailUrl;
+            }
+        }
+    }
+    
+    toast(`Categorie "${name}" creee`, 'success');
+    
+    allCategories.push(newCategory);
     renderCategoriesSelect();
     renderCategoriesList();
+    
+    return true;
+}
 
-    const sel = document.getElementById('categoriesSelect');
-    if (sel && !fromMainView) {
-        sel.value = data.id;
-        catCreateBox.style.display = 'none';
-        newCatNameInp.value = '';
+// Fonction pour mettre a jour une categorie
+async function updateCategoryWithThumbnail(id, name, icon, thumbnailFile) {
+    name = (name || '').trim();
+    if (!name) {
+        toast('Donnez un nom a la categorie', 'error');
+        return false;
     }
 
-    if (fromMainView) {
-        catFormWrap.style.display = 'none';
-        catFormName.value = '';
-        catFormIcon.value = '';
+    const slug = name.toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+    const updates = {
+        name: name,
+        slug: slug,
+        icon: icon || null
+    };
+    
+    // Upload nouvelle thumbnail si presente
+    if (thumbnailFile) {
+        const oldCategory = allCategories.find(c => c.id === id);
+        if (oldCategory?.thumbnail_url) {
+            await deleteCategoryThumbnail(oldCategory.thumbnail_url);
+        }
+        
+        const newThumbnailUrl = await uploadCategoryThumbnail(thumbnailFile, id);
+        if (newThumbnailUrl) {
+            updates.thumbnail_url = newThumbnailUrl;
+        }
+    }
+    
+    const { error } = await sb
+        .from('categories')
+        .update(updates)
+        .eq('id', id);
+    
+    if (error) {
+        toast(error.message, 'error');
+        return false;
+    }
+    
+    toast('Categorie mise a jour', 'success');
+    await loadCategories();
+    return true;
+}
+
+// Ouvrir le modal de creation
+function openCreateCategoryModal() {
+    isEditingCategory = false;
+    editingCategoryId = null;
+    catFormName.value = '';
+    catFormIcon.value = '';
+    catThumbnailFile = null;
+    if (catThumbnailInput) catThumbnailInput.value = '';
+    if (catThumbnailPreview) catThumbnailPreview.style.display = 'none';
+    if (catFormWrap) catFormWrap.style.display = 'block';
+    if (catFormName) catFormName.focus();
+    if (document.getElementById('catModalTitle')) {
+        document.getElementById('catModalTitle').textContent = 'Nouvelle categorie';
     }
 }
 
-/* Delete categories */
+// Ouvrir le modal de modification
+function openEditCategoryModal(id, name, icon, thumbUrl) {
+    isEditingCategory = true;
+    editingCategoryId = id;
+    catFormName.value = name;
+    catFormIcon.value = icon || '';
+    catThumbnailFile = null;
+    
+    if (thumbUrl && thumbUrl !== 'undefined' && thumbUrl !== '') {
+        if (catThumbnailPreview) {
+            catThumbnailPreview.style.display = 'flex';
+            if (catThumbnailImg) catThumbnailImg.src = thumbUrl;
+        }
+    } else {
+        if (catThumbnailPreview) catThumbnailPreview.style.display = 'none';
+    }
+    
+    if (catThumbnailInput) catThumbnailInput.value = '';
+    if (catFormWrap) catFormWrap.style.display = 'block';
+    if (document.getElementById('catModalTitle')) {
+        document.getElementById('catModalTitle').textContent = 'Modifier la categorie';
+    }
+}
+
+// Sauvegarder la categorie (creation ou modification)
+async function saveCategory() {
+    const name = catFormName.value;
+    const icon = catFormIcon.value;
+    const thumbnail = catThumbnailFile;
+    
+    if (isEditingCategory && editingCategoryId) {
+        await updateCategoryWithThumbnail(editingCategoryId, name, icon, thumbnail);
+    } else {
+        await createCategoryWithThumbnail(name, icon, thumbnail);
+    }
+    
+    // Fermer le modal
+    catFormWrap.style.display = 'none';
+    catFormName.value = '';
+    catFormIcon.value = '';
+    catThumbnailFile = null;
+    if (catThumbnailInput) catThumbnailInput.value = '';
+    if (catThumbnailPreview) catThumbnailPreview.style.display = 'none';
+}
+
+// Supprimer une categorie
+async function deleteCategory(categoryId) {
+    if (!confirm('Supprimer cette categorie ? Les produits associes ne seront pas supprimer.')) return;
+    
+    const category = allCategories.find(c => c.id === categoryId);
+    if (category?.thumbnail_url) {
+        await deleteCategoryThumbnail(category.thumbnail_url);
+    }
+    
+    const { error } = await sb.from('categories').delete().eq('id', categoryId);
+    if (error) return toast(error.message, 'error');
+    
+    toast('Categorie supprimee', 'success');
+    await loadCategories();
+}
+
+/* ─────────── INITIALISATION DES EVENT LISTENERS ─────────── */
+
+// Bouton nouvelle categorie
+const newCatBtnMain = document.getElementById('newCatBtnMain');
+if (newCatBtnMain) {
+    newCatBtnMain.addEventListener('click', openCreateCategoryModal);
+}
+
+// Bouton annuler
+const catFormCancel = document.getElementById('catFormCancel');
+if (catFormCancel) {
+    catFormCancel.addEventListener('click', () => {
+        catFormWrap.style.display = 'none';
+        catFormName.value = '';
+        catFormIcon.value = '';
+        catThumbnailFile = null;
+        if (catThumbnailInput) catThumbnailInput.value = '';
+        if (catThumbnailPreview) catThumbnailPreview.style.display = 'none';
+    });
+}
+
+// Bouton sauvegarder (LE PLUS IMPORTANT)
+const catFormSave = document.getElementById('catFormSave');
+if (catFormSave) {
+    // Supprimer les anciens event listeners
+    const newSaveBtn = catFormSave.cloneNode(true);
+    catFormSave.parentNode.replaceChild(newSaveBtn, catFormSave);
+    
+    // Ajouter le nouvel event listener
+    newSaveBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log('Bouton sauvegarder clique');
+        saveCategory();
+    });
+}
+
+// Zone d'upload thumbnail
+const catThumbnailZone = document.getElementById('catThumbnailZone');
+const catThumbnailInput = document.getElementById('catThumbnailInput');
+const catThumbnailPreview = document.getElementById('catThumbnailPreview');
+const catThumbnailImg = document.getElementById('catThumbnailImg');
+const catThumbnailRemove = document.getElementById('catThumbnailRemove');
+
+if (catThumbnailZone && catThumbnailInput) {
+    catThumbnailZone.addEventListener('click', () => {
+        catThumbnailInput.click();
+    });
+    
+    catThumbnailInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            catThumbnailFile = file;
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                if (catThumbnailImg) catThumbnailImg.src = event.target.result;
+                if (catThumbnailPreview) catThumbnailPreview.style.display = 'flex';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+}
+
+if (catThumbnailRemove) {
+    catThumbnailRemove.addEventListener('click', () => {
+        catThumbnailFile = null;
+        if (catThumbnailInput) catThumbnailInput.value = '';
+        if (catThumbnailPreview) catThumbnailPreview.style.display = 'none';
+        if (catThumbnailImg) catThumbnailImg.src = '';
+    });
+}
+
+// Suppression d'une categorie
 if (categoriesList) {
     categoriesList.addEventListener('click', async (e) => {
         const del = e.target.closest('[data-delcat]');
-        if (!del) return;
-        if (!confirm('Supprimer cette catégorie ? Les produits associés ne seront pas supprimés.')) return;
-        const { error } = await sb.from('categories').delete().eq('id', del.dataset.delcat);
-        if (error) return toast(error.message, 'error');
-        toast('Catégorie supprimée', 'success');
-        await loadCategories();
+        if (del) {
+            e.preventDefault();
+            await deleteCategory(del.dataset.delcat);
+        }
     });
 }
 

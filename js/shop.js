@@ -1,5 +1,6 @@
 /* ══════════════════════════════════════════════════════════
    Mayi · shop.js — E-commerce page complète
+   Avec thumbnails des catégories
    ══════════════════════════════════════════════════════════ */
 
 const IMG_FALLBACK = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200"%3E%3Crect fill="%23F2F2EF" width="200" height="200"/%3E%3C/svg%3E';
@@ -45,7 +46,6 @@ function buildSection({ id, title, subtitle, products, featured = false, total =
     const idAttr = id ? `id="${id}"` : '';
     const sliderId = id ? `slider-${id}` : `slider-${Math.random().toString(36).slice(2,7)}`;
 
-    // Bouton "Voir plus" — toujours présent, même sans categoriesId
     let seeAllBtn = '';
     if (categoriesId && total > products.length) {
         seeAllBtn = `<a href="categories.html?id=${categoriesId}" class="section__more-btn">Voir plus<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>`;
@@ -73,7 +73,6 @@ function buildSection({ id, title, subtitle, products, featured = false, total =
         headerHTML = `<div class="cat-section__head"><div><h2 class="cat-section__title">${escapeHTML(title)}</h2>${subtitle?`<p class="cat-section__subtitle">${escapeHTML(subtitle)}</p>`:''}</div>${seeAllHeader}</div>`;
     }
 
-    // Bouton "Voir plus" sous la grille de produits
     const footerHTML = seeAllBtn ? `<div class="cat-section__footer">${seeAllBtn}</div>` : '';
 
     return `<section class="cat-section${featured?' cat-section--featured':''}" ${idAttr}>
@@ -91,7 +90,6 @@ function buildSection({ id, title, subtitle, products, featured = false, total =
 function buildFlashDeals(products) {
     if (!products.length) return '';
     const sliderId = 'slider-flash';
-    // Countdown : fin de journée
     const now = new Date();
     const end = new Date(now); end.setHours(23,59,59,999);
     const diff = end - now;
@@ -123,7 +121,6 @@ function buildFlashDeals(products) {
     </section>`;
 }
 
-// Countdown timer
 function startFlashCountdown() {
     const hEl = document.getElementById('fcH'), mEl = document.getElementById('fcM'), sEl = document.getElementById('fcS');
     if (!hEl) return;
@@ -135,47 +132,6 @@ function startFlashCountdown() {
         sEl.textContent = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
     }, 1000);
 }
-
-/* ═══════════════════════════════════════════════════════════
-   BANNIÈRES ENTRE SECTIONS
-   ═══════════════════════════════════════════════════════════ */
-
-const BANNERS = [
-   /* `<div class="promo-banner promo-banner--dark">
-        <div class="promo-banner__inner">
-            <div class="promo-banner__content">
-                <span class="promo-banner__tag">Pour les vendeurs</span>
-                <h3 class="promo-banner__title">Ouvrez votre boutique.<br><em>Zéro commission.</em></h3>
-                <p class="promo-banner__sub">Rejoignez des centaines de vendeurs et touchez de nouveaux clients chaque jour.</p>
-                <a href="login.html" class="promo-banner__btn">Commencer<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
-            </div>
-            <div class="promo-banner__visual"><div class="promo-banner__circle"></div><span class="promo-banner__big">0%</span><span class="promo-banner__label">de commission</span></div>
-        </div>
-    </div>`,
-    `<div class="promo-banner promo-banner--accent">
-        <div class="promo-banner__inner">
-            <div class="promo-banner__content">
-                <span class="promo-banner__tag">Livraison</span>
-                <h3 class="promo-banner__title">Livraison offerte<br><em>dès 50 000 FCFA</em></h3>
-                <p class="promo-banner__sub">Partout au Cameroun. Paiement à la livraison disponible.</p>
-                <a href="#sections-anchor" class="promo-banner__btn promo-banner__btn--white">Voir les produits<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
-            </div>
-            <div class="promo-banner__visual"><div class="promo-banner__circle promo-banner__circle--white"></div><svg class="promo-banner__truck" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
-        </div>
-    </div>`,
-
-    `<div class="promo-banner promo-banner--light">
-        <div class="promo-banner__inner">
-            <div class="promo-banner__content">
-                <span class="promo-banner__tag">Support</span>
-                <h3 class="promo-banner__title">Une question ?<br><em>On vous répond.</em></h3>
-                <p class="promo-banner__sub">Notre équipe est disponible sur WhatsApp en moins de 5 minutes.</p>
-                <a href="https://wa.me/237693421348" target="_blank" class="promo-banner__btn promo-banner__btn--dark">Nous contacter<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></a>
-            </div>
-        </div>
-    </div>`*/
-];
-function getBanner(i) { return i < BANNERS.length ? BANNERS[i] : ''; }
 
 /* ═══════════════════════════════════════════════════════════
    PRODUCT CARD
@@ -193,7 +149,6 @@ function cardHTML(p, showDiscount = false) {
     else if (isOut) badgeHTML = '<span class="badge badge--out_of_stock">Épuisé</span>';
     else if (hasPromo) badgeHTML = `<span class="badge badge--promo">−${discount}%</span>`;
 
-    // Barre de stock pour flash deals
     let stockBar = '';
     if (showDiscount && hasPromo && !isOut) {
         const sold = Math.floor(Math.random() * 70) + 20;
@@ -202,6 +157,7 @@ function cardHTML(p, showDiscount = false) {
 
     return `<a href="product.html?id=${p.id}" class="mi-card${isOut?' mi-card--out':''}" aria-label="${escapeHTML(p.name)}"><div class="mi-card__media">${badgeHTML}<button class="mi-card__wish" onclick="event.preventDefault();event.stopPropagation();"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button><img src="${escapeHTML(img)}" alt="${escapeHTML(p.name)}" loading="lazy" onerror="this.src='${IMG_FALLBACK}'"><button class="mi-card__atc" onclick="event.preventDefault();event.stopPropagation();quickAddToCart('${p.id}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 6L8 16H20L22 6H6Z"/><path d="M6 6L4 2H2"/><circle cx="10" cy="20" r="1.5" fill="currentColor" stroke="none"/><circle cx="18" cy="20" r="1.5" fill="currentColor" stroke="none"/></svg>Ajouter</button></div><div class="mi-card__body"><div class="mi-card__vendor">${escapeHTML(p.vendors?.shop_name||'Mayi')}</div><h3 class="mi-card__name">${escapeHTML(p.name)}</h3><p class="mi-card__desc">${escapeHTML(desc)}</p>${renderSwatches(p.colors)}<div class="mi-card__price"><span class="mi-card__price-current">${formatXAF(p.price)}</span>${hasPromo?`<span class="mi-card__price-old">${formatXAF(p.old_price)}</span>`:''}${hasPromo?`<span class="mi-card__price-discount">−${discount}%</span>`:''}</div>${stockBar}</div></a>`;
 }
+
 /* ═══════════════════════════════════════════════════════════
    SLIDER + CART
    ═══════════════════════════════════════════════════════════ */
@@ -249,6 +205,10 @@ function renderSections() {
     let html = '';
     let bannerIdx = 0;
 
+    // Bannières (commentées par défaut)
+    // const BANNERS = [...];
+    // function getBanner(i) { return i < BANNERS.length ? BANNERS[i] : ''; }
+
     // 1 — Flash Deals (produits en promo)
     const promos = allProducts.filter(p => p.old_price && p.old_price > p.price).slice(0, 12);
     if (promos.length) html += buildFlashDeals(promos);
@@ -256,9 +216,6 @@ function renderSections() {
     // 2 — Coups de cœur
     const featured = allProducts.filter(p => p.badge === 'featured' || p.badge === 'bestseller').slice(0, 10);
     if (featured.length) html += buildSection({ title: 'Coups de cœur', subtitle: 'Sélectionnés pour vous', products: featured, featured: true });
-
-    // Bannière #1
-    html += getBanner(bannerIdx++);
 
     // 3 — Nouveautés
     const newProds = allProducts.filter(p => p.badge === 'new').slice(0, 10);
@@ -269,8 +226,16 @@ function renderSections() {
     for (const cat of allCategories) {
         const all = grouped.get(cat.id) || [];
         if (!all.length) continue;
-        if (catIdx > 0 && catIdx % 2 === 0 && bannerIdx < BANNERS.length) html += getBanner(bannerIdx++);
-        html += buildSection({ id: `cat-${cat.id}`, title: cat.name, subtitle: `${all.length} produit${all.length>1?'s':''} disponible${all.length>1?'s':''}`, products: all.slice(0,10), total: all.length, categoriesId: cat.id, theme: getCatTheme(catIdx), catIndex: catIdx });
+        html += buildSection({ 
+            id: `cat-${cat.id}`, 
+            title: cat.name, 
+            subtitle: `${all.length} produit${all.length>1?'s':''} disponible${all.length>1?'s':''}`, 
+            products: all.slice(0,10), 
+            total: all.length, 
+            categoriesId: cat.id, 
+            theme: getCatTheme(catIdx), 
+            catIndex: catIdx 
+        });
         catIdx++;
     }
 
@@ -279,13 +244,17 @@ function renderSections() {
     startFlashCountdown();
 
     const visibleCats = allCategories.filter(c => grouped.has(c.id));
-    if (visibleCats.length) { catNavInner.innerHTML = visibleCats.map(c => `<a href="#cat-${c.id}" class="cat-nav__link">${escapeHTML(c.name)}</a>`).join(''); catNav.hidden = false; initScrollSpy(visibleCats); } else catNav.hidden = true;
+    if (visibleCats.length) { 
+        catNavInner.innerHTML = visibleCats.map(c => `<a href="#cat-${c.id}" class="cat-nav__link">${escapeHTML(c.name)}</a>`).join(''); 
+        catNav.hidden = false; 
+        initScrollSpy(visibleCats); 
+    } else catNav.hidden = true;
 }
 
 let debounceTimer; searchInput.addEventListener('input', () => { clearTimeout(debounceTimer); debounceTimer = setTimeout(render, 200); }); searchForm.addEventListener('submit', e => { e.preventDefault(); render(); });
 
 /* ═══════════════════════════════════════════════════════════
-   categories VISUAL GRID
+   CATEGORIES VISUAL GRID AVEC THUMBNAILS
    ═══════════════════════════════════════════════════════════ */
 
 function buildCatGrid(categories, pbc) {
@@ -295,8 +264,13 @@ function buildCatGrid(categories, pbc) {
         const t = getCatTheme(i);
         const icon = getCatIcon(cat.name);
         const count = pbc.get(cat.id) || 0;
+        // Utiliser la thumbnail si disponible, sinon l'icône par défaut
+        const hasThumb = cat.thumbnail_url && cat.thumbnail_url !== '';
         return `<a href="categories.html?id=${cat.id}" class="cat-tile" style="--tile-accent:${t.accent};--tile-bg:${t.bg};">
-            <span class="cat-tile__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">${icon}</svg></span>
+            ${hasThumb ? 
+                `<div class="cat-tile__thumb"><img src="${escapeHTML(cat.thumbnail_url)}" alt="${escapeHTML(cat.name)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="cat-tile__icon" style="display:none;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">${icon}</svg></span></div>` :
+                `<span class="cat-tile__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">${icon}</svg></span>`
+            }
             <span class="cat-tile__name">${escapeHTML(cat.name)}</span>
             <span class="cat-tile__count">${count} produit${count>1?'s':''}</span>
         </a>`;
@@ -304,7 +278,7 @@ function buildCatGrid(categories, pbc) {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   MEGA MENU
+   MEGA MENU AVEC THUMBNAILS
    ═══════════════════════════════════════════════════════════ */
 
 const megaLinks = document.getElementById('megaLinks'), megaDropdown = document.getElementById('megaDropdown'), megaDropdownInner = document.getElementById('megaDropdownInner'), megaToggle = document.getElementById('megaToggle'), megaOverlay = document.getElementById('megaOverlay');
@@ -316,8 +290,32 @@ document.addEventListener('keydown', e => { if (e.key==='Escape'&&megaOpen) togg
 
 function buildMegaMenu(categories, pbc) {
     if (!categories.length) return;
-    megaLinks.innerHTML = categories.map(c => { const n = pbc.get(c.id)||0; return `<a href="categories.html?id=${c.id}" class="mega__link">${escapeHTML(c.name)}${n?`<span class="mega__link-count">${n}</span>`:''}</a>`; }).join('');
-    megaDropdownInner.innerHTML = `<div class="mega__grid">${categories.map((c,i)=>{ const t=getCatTheme(i); const ic=getCatIcon(c.name); const n=pbc.get(c.id)||0; return `<a href="categories.html?id=${c.id}" class="mega__card" style="--card-accent:${t.accent};--card-bg:${t.bg};"><span class="mega__card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">${ic}</svg></span><span class="mega__card-body"><span class="mega__card-name">${escapeHTML(c.name)}</span><span class="mega__card-count">${n} produit${n>1?'s':''}</span></span><svg class="mega__card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>`; }).join('')}</div>`;
+    megaLinks.innerHTML = categories.map(c => { 
+        const n = pbc.get(c.id)||0; 
+        const hasThumb = c.thumbnail_url && c.thumbnail_url !== '';
+        return `<a href="categories.html?id=${c.id}" class="mega__link">
+            ${hasThumb ? `<img src="${escapeHTML(c.thumbnail_url)}" class="mega__link-thumb" onerror="this.style.display='none'">` : ''}
+            <span>${escapeHTML(c.name)}</span>${n?`<span class="mega__link-count">${n}</span>`:''}
+        </a>`;
+    }).join('');
+    
+    megaDropdownInner.innerHTML = `<div class="mega__grid">${categories.map((c,i)=>{
+        const t=getCatTheme(i); 
+        const ic=getCatIcon(c.name); 
+        const n=pbc.get(c.id)||0;
+        const hasThumb = c.thumbnail_url && c.thumbnail_url !== '';
+        return `<a href="categories.html?id=${c.id}" class="mega__card" style="--card-accent:${t.accent};--card-bg:${t.bg};">
+            ${hasThumb ? 
+                `<div class="mega__card-thumb"><img src="${escapeHTML(c.thumbnail_url)}" alt="${escapeHTML(c.name)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="mega__card-icon" style="display:none;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">${ic}</svg></span></div>` :
+                `<span class="mega__card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">${ic}</svg></span>`
+            }
+            <span class="mega__card-body">
+                <span class="mega__card-name">${escapeHTML(c.name)}</span>
+                <span class="mega__card-count">${n} produit${n>1?'s':''}</span>
+            </span>
+            <svg class="mega__card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>`;
+    }).join('')}</div>`;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -333,7 +331,7 @@ async function loadData() {
     showSkeleton(sectionsEl);
     const [pr, cr] = await Promise.all([
         sb.from('products').select('id,name,description,price,old_price,image_url,images,colors,badge,stock,categories_id,vendor_id,vendors(shop_name),categories(id,name,slug)').eq('active', true).order('created_at', { ascending: false }),
-        sb.from('categories').select('id,name,slug,vendor_id,position').order('position', { ascending: true, nullsFirst: false }).order('name')
+        sb.from('categories').select('id,name,slug,vendor_id,position,thumbnail_url,icon').order('position', { ascending: true, nullsFirst: false }).order('name')
     ]);
     if (pr.error) { sectionsEl.innerHTML = `<div class="empty">⚠️ Erreur : ${escapeHTML(pr.error.message)}</div>`; return; }
     allProducts = pr.data || [];

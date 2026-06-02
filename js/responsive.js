@@ -150,7 +150,7 @@
                         </a>
                     </nav>
                     <div class="mobile-sidebar__footer">
-                        <p>© 2025 Mayi</p>
+                        <p>© 2026 Mayi</p>
                     </div>
                 </div>
             `;
